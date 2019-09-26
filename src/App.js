@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
 import Routes from './routes';
-import './assets/bootstrap/css/bootstrap.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <Routes propriedade1="x"/>
