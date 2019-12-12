@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 import { Link, withRouter } from "react-router-dom";
-import { login } from '../services/auth';
+import { armazenaToken } from '../services/auth';
 import './Login.css';
 
 
@@ -22,13 +22,13 @@ class Login extends Component {
             this.setState({ error: "Preencha e-mail e senha para continuar!" });
         } else {
             try {
-                const response = await api.post('/users/login',
-                    { email: email, pass: senha }
+                const response = await api.post('/barauth',
+                    { email: email, password: senha }
                 );
-                const { jwt } = response.data;
-                if (jwt) {
-                    login(jwt);
-                    this.props.history.push("/feed");
+                const { token } = response.data;
+                if (token) {
+                    armazenaToken(token);
+                    this.props.history.push("/mesas");
                 }
 
             } catch (err) {
