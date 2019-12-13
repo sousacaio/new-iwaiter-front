@@ -4,7 +4,7 @@ import Routes from './routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
-    <Routes propriedade1="x"/>
+    <Routes propriedade1="x" />
   );
 }
 

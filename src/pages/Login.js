@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 import { Link, withRouter } from "react-router-dom";
-import { armazenaToken } from '../services/auth';
+import { armazenaToken, armazenaIdBar } from '../services/auth';
 import './Login.css';
 
 
@@ -26,8 +26,10 @@ class Login extends Component {
                     { email: email, password: senha }
                 );
                 const { token } = response.data;
+
                 if (token) {
                     armazenaToken(token);
+                    armazenaIdBar(response.data.bar._id)
                     this.props.history.push("/mesas");
                 }
 

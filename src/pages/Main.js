@@ -1,40 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Main.css';
-import Navba from '../components/Navbar';
-import { getToken } from '../services/auth';
+import { getIdBar } from '../services/auth';
 import { Container, Row, Col } from 'react-bootstrap';
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            token: ''
+import api from '../services/api';
+import Menu from '../components/Menu/Menu';
+import Card from '../components/Cards/Card';
+const App = () => {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        async function getMesas() {
+            api.get('/mesas', { headers: { id: getIdBar() } })
+                .then((r) => {
+                    console.log(r.data);
+                    setData(r.data.mesas);
+                })
         }
+        getMesas();
+    }, [data]);
+    return (
+        <div>
 
-    }
-    render() {
-        return (
-            <div>
-                <Navba />
-                <Container>
-                    <Row>
-                        <Col xs={9}>
-                            Ver movimento no estabelecimento<br />
-                            Criar novas mesas<br />
-                            Cardápio<br />
-                            {getToken('token')}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        );
-    }
-
+            <section>
+                <Menu />
+            </section>
+            <Container>
+                <Row>
+                    <Col xs={9}>
+                        <div className="grid grid-template-columns-1">
+                            {data.map((i) => {
+                                return <div key={i._id} className="item">
+                                    <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
+                                </div>
+                            })}
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </div >
+    );
 }
 
-
-
-
 export default App;
+
+
+
 
 
 
