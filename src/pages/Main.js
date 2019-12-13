@@ -5,8 +5,16 @@ import { Container, Row, Col } from 'react-bootstrap';
 import api from '../services/api';
 import Menu from '../components/Menu/Menu';
 import Card from '../components/Cards/Card';
+import Modal from '../components/Modal/Modal';
 const App = () => {
     const [data, setData] = useState([]);
+    const [isShowing, setShowing] = useState(false);
+    function closeModalHandler() {
+        setShowing(false);
+    }
+    function openModalHandler() {
+        setShowing(true);
+    }
     useEffect(() => {
         async function getMesas() {
             api.get('/mesas', { headers: { id: getIdBar() } })
@@ -32,6 +40,18 @@ const App = () => {
                                     <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
                                 </div>
                             })}
+                        </div>
+                        <div>
+                            {isShowing ? <div onClick={() => closeModalHandler()} className="back-drop"></div> : null}
+
+                            <button className="open-modal-btn" onClick={() => openModalHandler()}>Open Modal</button>
+
+                            <Modal
+                                className="modal"
+                                show={isShowing}
+                                close={() => closeModalHandler()}>
+                                Maybe aircrafts fly very high because they don't want to be seen in plane sight?
+                        </Modal>
                         </div>
                     </Col>
                 </Row>
