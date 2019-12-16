@@ -1,18 +1,17 @@
-
 /* Float four columns side by side */
 
 .column {
   position: relative;
-  left: 40px;
   float: left;
   width: auto;
+  height: auto;
   padding: 0 10px;
 }
 
 /* Remove extra left and right margins, due to padding in columns */
 
 .row {
-  margin: 0 -5px;
+  margin: 0 ;
 }
 
 /* Clear floats after the columns */
@@ -30,7 +29,7 @@
   /* this adds the "card" effect */
   padding: 16px;
   text-align: center;
-  background-color: #f1f1f1;
+  background-color: black;
 }
 
 /* Responsive columns - one column layout (vertical) on small screens */

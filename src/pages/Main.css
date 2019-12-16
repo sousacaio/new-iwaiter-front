@@ -1,32 +1,27 @@
-.fixado {
-    position: fixed;
-}
-
-.mr-3:hover {
-    -webkit-transform: scale(1.3);
-    -ms-transform: scale(1.3);
-    transform: scale(1.3);
-}
-
-.espaca {
-    padding: 10px;
-    margin: 10px;
-    align-items: center;
-}
-
-.espacaCartao {
-    margin: 10px;
-}
-
-.grid-template-columns-1 {
-    grid-template-columns: auto auto;
-}
+/* Grid */
 
 .grid {
     display: grid;
 }
 
+
+/* 100px é o valor total, ignora conteúdo, margem e etc. Respeita apenas o min-width do item.*/
+
+.grid-template-columns-1 {
+    grid-template-columns: auto auto auto auto;
+}
+
+/* Estilos Gerais */
+
 .item {
+    margin: auto;
     text-align: center;
     font-size: 1.5em;
+    
 }
+
+.grid {
+    border: 1px solid #ccc;
+    background-color: black;
+}
+

@@ -46,56 +46,32 @@ class Login extends Component {
         return (
             //eh preferivel utilizar className ao inves de so class
             //pq class eh uma palavra reservada do js e pode dar erro
-            <div>
-                <div className="fullscreen-bg">
-                    <header>
-                        <div className="overlay"></div>
-                        <video playsInline="playsinline" autoPlay="autoplay" muted="muted" loop="loop">
-                            <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4" />
-                        </video>
-                        <div className="container h-100">
-                            <div className="d-flex h-100  align-items-center">
-                                <div className="w-100">
-                                    <div className="mt-4 col-8 offset-2">
-                                        <div className="card">
-                                            <div className="card-header">Faça o login!</div>
-                                            <div className="card-body">
-                                                <form onSubmit={this.handleSignIn}>
-                                                    <div className="form-group row">
-                                                        <label className="col-sm-2 col-form-label">Email</label>
-                                                        <div className="col-sm-10">
-                                                            <input type="email" className="form-control" name="email" required id="inputEmail3"
-                                                                onChange={e => this.setState({ email: e.target.value })} placeholder="Email" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group row">
-                                                        <label className="col-sm-2 col-form-label">Password</label>
-                                                        <div className="col-sm-10">
-                                                            <input type="password" className="form-control" name="password" required
-                                                                id="inputPassword3" placeholder="Password"
-                                                                onChange={e => this.setState({ senha: e.target.value })} />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="form-group row">
-                                                        <div className="col-sm-10 offset-2">
-                                                            <button type="submit" className="btn btn-primary" >Entrar</button>
-                                                            <Link to="/signup" className="btn btn-info float-right" >Cadastrar</Link>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div >
-                                        </div >
-                                    </div >
-
-                                </div>
-                            </div>
+            <div>f
+                <form onSubmit={this.handleSignIn}>
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label">Email</label>
+                        <div className="col-sm-10">
+                            <input type="email" className="form-control" name="email" required id="inputEmail3"
+                                onChange={e => this.setState({ email: e.target.value })} placeholder="Email" />
                         </div>
-                    </header>
-                </div>
+                    </div>
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label">Password</label>
+                        <div className="col-sm-10">
+                            <input type="password" className="form-control" name="password" required
+                                id="inputPassword3" placeholder="Password"
+                                onChange={e => this.setState({ senha: e.target.value })} />
+                        </div>
+                    </div>
+
+                    <div className="form-group row">
+                        <div className="col-sm-10 offset-2">
+                            <button type="submit" className="btn btn-primary" >Entrar</button>
+                            <Link to="/signup" className="btn btn-info float-right" >Cadastrar</Link>
+                        </div>
+                    </div>
+                </form>
             </div >
-
-
         );
     }
 }

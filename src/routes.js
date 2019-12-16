@@ -2,8 +2,7 @@ import React from "react";
 import App from './pages/Main';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Random from './pages/Random';
-import Perfil from './pages/Perfil';
+import Cardapio from './pages/Cardapio/Cardapio';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
@@ -11,9 +10,9 @@ import { isAuthenticated } from "./services/auth";
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>  isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
+    render={props => isAuthenticated() ? (
+      <Component {...props} />
+    ) : (
         <Redirect to={{ pathname: "/", state: { from: props.location } }} />
       )
     }
@@ -26,8 +25,7 @@ const Routes = () => (
       <Route exact path="/" component={Login} />
       <Route path="/signup" component={Signup} />
       <PrivateRoute path="/mesas" component={App} />
-      <PrivateRoute path="/random" component={Random} />
-      <PrivateRoute path="/perfil" component={Perfil} />
+      <PrivateRoute path="/cardapio" component={Cardapio} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>
