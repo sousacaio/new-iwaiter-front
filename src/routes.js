@@ -3,6 +3,7 @@ import App from './pages/Main';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Cardapio from './pages/Cardapio/Cardapio';
+import ItemCardapio from './pages/ItemCardapio/ItemCardapio';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
@@ -26,6 +27,7 @@ const Routes = () => (
       <Route path="/signup" component={Signup} />
       <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/cardapio" component={Cardapio} />
+      <PrivateRoute path="/item" component={ItemCardapio} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>

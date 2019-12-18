@@ -1,0 +1,42 @@
+/* Float four columns side by side */
+
+.column {
+    position: relative;
+    float: left;
+    width: auto;
+    height: auto;
+    padding: 0 10px;
+  }
+  
+  /* Remove extra left and right margins, due to padding in columns */
+  
+  .row {
+    margin: 0 ;
+  }
+  
+  /* Clear floats after the columns */
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Style the counter cards */
+  
+  .card {
+    /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+    background-color: grey;
+  }
+  
+  /* Responsive columns - one column layout (vertical) on small screens */
+  
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }

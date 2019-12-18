@@ -6,14 +6,13 @@ left: 0;
 bottom: 0;
 z-index: 1050;
 display: flex;
-align-items: baseline;
+align-items: fit-content;
 `;
 export const ModalBoxSetup = styled.div`
 position: absolute;
 left: 0;
 right: 0;
 width: ${props => props.width || "32%"}
-overflow:hidden;
 padding:16px;
 margin: 50px auto;
 box-sizing:border-box;

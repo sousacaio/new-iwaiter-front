@@ -33,7 +33,7 @@ const Menu = (history) => {
         <div className="menu">
             <div className="label">Opções</div>
             <div className="spacer"></div>
-            <div className="item2" ><Link to="/cardapio" style={{ textDecoration: 'none', color: 'white' }}><span>Cardápio</span></Link></div>
+            <div className="item2" ><Link to="/cardapio" style={{ textDecoration: 'none', color: 'black' }}><span>Cardápio</span></Link></div>
             <div className="item2" onClick={() => openMesas()}> <span>Mesas</span></div>
             <div className="item2" onClick={() => openFaleConosco()}><span>Fale Conosco</span></div>
             <div onClick={() => handleLogout()} className="item2"><span>Sair</span></div>

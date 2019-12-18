@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CatInputs from './CatInputs';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
-
+//https://itnext.io/how-to-build-a-dynamic-controlled-form-with-react-hooks-2019-b39840f75c4f
 const Form = () => {
     const blankCardapio = { bar: getIdBar(), nome: '', valor: '', categoria: '' };
     const [cardapioState, setCardapioState] = useState([{ ...blankCardapio },]);
@@ -18,13 +18,6 @@ const Form = () => {
         api.post('/cardapio', { ...cardapioState }, { headers: { _id: getIdBar() } }).then()
     }
 
-    var obj = [{ bar: '5de453cd841fb331e8876853', nome: "1", valor: "1", categoria: "1" },
-    { bar: '5de453cd841fb331e8876853', nome: "12", valor: "21", categoria: "12" }]
-    console.log(cardapioState)
-    console.log([
-        { bar: '5de453cd841fb331e8876853', nome: "1", valor: "1", categoria: "1" },
-        { bar: '5de453cd841fb331e8876853', nome: "12", valor: "21", categoria: "12" },
-    ])
     return (
         <form>
             <input
