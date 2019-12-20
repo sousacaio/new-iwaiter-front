@@ -1,53 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { logout } from '../../services/auth';
 import { Link } from 'react-router-dom';
-import Form from '../CatInputs/Form';
-import './Menu.css';
-import ModalMesas from '../Modal/ModalMesas';
-import ModalFaleConosco from '../Modal/ModalFaleConosco';
+import './Menu.scss';
 // https://codepen.io/jreyesgs/pen/qqomjK/
 const Menu = (history) => {
-    const [mesas, setMesas] = useState(false);
-    const [FaleConosco, setFaleConosco] = useState(false);
-
-
-    function openMesas() {
-        setMesas(true)
-    }
-    function dissmissMesas() {
-        setMesas(false)
-    }
-    function openFaleConosco() {
-        setFaleConosco(true)
-    }
-    function dissmissFaleConosco() {
-        setFaleConosco(false)
-    }
-
     function handleLogout() {
         logout();
         localStorage.removeItem('currentIdUser');
     }
-
     return (
-        <div className="menu">
-            <div className="label">Opções</div>
-            <div className="spacer"></div>
-            <div className="item2" ><Link to="/cardapio" style={{ textDecoration: 'none', color: 'black' }}><span>Cardápio</span></Link></div>
-            <div className="item2" onClick={() => openMesas()}> <span>Mesas</span></div>
-            <div className="item2" onClick={() => openFaleConosco()}><span>Fale Conosco</span></div>
-            <div onClick={() => handleLogout()} className="item2"><span>Sair</span></div>
-            <ModalMesas
-                visible={mesas}
-                dismiss={dissmissMesas}
-                children={<div><Form /></div>}
-            />
-            <ModalFaleConosco
-                visible={FaleConosco}
-                dismiss={dissmissFaleConosco}
-                children={<div>FaleConosco </div>}
-            />
-        </div >
+        <div>
+
+            <header class="header" role="banner">
+                <h1 class="logo">
+                    <Link to="/mesas"><span>Qmesa</span></Link>
+                </h1>
+                <div class="nav-wrap">
+                    <nav class="main-nav" role="navigation">
+                        <ul class="unstyled list-hover-slide">
+                            <li><Link to="/mesas">Mesas</Link></li>
+                            <li><Link to="/cardapio">Cardapio</Link></li>
+                            <li><Link to="#">Fale conosco</Link></li>
+                            <li><Link onClick={() => { handleLogout() }}>Sair</Link ></li>
+                        </ul>
+                    </nav>
+                    <ul class="social-links list-inline unstyled list-hover-slide">
+                        <li><Link to="#">Twitter</Link></li>
+                        <li><Link to="#">Google+</Link></li>
+                        <li><Link to="#">GitHub</Link></li>
+                        <li><Link to="#">CodePen</Link></li>
+                    </ul>
+                </div>
+            </header>
+        </div>
     );
 }
 

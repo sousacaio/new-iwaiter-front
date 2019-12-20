@@ -11,7 +11,7 @@
 /* Remove extra left and right margins, due to padding in columns */
 
 .row {
-  margin: 0 ;
+  margin: 0;
 }
 
 /* Clear floats after the columns */
@@ -27,9 +27,11 @@
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   /* this adds the "card" effect */
+  margin: 10;
+  border-radius: 5px 5px 5px 5px;
   padding: 16px;
   text-align: center;
-  background-color: grey;
+  background-color: #35302D;
 }
 
 /* Responsive columns - one column layout (vertical) on small screens */

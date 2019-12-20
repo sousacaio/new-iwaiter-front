@@ -4,11 +4,14 @@
     display: grid;
 }
 
-
 /* 100px é o valor total, ignora conteúdo, margem e etc. Respeita apenas o min-width do item.*/
 
 .grid-template-columns-1 {
     grid-template-columns: auto auto auto auto;
+}
+
+.grid-template-areas {
+    grid-template-columns: 30% 70%;
 }
 
 /* Estilos Gerais */
@@ -16,11 +19,4 @@
 .item {
     margin: auto;
     text-align: center;
-    font-size: 1.5em;
-    
 }
-
-.grid {
-    border: 1px solid #ccc;
-}
-

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Form from '../../components/CatInputs/Form';
 import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import CardCardapio from '../../components/Cards/CardCardapio'
-import ModalCardapio from '../../components/Modal/ModalCardapio'
 const Cardapio = (props) => {
     const [data, setData] = useState([[]])
 
@@ -15,8 +13,11 @@ const Cardapio = (props) => {
         fetchData()
     }, []);
     return (
-        <>
-            <div className="grid grid-template-columns-1 ">
+        <div className="grid-template-areas">
+            <div>
+                <Menu />
+            </div>
+            <div style={{ position: 'absolute', left: '300px' }}>
                 {data.map((item, index) => {
                     return (
                         <div key={index} onClick={() => { props.history.push({ pathname: 'item', state: { item: item._id } }) }}>
@@ -25,8 +26,8 @@ const Cardapio = (props) => {
                     )
                 })}
             </div>
-            <Menu />
-        </>
+
+        </div>
     );
 };
 

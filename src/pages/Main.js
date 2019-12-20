@@ -17,14 +17,18 @@ const App = () => {
         getMesas();
     }, []);
     return (
-        <div className="grid-template-areas-4">
-            <Menu />
-            <div className="grid grid-template-columns-1 ">
-                {data.map((i) => {
-                    return <div key={i._id} className="item">
-                        <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
-                    </div>
-                })}
+        <div className="grid-template-areas">
+            <div>
+                <Menu />
+            </div>
+            <div>
+                <div className="grid grid-template-columns-1 right" style={{ position: 'absolute', left: '300px' }}>
+                    {data.map((i) => {
+                        return <div key={i._id} className="item">
+                            <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
+                        </div>
+                    })}
+                </div>
             </div>
         </div >
 
@@ -43,11 +47,11 @@ export default App;
 
 
 
-// import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
-// import api from '../services/api';
-// import './Main.css';
-// import Navbar from '../components/Navbar';
+// import React, {Component} from 'react';
+// import {Link} from 'react-router-dom';
+            // import api from '../services/api';
+            // import './Main.css';
+            // import Navbar from '../components/Navbar';
 // export default class App extends Component {
 
 //     constructor() {
