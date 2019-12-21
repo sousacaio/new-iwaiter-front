@@ -11,24 +11,24 @@ const Menu = (history) => {
     return (
         <div>
 
-            <header class="header" role="banner">
-                <h1 class="logo">
+            <header className="header" role="banner">
+                <h1 className="logo">
                     <Link to="/mesas"><span>Qmesa</span></Link>
                 </h1>
-                <div class="nav-wrap">
-                    <nav class="main-nav" role="navigation">
-                        <ul class="unstyled list-hover-slide">
+                <div className="nav-wrap">
+                    <nav className="main-nav" role="navigation">
+                        <ul className="unstyled list-hover-slide">
                             <li><Link to="/mesas">Mesas</Link></li>
                             <li><Link to="/cardapio">Cardapio</Link></li>
-                            <li><Link to="#">Fale conosco</Link></li>
-                            <li><Link onClick={() => { handleLogout() }}>Sair</Link ></li>
+                            <li><Link to="/">Fale conosco</Link></li>
+                            <li><Link to="" onClick={() => { handleLogout() }}>Sair</Link ></li>
                         </ul>
                     </nav>
-                    <ul class="social-links list-inline unstyled list-hover-slide">
-                        <li><Link to="#">Twitter</Link></li>
-                        <li><Link to="#">Google+</Link></li>
-                        <li><Link to="#">GitHub</Link></li>
-                        <li><Link to="#">CodePen</Link></li>
+                    <ul className="social-links list-inline unstyled list-hover-slide">
+                        <li><Link to="/">Twitter</Link></li>
+                        <li><Link to="/">Google+</Link></li>
+                        <li><Link to="/">GitHub</Link></li>
+                        <li><Link to="/">CodePen</Link></li>
                     </ul>
                 </div>
             </header>

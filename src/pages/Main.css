@@ -1,22 +1,4 @@
-/* Grid */
-
-.grid {
-    display: grid;
-}
-
-/* 100px é o valor total, ignora conteúdo, margem e etc. Respeita apenas o min-width do item.*/
-
-.grid-template-columns-1 {
-    grid-template-columns: auto auto auto auto;
-}
-
-.grid-template-areas {
-    grid-template-columns: 30% 70%;
-}
-
-/* Estilos Gerais */
-
-.item {
-    margin: auto;
-    text-align: center;
+html{
+    margin: 0;
+    height: 100%;
 }

@@ -1,72 +1,83 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { Link } from 'react-router-dom';
-import { getIdBar } from '../../services/auth';
-
+import './styles.css'
 
 export default function ItemCardapio(props, history) {
     const [thumbnail, setThumbnail] = useState(null);
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
     const [nome, setNome] = useState('');
-    const [id, setId] = useState('');
-
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
     }, [thumbnail])
     async function handleSubmit(event) {
         event.preventDefault();
-        const data = new FormData();
-        data.append('valor', valor);
-        data.append('categoria', categoria);
-        data.append('nome', nome);
-        data.append('bar', getIdBar())
-        api.put('/cardapio', { data }, { headers: { id: props.location.state.item } });
-
+        api.put('/cardapio', { valor, categoria, nome }, { headers: { id: props.location.state.item } }).then(
+            (r) => { r.status === 200 ? props.history.push('/cardapio') : alert('Algo deu errado,por favor,tente novamente') }
+        );
     }
+
     useEffect(() => {
         function fetchData() {
             api.get('/cardapio', { headers: { id: props.location.state.item } }).then((r) => {
-                setId(r.data._id);
                 setNome(r.data.nome);
                 setValor(r.data.valor)
                 setCategoria(r.data.categoria);
             });
         }
         fetchData()
-    }, [])
+    }, [props.location.state.item])
     return (
-        <form onSubmit={handleSubmit}>
-            <label
-                id="thumbnail"
-                style={{ backgroundImage: `url(${preview})` }}
-                className={thumbnail ? 'has-thumbnail' : ''}
-            >
-                <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
-            </label>
+        <form onSubmit={handleSubmit} className="f-card">
 
-            <label htmlFor="nome">Nome</label>
-            <input
-                id="nome"
-                value={nome}
-                onChange={event => setNome(event.target.value)}
-            />
+            <section className="grid ">
+                <div className="item social">
+                    <label
+                        id="thumbnail"
+                        style={{ backgroundImage: `url(${preview})` }}
+                        className={thumbnail ? 'has-thumbnail' : ''}
+                    >
+                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
+                    </label>
+                </div>
+                <div className="item">
 
-            <label htmlFor="valor">Valor</label>
-            <input
-                id="valor"
-                value={valor}
-                onChange={event => setValor(event.target.value)}
-            />
+                    <label htmlFor="nome">Nome</label><br />
+                    <input
+                        className="input"
+                        id="nome"
+                        value={nome}
+                        onChange={event => setNome(event.target.value)}
+                    />
 
-            <label htmlFor="categoria">Categoria</label>
-            <input
-                id="categoria"
-                value={categoria}
-                onChange={event => setCategoria(event.target.value)}
-            />
-            <button type="submit" className="btn">Alterar</button>
-        </form>
+                </div>
+                <div className="item">
+                    <label htmlFor="valor">Valor</label><br />
+                    <input
+                        className="input"
+                        id="valor"
+                        value={valor}
+                        onChange={event => setValor(event.target.value)}
+                    />
+                </div>
+                <div className="item">
+
+                    <label htmlFor="categoria">Categoria</label><br />
+                    <input
+                        id="categoria"
+                        value={categoria}
+                        className="input"
+                        onChange={event => setCategoria(event.target.value)}
+                    />
+                </div><br />
+
+                <button type="submit" className="btn">Alterar</button>
+            </section>
+
+
+
+
+        </form >
     )
 }
 

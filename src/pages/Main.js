@@ -4,6 +4,7 @@ import { getIdBar } from '../services/auth';
 import api from '../services/api';
 import Menu from '../components/Menu/Menu';
 import Card from '../components/Cards/Card';
+import { Container, Column } from '../components/areaComponents';
 const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -17,21 +18,19 @@ const App = () => {
         getMesas();
     }, []);
     return (
-        <div className="grid-template-areas">
-            <div>
-                <Menu />
-            </div>
-            <div>
-                <div className="grid grid-template-columns-1 right" style={{ position: 'absolute', left: '300px' }}>
-                    {data.map((i) => {
-                        return <div key={i._id} className="item">
-                            <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
-                        </div>
-                    })}
-                </div>
-            </div>
-        </div >
 
+        <Container>
+            <Column>
+                <Menu />
+            </Column>
+            <Column>
+                {data.map((i) => {
+                    return <div key={i._id} >
+                        <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
+                    </div>
+                })}
+            </Column>
+        </Container>
     );
 }
 
