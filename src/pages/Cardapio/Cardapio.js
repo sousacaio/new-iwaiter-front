@@ -20,8 +20,8 @@ const Cardapio = (props) => {
             <Column>
                 {data.map((item, index) => {
                     return (
-                        <div key={index} onClick={() => { props.history.push({ pathname: 'item', state: { item: item._id } }) }}>
-                            <CardCardapio nome={item.nome} valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} categoria={item.categoria} />
+                        <div key={index} onClick={() => { props.history.push({ pathname: 'item', state: { item: item.id } }) }}>
+                            <CardCardapio descricao={item.descricao} nome={item.nome} valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} categoria={item.categoria} />
                         </div>
                     )
                 })}</Column>

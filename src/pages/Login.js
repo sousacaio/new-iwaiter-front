@@ -29,7 +29,7 @@ class Login extends Component {
 
                 if (token) {
                     armazenaToken(token);
-                    armazenaIdBar(response.data.bar._id)
+                    armazenaIdBar(response.data.bar.id)
                     this.props.history.push("/mesas");
                 }
 

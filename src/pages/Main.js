@@ -25,8 +25,8 @@ const App = () => {
             </Column>
             <Column>
                 {data.map((i) => {
-                    return <div key={i._id} >
-                        <Card ocupado={i.ocupada} numero={i.numero} id={i._id} />
+                    return <div key={i.id} >
+                        <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
                     </div>
                 })}
             </Column>

@@ -6,13 +6,14 @@ export default function ItemCardapio(props, history) {
     const [thumbnail, setThumbnail] = useState(null);
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
+    const [descricao, setDescricao] = useState('');
     const [nome, setNome] = useState('');
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
     }, [thumbnail])
     async function handleSubmit(event) {
         event.preventDefault();
-        api.put('/cardapio', { valor, categoria, nome }, { headers: { id: props.location.state.item } }).then(
+        api.put('/cardapio', { valor, categoria, nome, descricao }, { headers: { id: props.location.state.item } }).then(
             (r) => { r.status === 200 ? props.history.push('/cardapio') : alert('Algo deu errado,por favor,tente novamente') }
         );
     }
@@ -23,6 +24,7 @@ export default function ItemCardapio(props, history) {
                 setNome(r.data.nome);
                 setValor(r.data.valor)
                 setCategoria(r.data.categoria);
+                setDescricao(r.data.descricao);
             });
         }
         fetchData()
@@ -58,6 +60,15 @@ export default function ItemCardapio(props, history) {
                         id="valor"
                         value={valor}
                         onChange={event => setValor(event.target.value)}
+                    />
+                </div>
+                <div className="item">
+                    <label htmlFor="valor">Descricao</label><br />
+                    <input
+                        className="input"
+                        id="valor"
+                        value={descricao}
+                        onChange={event => setDescricao(event.target.value)}
                     />
                 </div>
                 <div className="item">
