@@ -21,6 +21,7 @@ const Menu = (history) => {
                             <li><Link to="/mesas">Mesas</Link></li>
                             <li><Link to="/cardapio">Cardapio</Link></li>
                             <li><Link to="/">Fale conosco</Link></li>
+                            <li><Link to="/qr">Qr Codes</Link></li>
                             <li><Link to="" onClick={() => { handleLogout() }}>Sair</Link ></li>
                         </ul>
                     </nav>

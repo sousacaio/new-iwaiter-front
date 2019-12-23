@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Main.css';
-import { getIdBar } from '../services/auth';
-import api from '../services/api';
-import Menu from '../components/Menu/Menu';
-import Card from '../components/Cards/Card';
-import { Container, Column } from '../components/areaComponents';
+import { getIdBar } from '../../services/auth';
+import api from '../../services/api';
+import Menu from '../../components/Menu/Menu';
+import Card from '../../components/Cards/Card';
+import { Container, Column } from '../../components/areaComponents';
 const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -48,9 +48,9 @@ export default App;
 
 // import React, {Component} from 'react';
 // import {Link} from 'react-router-dom';
-            // import api from '../services/api';
+            // import api from '../../services/api';
             // import './Main.css';
-            // import Navbar from '../components/Navbar';
+            // import Navbar from '../../components/Navbar';
 // export default class App extends Component {
 
 //     constructor() {

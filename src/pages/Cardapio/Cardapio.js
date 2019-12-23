@@ -6,11 +6,11 @@ import CardCardapio from '../../components/Cards/CardCardapio'
 import { Container, Column } from '../../components/areaComponents';
 import './Cardapio.css';
 const Cardapio = (props) => {
-    const [data, setData] = useState([[]])
+    const [data, setData] = useState([])
 
     useEffect(() => {
         function fetchData() {
-            api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { setData(r.data) })
+            api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { console.log(r.data);setData(r.data.cardapio) })
         }
         fetchData()
     }, []);
@@ -24,7 +24,10 @@ const Cardapio = (props) => {
                             <CardCardapio descricao={item.descricao} nome={item.nome} valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} categoria={item.categoria} />
                         </div>
                     )
-                })}</Column>
+                })}
+
+            </Column>
+
         </Container>
     );
 };

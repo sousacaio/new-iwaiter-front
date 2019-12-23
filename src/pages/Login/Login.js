@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 import { Link, withRouter } from "react-router-dom";
-import { armazenaToken, armazenaIdBar } from '../services/auth';
+import { armazenaToken, armazenaIdBar } from '../../services/auth';
 import './Login.css';
 
 
