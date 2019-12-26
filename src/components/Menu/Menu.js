@@ -19,9 +19,11 @@ const Menu = (history) => {
                     <nav className="main-nav" role="navigation">
                         <ul className="unstyled list-hover-slide">
                             <li><Link to="/mesas">Mesas</Link></li>
+                            <li><Link to="/addmesas">Adicionar mesas</Link></li>
                             <li><Link to="/cardapio">Cardapio</Link></li>
-                            <li><Link to="/">Fale conosco</Link></li>
+                            <li><Link to="/addcardapio">Adicionar itens ao cardápio</Link></li>
                             <li><Link to="/qr">Qr Codes</Link></li>
+                            <li><Link to="/configurações">Configurações</Link></li>
                             <li><Link to="" onClick={() => { handleLogout() }}>Sair</Link ></li>
                         </ul>
                     </nav>

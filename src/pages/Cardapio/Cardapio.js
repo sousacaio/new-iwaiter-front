@@ -10,7 +10,7 @@ const Cardapio = (props) => {
 
     useEffect(() => {
         function fetchData() {
-            api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { console.log(r.data);setData(r.data.cardapio) })
+            api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { console.log(r.data); setData(r.data.cardapio) })
         }
         fetchData()
     }, []);

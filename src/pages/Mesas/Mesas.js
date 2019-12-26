@@ -44,7 +44,7 @@ const Mesas = (props) => {
                                     level={"H"}
                                     includeMargin={true}
                                 />
-                                <a href="" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
+                                <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
                             </Row>
                         </div>
                     )
