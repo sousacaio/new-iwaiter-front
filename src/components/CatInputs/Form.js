@@ -17,7 +17,7 @@ const Form = () => {
     function addProdCardapio() {
         api.post('/cardapio', { ...cardapioState }, { headers: { _id: getIdBar() } }).then()
     }
-
+    console.log(cardapioState)
     return (
         <form>
             <input

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
-import { Container, Column, Row } from '../../components/areaComponents';
+import { Flexcolumn, Flexrow, TotalRow, TotalColumn } from '../../components/GridArea/GridArea'
 import QRCode from 'qrcode.react';
 const Mesas = (props) => {
     const [data, setData] = useState([]);
@@ -25,18 +25,15 @@ const Mesas = (props) => {
         document.body.removeChild(downloadLink);
     };
     return (
-        <Container>
-            <Column grid="12">  <Menu /></Column>
-
-            <div style={{ position: 'absolute', left: '500px' }}>
-                <div>
-
-
-                </div>
-                {data.map((item, index) => {
-                    return (
-                        <div key={index}>
-                            <Row>
+        <Flexrow altura={12}>
+            <Flexcolumn size={3}>
+                <Menu />
+            </Flexcolumn>
+            <Flexcolumn size={9}>
+                <TotalColumn size={10}>
+                    {data.map((item, index) => {
+                        return (
+                            <TotalRow key={index} altura={1}>
                                 <QRCode
                                     id={item.numero}
                                     value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
@@ -45,12 +42,11 @@ const Mesas = (props) => {
                                     includeMargin={true}
                                 />
                                 <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
-                            </Row>
-                        </div>
-                    )
-                })}
-            </div>
-        </Container>
+                            </TotalRow>)
+                    })}
+                </TotalColumn>
+            </Flexcolumn>
+        </Flexrow>
     );
 };
 

@@ -14,7 +14,7 @@ export default function ItemCardapio(props, history) {
     async function handleSubmit(event) {
         event.preventDefault();
         api.put('/cardapio', { valor, categoria, nome, descricao }, { headers: { id: props.location.state.item } }).then(
-            (r) => { r.status === 200 ? props.history.push('/cardapio') : alert('Algo deu errado,por favor,tente novamente') }
+            (r) => { r.status === 200 ? props.history.push('/cardapio',{ok:'ok'}) : alert('Algo deu errado,por favor,tente novamente') }
         );
     }
 
@@ -84,10 +84,6 @@ export default function ItemCardapio(props, history) {
 
                 <button type="submit" className="btn">Alterar</button>
             </section>
-
-
-
-
         </form >
     )
 }

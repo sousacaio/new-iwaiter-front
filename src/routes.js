@@ -4,7 +4,8 @@ import Login from './pages/Login/Login';
 import Cardapio from './pages/Cardapio/Cardapio';
 import ItemCardapio from './pages/ItemCardapio/ItemCardapio';
 import Mesas from './pages/Mesas/Mesas';
-import Form from './components/CatInputs/Form';
+import AddCardapio from './pages/AddCardapio/AddCardapio';
+import Teste from './components/Testes/Testes';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
@@ -28,9 +29,10 @@ const Routes = () => (
       <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/addmesas" component={App} />
       <PrivateRoute path="/cardapio" component={Cardapio} />
-      <PrivateRoute path="/addcardapio" component={Form} />
+      <PrivateRoute path="/addcardapio" component={AddCardapio} />
       <PrivateRoute path="/item" component={ItemCardapio} />
       <PrivateRoute path="/qr" component={Mesas} />
+      <PrivateRoute path="/testes" component={Teste} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>

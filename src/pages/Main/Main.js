@@ -4,7 +4,7 @@ import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import Menu from '../../components/Menu/Menu';
 import Card from '../../components/Cards/Card';
-import { Container, Column } from '../../components/areaComponents';
+import { Flexcolumn, Flexrow, TotalRow, TotalColumn } from '../../components/GridArea/GridArea'
 const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -19,18 +19,24 @@ const App = () => {
     }, []);
     return (
 
-        <Container>
-            <Column>
-                <Menu />
-            </Column>
-            <Column>
-                {data.map((i) => {
-                    return <div key={i.id} >
-                        <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
-                    </div>
-                })}
-            </Column>
-        </Container>
+        <div>
+            <Flexrow altura={12}>
+                <Flexcolumn size={3}>
+                    <Menu />
+                </Flexcolumn>
+                <Flexcolumn size={9}>
+                    <TotalColumn size={9}>
+                        {data.map((i) => {
+                            return  <TotalRow altura={1}>
+                                <div key={i.id} >
+                                    <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
+                                </div>
+                            </TotalRow>
+                        })}
+                    </TotalColumn>
+                </Flexcolumn>
+            </Flexrow>
+        </div>
     );
 }
 
@@ -48,9 +54,9 @@ export default App;
 
 // import React, {Component} from 'react';
 // import {Link} from 'react-router-dom';
-            // import api from '../../services/api';
-            // import './Main.css';
-            // import Navbar from '../../components/Navbar';
+                                        // import api from '../../services/api';
+                                        // import './Main.css';
+                                        // import Navbar from '../../components/Navbar';
 // export default class App extends Component {
 
 //     constructor() {
