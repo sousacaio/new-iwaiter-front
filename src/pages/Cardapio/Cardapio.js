@@ -9,9 +9,9 @@ import './Cardapio.css';
 const Cardapio = (props) => {
     const [data, setData] = useState([])
     const alert = useAlert()
-    var OkAlerta = props.location.state && props.location.state.ok;
-    console.log(OkAlerta)
+
     useEffect(() => {
+        var OkAlerta = props.location.state && props.location.state.ok;
         function fetchData() {
             api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { console.log(r.data); setData(r.data.cardapio) })
         }
@@ -20,7 +20,7 @@ const Cardapio = (props) => {
             OkAlerta = null;
         }
         fetchData()
-    }, []);
+    }, [alert,props.location.state]);
     return (
         <Flexrow altura={12}>
             <Flexcolumn size={3} flutua={true}>
@@ -30,14 +30,13 @@ const Cardapio = (props) => {
                 <TotalColumn size={5} absoluto={true}>
                     {data.map((item, index) => {
                         return (
-                            <TotalRow altura={5}>
+                            <TotalRow altura={5} key={index}>
                                 <div key={index} onClick={() => { props.history.push({ pathname: 'item', state: { item: item.id } }) }}>
                                     <CardCardapio descricao={item.descricao} nome={item.nome} valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} categoria={item.categoria} />
                                 </div>
                             </TotalRow>
                         )
                     })}
-                    {OkAlerta}
                 </TotalColumn>
             </Flexcolumn>
         </Flexrow>
