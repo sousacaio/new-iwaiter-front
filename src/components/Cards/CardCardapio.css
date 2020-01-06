@@ -11,11 +11,9 @@ body {
 .f-card {
   background-color: white;
   /*height:400px;*/
-  width: 502px;
+  width: 100%;
   border: 1px solid #d0d1d5;
   border-radius: 10px;
-  margin: auto;
-  margin-bottom: 10px;
   padding: 12px;
   box-shadow: 0 0 5px rgba(0, 0, 0, .30);
   /* Not original, just a test */
@@ -90,14 +88,14 @@ body {
 }
 
 .reference {
-  width: 476px;
+  width:100%;
 }
 
 .reference-thumb {
   border-radius: 10px;
   display: block;
-  width: 476px;
-  height: 249px;
+  width: 100%;
+  height: 100%;
 }
 
 .reference-content {

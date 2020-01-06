@@ -21,11 +21,11 @@ const App = () => {
 
         <div>
             <Flexrow altura={12}>
-                <Flexcolumn size={3}>
+                <Flexcolumn size={3} flutua={true}>
                     <Menu />
                 </Flexcolumn>
                 <Flexcolumn size={9}>
-                    <TotalColumn size={9}>
+                    <TotalColumn size={9} absoluto={true}> 
                         {data.map((i) => {
                             return  <TotalRow altura={1}>
                                 <div key={i.id} >

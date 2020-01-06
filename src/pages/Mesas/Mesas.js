@@ -26,22 +26,25 @@ const Mesas = (props) => {
     };
     return (
         <Flexrow altura={12}>
-            <Flexcolumn size={3}>
+            <Flexcolumn size={3} flutua={true}>
                 <Menu />
             </Flexcolumn>
             <Flexcolumn size={9}>
-                <TotalColumn size={10}>
+                <TotalColumn size={5} absoluto={true}>
                     {data.map((item, index) => {
                         return (
                             <TotalRow key={index} altura={1}>
-                                <QRCode
-                                    id={item.numero}
-                                    value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
-                                    size={290}
-                                    level={"H"}
-                                    includeMargin={true}
-                                />
-                                <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
+                                <div style={{ flexDirection: 'column' }}>
+                                    <QRCode
+                                        id={item.numero}
+                                        value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
+                                        size={290}
+                                        level={"H"}
+                                        includeMargin={true}
+                                    />
+                                    <br />
+                                    <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
+                                </div>
                             </TotalRow>)
                     })}
                 </TotalColumn>
