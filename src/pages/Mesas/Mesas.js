@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
-import { Flexcolumn, Flexrow, TotalRow, TotalColumn } from '../../components/GridArea/GridArea'
+import { Container, Coluna, Linha } from '../../components/GridArea/GridArea'
 import QRCode from 'qrcode.react';
 const Mesas = (props) => {
     const [data, setData] = useState([]);
@@ -25,31 +25,29 @@ const Mesas = (props) => {
         document.body.removeChild(downloadLink);
     };
     return (
-        <Flexrow altura={12}>
-            <Flexcolumn size={3} flutua={true}>
-                <Menu />
-            </Flexcolumn>
-            <Flexcolumn size={9}>
-                <TotalColumn size={5} absoluto={true}>
+        <Container>
+            <Linha width={100} heigth={100}  >
+                <Coluna  height={100} position="fixed" style={{ position: 'fixed' }}>
+                    <Menu />
+                </Coluna>
+                <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
                     {data.map((item, index) => {
                         return (
-                            <TotalRow key={index} altura={1}>
-                                <div style={{ flexDirection: 'column' }}>
-                                    <QRCode
-                                        id={item.numero}
-                                        value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
-                                        size={290}
-                                        level={"H"}
-                                        includeMargin={true}
-                                    />
-                                    <br />
-                                    <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
-                                </div>
-                            </TotalRow>)
+                            <div style={{ flexDirection: 'column' }} key={index}>
+                                <QRCode
+                                    id={item.numero}
+                                    value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
+                                    size={290}
+                                    level={"H"}
+                                    includeMargin={true}
+                                />
+                                <br />
+                                <a href="/#" onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
+                            </div>)
                     })}
-                </TotalColumn>
-            </Flexcolumn>
-        </Flexrow>
+                </Coluna>
+            </Linha>
+        </Container>
     );
 };
 

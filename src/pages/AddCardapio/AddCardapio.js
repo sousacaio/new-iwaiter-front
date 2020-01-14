@@ -1,19 +1,17 @@
 import React from 'react';
-import { Flexcolumn, Flexrow, TotalColumn } from '../../components/GridArea/GridArea';
+import { Container, Coluna } from '../../components/GridArea/GridArea'
 import Form from '../../components/CatInputs/Form';
 import Menu from '../../components/Menu/Menu'
 const AddCardapio = () => {
     return (
-        <Flexrow size={12}>
-            <Flexcolumn size={3} flutua={true}>
+        <Container >
+            <Coluna  heigth={100} position="fixed" style={{ position: 'fixed' }}>
                 <Menu />
-            </Flexcolumn>
-            <Flexcolumn size={9}>
-                <TotalColumn absoluto={true}>
-                    <Form />
-                </TotalColumn>
-            </Flexcolumn>
-        </Flexrow>
+            </Coluna>
+            <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
+                <Form />
+            </Coluna>
+        </Container>
     )
 
 }

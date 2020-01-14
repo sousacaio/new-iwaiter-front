@@ -11,7 +11,7 @@ body {
 .f-card {
   background-color: white;
   /*height:400px;*/
-  width: 100%;
+  width: 40%;
   border: 1px solid #d0d1d5;
   border-radius: 10px;
   padding: 12px;
@@ -19,15 +19,11 @@ body {
   /* Not original, just a test */
 }
 
-.header {
-  margin-bottom: 17px;
-}
 
 .item {
   flex: 1;
   margin: 5px;
   text-align: center;
-  font-size: 1.5em;
 }
 
 .co-logo {
@@ -113,7 +109,6 @@ body {
 }
 
 .reference-title {
-  font-family: Georgia;
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
@@ -121,14 +116,12 @@ body {
 }
 
 .reference-subtitle {
-  font-family: Helvetica;
   font-size: 12px;
   line-height: 16px;
 }
 
 .reference-font {
   color: #90949c;
-  font-family: Helvetica;
   font-size: 11px;
   line-height: 11px;
   text-transform: uppercase;

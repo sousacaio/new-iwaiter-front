@@ -4,7 +4,7 @@ import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import Menu from '../../components/Menu/Menu';
 import Card from '../../components/Cards/Card';
-import { Flexcolumn, Flexrow, TotalRow, TotalColumn } from '../../components/GridArea/GridArea'
+import { Container, Coluna } from '../../components/GridArea/GridArea'
 const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -18,25 +18,18 @@ const App = () => {
         getMesas();
     }, []);
     return (
-
-        <div>
-            <Flexrow altura={12}>
-                <Flexcolumn size={3} flutua={true}>
-                    <Menu />
-                </Flexcolumn>
-                <Flexcolumn size={9}>
-                    <TotalColumn size={9} absoluto={true}> 
-                        {data.map((i) => {
-                            return  <TotalRow altura={1}>
-                                <div key={i.id} >
-                                    <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
-                                </div>
-                            </TotalRow>
-                        })}
-                    </TotalColumn>
-                </Flexcolumn>
-            </Flexrow>
-        </div>
+        <Container>
+            <Coluna width={20} height={100} position="fixed" style={{ position: 'fixed' }}>
+                <Menu />
+            </Coluna>
+            <Coluna width={80} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
+                {data.map((i) => {
+                    return <div key={i.id} >
+                        <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
+                    </div>
+                })}
+            </Coluna  >
+        </Container>
     );
 }
 

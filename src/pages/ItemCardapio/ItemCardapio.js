@@ -1,8 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
+import { Container, Coluna, Linha } from '../../components/GridArea/GridArea'
+import Menu from '../../components/Menu/Menu';
+import { useAlert } from 'react-alert'
 import './styles.css'
 
 export default function ItemCardapio(props, history) {
+    const alert = useAlert();
     const [thumbnail, setThumbnail] = useState(null);
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
@@ -14,7 +18,7 @@ export default function ItemCardapio(props, history) {
     async function handleSubmit(event) {
         event.preventDefault();
         api.put('/cardapio', { valor, categoria, nome, descricao }, { headers: { id: props.location.state.item } }).then(
-            (r) => { r.status === 200 ? props.history.push('/cardapio',{ok:'ok'}) : alert('Algo deu errado,por favor,tente novamente') }
+            (r) => { r.status === 200 ? alert.show('Atualizado!') : alert('Algo deu errado,por favor,tente novamente') }
         );
     }
 
@@ -30,61 +34,66 @@ export default function ItemCardapio(props, history) {
         fetchData()
     }, [props.location.state.item])
     return (
-        <form onSubmit={handleSubmit} className="f-card">
+        <Container>
+            <Coluna heigth={100} position="fixed" style={{ position: 'fixed' }}>
+                <Menu />
+            </Coluna>
+            <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
+                <form onSubmit={handleSubmit} className="f-c ard">
+                    <section className="grid ">
+                        <div className="item social">
+                            <label
+                                id="thumbnail"
+                                style={{ backgroundImage: `url(${preview})` }}
+                                className={thumbnail ? 'has-thumbnail' : ''}
+                            >
+                                <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
+                            </label>
+                        </div>
+                        <div className="item">
 
-            <section className="grid ">
-                <div className="item social">
-                    <label
-                        id="thumbnail"
-                        style={{ backgroundImage: `url(${preview})` }}
-                        className={thumbnail ? 'has-thumbnail' : ''}
-                    >
-                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
-                    </label>
-                </div>
-                <div className="item">
+                            <label htmlFor="nome">Nome</label><br />
+                            <input
+                                className="input"
+                                id="nome"
+                                value={nome}
+                                onChange={event => setNome(event.target.value)}
+                            />
+                        </div>
+                        <div className="item">
+                            <label htmlFor="valor">Valor</label><br />
+                            <input
+                                className="input"
+                                id="valor"
+                                value={valor}
+                                onChange={event => setValor(event.target.value)}
+                            />
+                        </div>
+                        <div className="item">
+                            <label htmlFor="valor">Descricao</label><br />
+                            <input
+                                className="input"
+                                id="valor"
+                                value={descricao}
+                                onChange={event => setDescricao(event.target.value)}
+                            />
+                        </div>
+                        <div className="item">
+                            <label htmlFor="categoria">Categoria</label><br />
+                            <input
+                                id="categoria"
+                                value={categoria}
+                                className="input"
+                                onChange={event => setCategoria(event.target.value)}
+                            />
+                        </div>
+                        <br />
+                        <button type="submit" className="btn">Alterar</button>
+                    </section>
+                </form >
 
-                    <label htmlFor="nome">Nome</label><br />
-                    <input
-                        className="input"
-                        id="nome"
-                        value={nome}
-                        onChange={event => setNome(event.target.value)}
-                    />
-
-                </div>
-                <div className="item">
-                    <label htmlFor="valor">Valor</label><br />
-                    <input
-                        className="input"
-                        id="valor"
-                        value={valor}
-                        onChange={event => setValor(event.target.value)}
-                    />
-                </div>
-                <div className="item">
-                    <label htmlFor="valor">Descricao</label><br />
-                    <input
-                        className="input"
-                        id="valor"
-                        value={descricao}
-                        onChange={event => setDescricao(event.target.value)}
-                    />
-                </div>
-                <div className="item">
-
-                    <label htmlFor="categoria">Categoria</label><br />
-                    <input
-                        id="categoria"
-                        value={categoria}
-                        className="input"
-                        onChange={event => setCategoria(event.target.value)}
-                    />
-                </div><br />
-
-                <button type="submit" className="btn">Alterar</button>
-            </section>
-        </form >
+            </Coluna>
+        </Container>
     )
 }
 

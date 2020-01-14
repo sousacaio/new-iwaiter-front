@@ -4,6 +4,7 @@ import Login from './pages/Login/Login';
 import Cardapio from './pages/Cardapio/Cardapio';
 import ItemCardapio from './pages/ItemCardapio/ItemCardapio';
 import Mesas from './pages/Mesas/Mesas';
+import AddMesas from './pages/AddMesas/AddMesas';
 import AddCardapio from './pages/AddCardapio/AddCardapio';
 import Teste from './components/Testes/Testes';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -27,7 +28,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={Login} />
       <PrivateRoute path="/mesas" component={App} />
-      <PrivateRoute path="/addmesas" component={App} />
+      <PrivateRoute path="/addmesas" component={AddMesas} />
       <PrivateRoute path="/cardapio" component={Cardapio} />
       <PrivateRoute path="/addcardapio" component={AddCardapio} />
       <PrivateRoute path="/item" component={ItemCardapio} />
