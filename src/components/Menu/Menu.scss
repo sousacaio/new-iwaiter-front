@@ -28,7 +28,7 @@
       text-transform: uppercase;
       text-decoration: none;
       letter-spacing: 0.4em;
-      color: rgba(#FFF, 0.35);
+      color: white;
       display: block;
       transition: all ease-out 300ms;
     }
@@ -42,7 +42,7 @@
     }
     
     &:not(.active):hover a {
-      color: rgba(#FFF, 0.75);
+      color: white;
     }
     
     &::after {
@@ -53,7 +53,7 @@
       background: black;
       left: 0;
       bottom: 0;
-      background-image: linear-gradient(to right, grey, blue)
+      background-image: linear-gradient(to right, #35302D, blue)
     }
   }
 }

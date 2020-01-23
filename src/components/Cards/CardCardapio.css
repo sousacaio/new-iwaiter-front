@@ -11,14 +11,12 @@ body {
 .f-card {
   background-color: white;
   /*height:400px;*/
-  width: 40%;
+  width: 100%;
   border: 1px solid #d0d1d5;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: calc(.25rem - 1px);
   box-shadow: 0 0 5px rgba(0, 0, 0, .30);
   /* Not original, just a test */
 }
-
 
 .item {
   flex: 1;
@@ -84,22 +82,25 @@ body {
 }
 
 .reference {
-  width:100%;
+  width: 100%;
+  border-bottom-right-radius: calc(.25rem - 1px);
+  border-bottom-left-radius: calc(.25rem - 1px);
 }
 
 .reference-thumb {
-  border-radius: 10px;
   display: block;
   width: 100%;
   height: 100%;
+  border-top-left-radius: calc(.25rem - 1px);
+  border-top-right-radius: calc(.25rem - 1px);
 }
 
 .reference-content {
-  border: 2px solid black;
   border: 2px solid rgba(0, 0, 0, .1);
-  border-radius: 10px;
-  border-top: 0;
+  border-bottom-right-radius: calc(.25rem - 1px);
+  border-bottom-left-radius: calc(.25rem - 1px);
   padding: 10px 12px 10px 12px;
+  content: '';
 }
 
 .reference:hover .reference-content {

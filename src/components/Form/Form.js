@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import CatInputs from './CatInputs';
+import CatInputs from './Inputs';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import { useAlert } from 'react-alert'
+import './button.scss';
 //https://itnext.io/how-to-build-a-dynamic-controlled-form-with-react-hooks-2019-b39840f75c4f
 const Form = () => {
     const alert = useAlert();
@@ -23,25 +24,33 @@ const Form = () => {
     }
     return (
         <form>
-            <input
-                type="button"
-                value="Adicione um novo item ao seu menu"
-                onClick={addCardapio}
-            />
             {
                 cardapioState.map((val, idx) => (
-                    <CatInputs
-                        key={`cardapio-${idx}`}
-                        idx={idx}
-                        catState={cardapioState}
-                        handleCatChange={handleCardapioChange}
-                    />
+                    <div>
+                        <CatInputs
+                            key={`cardapio-${idx}`}
+                            idx={idx}
+                            catState={cardapioState}
+                            handleCatChange={handleCardapioChange}
+                        />
+                    </div>
                 ))
             }
-
-            <div onClick={() => addProdCardapio()}>
-                Adicionar
+            <div align="middle" style={{margin:'10px'}}>
+                <input
+                    type="button"
+                    className="brk-btn"
+                    value="+"
+                    onClick={addCardapio}
+                />
             </div>
+            <div align="middle" style={{margin:'10px'}}>
+                <div onClick={() => addProdCardapio()} className="brk-btn">
+                    Adicionar
+                </div>
+            </div>
+
+
         </form>
     );
 };

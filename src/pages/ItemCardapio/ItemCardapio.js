@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { Container, Coluna, Linha } from '../../components/GridArea/GridArea'
+import { Container, Coluna } from '../../components/GridArea/GridArea'
 import Menu from '../../components/Menu/Menu';
 import { useAlert } from 'react-alert'
 import './styles.css'
