@@ -1,10 +1,15 @@
 import React from 'react';
 import './CardCardapio.css';
+import camera from '../../assets/logo.svg'
 const CardCardapio = (props) => {
     return (
         <div className="f-card">
             <div className="reference">
-                <img className="reference-thumb" alt="img" src="https://img.elo7.com.br/product/zoom/22565B3/adesivo-parede-prato-comida-frango-salada-restaurante-lindo-adesivo-parede.jpg" />
+                {props.foto ?
+                    <img className="reference-thumb" alt={props.foto} src={`http://localhost:3000/files/${props.foto}`} />
+                    :
+                    <img className="reference-thumb" alt="img" src={camera} />
+                }
                 <div className="reference-content">
                     <div className="social">
                         <div className="social-content">{String(props.descricao).substr(0, 20)}...</div>

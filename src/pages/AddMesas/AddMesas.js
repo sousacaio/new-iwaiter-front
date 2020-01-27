@@ -3,6 +3,7 @@ import Menu from '../../components/Menu/Menu';
 import { Container, Coluna } from '../../components/GridArea/GridArea'
 import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
+import Card from '../../components/Cards/Card';
 const AddMesas = (props) => {
 
     const [qtdInicial, setQtdInicial] = useState('');
@@ -95,16 +96,14 @@ const AddMesas = (props) => {
 };
 
 const AddMais = (props) => {
-    const { qtd, mesas } = props;
+    const { mesas } = props;
     return (
         <div>
-            Número atual de mesas:{qtd}
-            {mesas.map(r => (
-                <div key={r.id}>
-                    {r.numero}
+            {mesas.map((i) => {
+                return <div key={i.id} >
+                    <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
                 </div>
-            ))}
-            Adicionar mais mesas?
+            })}
         </div>
     )
 }

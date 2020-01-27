@@ -4,6 +4,7 @@ import { Container, Coluna } from '../../components/GridArea/GridArea'
 import Menu from '../../components/Menu/Menu';
 import { useAlert } from 'react-alert'
 import './styles.css'
+import { camera } from '../../assets/camera.svg'
 
 export default function ItemCardapio(props, history) {
     const alert = useAlert();
@@ -15,10 +16,28 @@ export default function ItemCardapio(props, history) {
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
     }, [thumbnail])
+    console.log(thumbnail)
     async function handleSubmit(event) {
         event.preventDefault();
-        api.put('/cardapio', { valor, categoria, nome, descricao }, { headers: { id: props.location.state.item } }).then(
-            (r) => { r.status === 200 ? alert.show('Atualizado!') : alert('Algo deu errado,por favor,tente novamente') }
+        const data = new FormData();
+        const id = props.location.state.item;
+        data.append('valor', valor);
+        data.append('categoria', categoria);
+        data.append('nome', nome);
+        data.append('descricao', descricao);
+        data.append('thumbnail', thumbnail);
+        await api.put('/cardapio', data, { headers: { id: id } }).then(
+            (r) => {
+                if (r.data.errors) {
+                    r.data.errors.map((r) => {
+                        alert.show(r.message);
+                    })
+                } else {
+                    alert.show('Atualizado!');
+                    props.history.push('/cardapio');
+                }
+
+            }
         );
     }
 
@@ -29,6 +48,7 @@ export default function ItemCardapio(props, history) {
                 setValor(r.data.valor)
                 setCategoria(r.data.categoria);
                 setDescricao(r.data.descricao);
+                setThumbnail(r.data.thumbnail);
             });
         }
         fetchData()
@@ -38,22 +58,13 @@ export default function ItemCardapio(props, history) {
             <Coluna heigth={100} position="fixed" style={{ position: 'fixed' }}>
                 <Menu />
             </Coluna>
-            <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
+            <Coluna width={80} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
                 <form onSubmit={handleSubmit} className="f-c ard">
                     <section className="grid ">
-                        <div className="item social">
-                            <label
-                                id="thumbnail"
-                                style={{ backgroundImage: `url(${preview})` }}
-                                className={thumbnail ? 'has-thumbnail' : ''}
-                            >
-                                <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
-                            </label>
-                        </div>
                         <div className="item">
-
                             <label htmlFor="nome">Nome</label><br />
                             <input
+                                required
                                 className="input"
                                 id="nome"
                                 value={nome}
@@ -63,6 +74,7 @@ export default function ItemCardapio(props, history) {
                         <div className="item">
                             <label htmlFor="valor">Valor</label><br />
                             <input
+                                required
                                 className="input"
                                 id="valor"
                                 value={valor}
@@ -72,6 +84,7 @@ export default function ItemCardapio(props, history) {
                         <div className="item">
                             <label htmlFor="valor">Descricao</label><br />
                             <input
+                                required
                                 className="input"
                                 id="valor"
                                 value={descricao}
@@ -81,13 +94,21 @@ export default function ItemCardapio(props, history) {
                         <div className="item">
                             <label htmlFor="categoria">Categoria</label><br />
                             <input
+                                required
                                 id="categoria"
                                 value={categoria}
                                 className="input"
                                 onChange={event => setCategoria(event.target.value)}
                             />
                         </div>
-                        <br />
+                        <div className="item social">
+                            <label id="thumbnail" style={{ backgroundImage: `url(${preview})` }}
+                                className={thumbnail ? 'has-thumbnail' : ''}
+                            >
+                                <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
+                                <img src={`http://localhost:3000/files/${thumbnail}`} alt="Select img" />
+                            </label>
+                        </div>
                         <button type="submit" className="btn">Alterar</button>
                     </section>
                 </form >
