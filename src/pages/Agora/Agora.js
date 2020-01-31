@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import './Main.css';
+import './Agora.css';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import Menu from '../../components/Menu/Menu';
 import Card from '../../components/Cards/Card';
 import { Container, Coluna } from '../../components/GridArea/GridArea'
+/*
+*Falta fazer:
+*Tratamento dos dados 
+*Renderização condicional
+*Renderizar os dados dos pedidos nas mesas
+*/
 const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
         async function getMesas() {
             api.get('/mesas', { headers: { id: getIdBar() } })
                 .then((r) => {
-                    console.log(r.data);
                     setData(r.data.mesas);
                 })
         }

@@ -4,7 +4,7 @@ import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import { Container, Coluna, Linha } from '../../components/GridArea/GridArea'
 import QRCode from 'qrcode.react';
-const Mesas = (props) => {
+const QrCodes = (props) => {
     const [data, setData] = useState([]);
     useEffect(() => {
         function fetchData() {
@@ -62,4 +62,4 @@ const Mesas = (props) => {
     );
 };
 
-export default Mesas;
+export default QrCodes;

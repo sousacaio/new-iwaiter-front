@@ -11,10 +11,11 @@ const Cardapio = (props, history) => {
     const [data, setData] = useState([])
     const alert = useAlert();
     useEffect(() => {
-        var OkAlerta = props.location.state
-        console.log(OkAlerta)
+        var OkAlerta = props.location.state;
         function fetchData() {
-            api.get('/cardapios', { headers: { id: getIdBar() } }).then((r) => { console.log(r.data); setData(r.data.cardapio) })
+            api.get('/cardapios', 
+            { headers:
+                 { id: getIdBar() } }).then((r) => { console.log(r.data); setData(r.data.cardapio) })
         }
 
         fetchData()
