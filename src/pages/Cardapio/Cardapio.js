@@ -3,41 +3,137 @@ import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import CardCardapio from '../../components/Cards/CardCardapio'
-import { Container, Coluna, Linha } from '../../components/GridArea/GridArea'
+import { Cont, Flexrow, Flexcolumn } from '../../components/GridArea/GridArea'
 import { useAlert } from 'react-alert'
 import './Cardapio.css';
-
+//https://codepen.io/qq7886/pen/MypEvw
 const Cardapio = (props, history) => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [nome, setNome] = useState('');
+    const [categoriaFiltro, setCategoriaFiltro] = useState('');
+    const [filtrados, setFiltrados] = useState([]);
+    const [categoria, setCategoria] = useState([]);
     const alert = useAlert();
-    useEffect(() => {
-        var OkAlerta = props.location.state;
-        function fetchData() {
-            api.get('/cardapios', 
-            { headers:
-                 { id: getIdBar() } }).then((r) => { console.log(r.data); setData(r.data.cardapio) })
-        }
 
+    const handleNomeChange = (event) => {
+        setNome(event.target.value);
+        filtraCardapioPorNome();
+    }
+    const handleCategoriaChange = (event) => {
+        setCategoriaFiltro(event.target.value);
+    }
+
+    function filtraCardapioPorNome() {
+        let profs = data;
+        let q = nome;
+        profs = profs.filter((profs) => {
+            return profs.nome.toLowerCase().indexOf(q) !== -1;
+        });
+        setFiltrados(profs);
+    }
+    function filtraCardapioPorCategoria() {
+        let profs = data;
+        let q = categoriaFiltro;
+        profs = profs.filter((profs) => {
+            return profs.categoria.toLowerCase().indexOf(q) !== -1;
+        });
+        setFiltrados(profs);
+    }
+
+    useEffect(() => {
+        function fetchData() {
+            api.get('/cardapios', { headers: { id: getIdBar() } })
+                .then((r) => {
+                    setData(r.data.cardapio);
+                    setCategoria(r.data.categorias)
+                })
+        }
         fetchData()
-    }, [alert, props.location.state]);
+    }, [alert, nome]);
     return (
-        <Container style={{ overflowX: 'hidden' }} >
-            <Coluna heigth={100} style={{ position: 'fixed' }}>
-                <Menu />
-            </Coluna>
-            <Coluna width={80} heigth={100} style={{ position: 'absolute', left: '20vw', display: 'grid', gridTemplate: 'auto auto/49% 49%', gridGap: '1em' }}>
-                {data.map((item, index) => {
-                    return (
-                        <Linha altura={5} key={index}  >
-                            <div key={index} onClick={() => { props.history.push({ pathname: 'item', state: { item: item.id } }) }}>
-                                <CardCardapio foto={item.foto} descricao={item.descricao} nome={item.nome} valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} categoria={item.categoria} />
+        <Cont style={{ overflowX: 'hidden' }}>
+            <Flexrow size={10}>
+                <Flexcolumn size={2}>
+                    <Menu />
+                </Flexcolumn>
+                <Flexcolumn size={8}>
+                    <Flexrow>
+                        <div className="cardapio-navbar">
+                            <input type="text" align="middle"
+                                className="brk-btn"
+                                value={nome}
+                                placeholder="Pesquise por nome"
+                                onChange={(event) => handleNomeChange(event)}
+                            />
+                            <div>
+                                <select value={categoriaFiltro} onChange={handleCategoriaChange} className="brk-btn">
+                                    <option disabled >Escolha uma das suas categorias </option>
+                                    {categoria.map((categorias, index) => (
+                                        <option value={categorias}>{categorias} </option>
+                                    ))}
+                                </select>
+                                <div className="brk-btn" onClick={() => filtraCardapioPorCategoria()}>
+                                    Pesquisar por categoria
                             </div>
-                        </Linha>
-                    )
-                })}
-            </Coluna>
-        </Container >
+                            </div>
+                        </div>
+                    </Flexrow>
+                    <Flexrow>
+                        <div class="masonry">
+                            {filtrados.length > 0 ?
+                                filtrados.map((item, index) => {
+                                    return (
+                                        <Flexrow key={index} className="item" >
+                                            <div key={index}
+                                                onClick={() => {
+                                                    props.history.push({
+                                                        pathname: 'item',
+                                                        state: { item: item.id }
+                                                    })
+                                                }}>
+                                                <CardCardapio
+                                                    foto={item.foto}
+                                                    descricao={item.descricao}
+                                                    nome={item.nome}
+                                                    valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                    categoria={item.categoria} />
+                                            </div>
+                                        </Flexrow>
+                                    )
+                                })
+                                :
+                                data.map((item, index) => {
+                                    return (
+                                        <Flexrow key={index} className="item"  >
+                                            <div onClick={() => { props.history.push({ pathname: 'item', state: { item: item.id } }) }}>
+                                                <CardCardapio
+                                                    foto={item.foto}
+                                                    descricao={item.descricao}
+                                                    nome={item.nome}
+                                                    valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                    categoria={item.categoria} />
+                                            </div>
+                                        </Flexrow>
+                                    )
+                                })}
+                        </div>
+                    </Flexrow>
+
+                </Flexcolumn>
+            </Flexrow>
+        </Cont >
     );
 };
+{/* <div class="box">
+                                <a class="button" href="#editar">Let me Pop up</a>
+                            </div>
+                            <div id="editar" class="overlay">
+                                <div class="popup">
+                                    <h2>Editar</h2>
+                                    <a class="close" href="#">&times;</a>
+                                    <div class="content">
 
+                                    </div>
+                                </div>
+                            </div> */}
 export default Cardapio;

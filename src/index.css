@@ -1,26 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 #root, html, body {
-    margin: 0;
-    height: auto;
-    width: auto;
-    font-family: Arial;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    display: block;
-    transition: all ease-out 300ms;
-    overflow-x: hidden;
-}
-/*Pra tirar a setinha do input number*/
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
   margin: 0;
+  padding: 0!important;
+  overflow: auto!important;
+  font-family: Muli!important;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f0f0f0;
+  overflow-x: hidden;
 }
 
-/* Firefox */
+/*Pra tirar a setinha do input number*/
+
 input[type=number] {
-  -moz-appearance:textfield;
+  -moz-appearance: textfield;
 }

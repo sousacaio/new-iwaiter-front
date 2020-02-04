@@ -4,20 +4,19 @@ import { Container, Coluna } from '../../components/GridArea/GridArea'
 import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
 import Card from '../../components/Cards/Card';
+import './AddMesas.css'
 const AddMesas = (props) => {
-
     const [qtdInicial, setQtdInicial] = useState('');
-    const blankCardapio = { id_bar: getIdBar(), ocupada: 'nao', numero: '' };
-    const [cardapioState, setCardapioState] = useState([{ ...blankCardapio },]);
+    const mesaObjeto = { id_bar: getIdBar(), ocupada: 'nao', numero: '' };
+    /*Aplicando imutabilidade no state*/
+    const [mesaState, setMesa] = useState([{ ...mesaObjeto },]);
     const [mesas, setMesas] = useState([]);
-    const addCardapio = () => {
-        setCardapioState([...cardapioState, { ...blankCardapio }]);
-    };
+    const addCardapio = () => { setMesa([...mesaState, { ...mesaObjeto }]) };
 
     const handleCardapioChange = (e) => {
-        const updatedCardapio = [...cardapioState];
+        const updatedCardapio = [...mesaState];
         updatedCardapio[e.target.dataset.idx][e.target.className] = e.target.value;
-        setCardapioState(updatedCardapio);
+        setMesa(updatedCardapio);
     };
     function checa() {
         api.get('/mesacheck', { headers: { id: getIdBar() } }).then(r => {
@@ -25,14 +24,14 @@ const AddMesas = (props) => {
         });
     }
     function adicionar() {
-        cardapioState.map((item) => {
+        mesaState.map((item) => {
             if (item.numero === '') {
                 alert('Há mesas sem número,mas você pode configurá-las mais tarde');
             } else {
                 alert('Mesas adicionadas!')
             }
         });
-        api.post('/mesa', { quantidade: cardapioState, id_bar: getIdBar() }).then(r => {
+        api.post('/mesa', { quantidade: mesaState, id_bar: getIdBar() }).then(r => {
             checa(r);
             setMesas(r.data)
             window.location.reload();
@@ -57,39 +56,40 @@ const AddMesas = (props) => {
                 <Menu />
             </Coluna>
             <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
-                <div align="middle">
-                    {qtdInicial === 0 ?
-                        cardapioState.map((val, idx) => (
-                            <div key={idx}>
-                                <CatInputs
-                                    key={`cardapio-${idx}`}
-                                    idx={idx}
-                                    catState={cardapioState}
-                                    handleCatChange={handleCardapioChange}
-                                    adicionar={adicionar}
-                                />
-                            </div>
-                        )) : <AddMais qtd={qtdInicial}
-                            mesas={mesas}
-                            catState={cardapioState}
-                            handleCatChange={handleCardapioChange}
-                            adicionar={adicionar}
-                        />}
-                    {qtdInicial === 0 ?
-                        <div>
-                            <div align="middle" style={{ margin: '10px' }}>
-                                <input
-                                    type="button"
-                                    className="brk-btn"
-                                    value="+"
-                                    onClick={addCardapio}
-                                />
-                            </div>
-                            <div onClick={() => adicionar()}>
-                                [Adicionar]
+                <div align="middle"></div>
+                {qtdInicial === 0 ?
+                    mesaState.map((val, idx) => (
+                        <div key={idx}>
+                            <NovasMesas
+                                key={`cardapio-${idx}`}
+                                idx={idx}
+                                mesaState={mesaState}
+                                handleMesaChange={handleCardapioChange}
+                                adicionar={adicionar}
+                            />
+                        </div>
+                    )) : <AddMais qtd={qtdInicial}
+                        mesas={mesas}
+                        mesaState={mesaState}
+                        handleMesaChange={handleCardapioChange}
+                        adicionar={adicionar}
+                    />}
+                {qtdInicial === 0 ?
+                    <div>
+                        <div align="middle" style={{ margin: '10px' }}>
+                            <input
+                                type="button"
+                                className="brk-btn"
+                                value="+"
+                                onClick={addCardapio}
+                            />
+                        </div>
+                        <div onClick={() => adicionar()}>
+                            [Adicionar]
                     </div>
-                        </div> : ''}
-                </div>
+                    </div> 
+                    :
+                     ''}
             </Coluna>
         </Container>
     );
@@ -108,46 +108,23 @@ const AddMais = (props) => {
     )
 }
 
-
-const CatInputs = ({ idx, catState, handleCatChange }) => {
+const NovasMesas = ({ idx, mesaState, handleMesaChange }) => {
     const numeroId = `numero-${idx}`;
     return (
-        <div key={`cardapio-${idx}`} style={{
-            display: 'flex',
-            height: '10vh',
-            flexDirection: 'row',
-            boxShadow: ' 0 0 10px',
-            margin: '10px',
-            background: '#35302D',
-            color: 'white',
-            borderRadius: '5px',
-            fontWeight: 'bold'
-        }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                width: '33%',
-            }}>
-                <div style={{ margin: 'auto' }}>
+        <div key={`cardapio-${idx}`} className="mesas-card">
+            <div className="mesas-container">
+                <div className="margin-auto">
                     # {idx + 1}
                 </div>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                    <div style={{ margin: 'auto' }}>
+                <div className="flex-column">
+                    <div className="margin-auto">
                         <label htmlFor={numeroId}>{`Número da mesa:`}</label>
                     </div>
-                    <div style={{ margin: 'auto' }}>
+                    <div className="margin-auto">
                         <input
-                            style={{ padding: '5px', borderColor: 'white', borderRadius: '5px' }}
-                            type="number"
-                            name={numeroId}
-                            data-idx={idx}
-                            id={numeroId}
-                            className="numero"
-                            value={catState[idx].numero}
-                            onChange={handleCatChange}
+                            className="mesas-input" type="number" name={numeroId}
+                            data-idx={idx} id={numeroId} className="numero"
+                            value={mesaState[idx].numero} onChange={handleMesaChange}
                         />
                     </div>
                 </div>

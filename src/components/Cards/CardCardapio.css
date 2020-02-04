@@ -12,9 +12,9 @@ body {
   background-color: white;
   /*height:400px;*/
   width: 100%;
-  border: 1px solid #d0d1d5;
+  /*border: 1px solid #d0d1d5;*/
   border-radius: calc(.25rem - 1px);
-  box-shadow: 0 0 5px rgba(0, 0, 0, .30);
+  /*box-shadow: 0 0 5px rgba(0, 0, 0, .30);*/
   /* Not original, just a test */
 }
 

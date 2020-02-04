@@ -1,0 +1,32 @@
+.mesas-card {
+    display: flex;
+    height: 10vh;
+    flex-direction: row;
+    box-shadow: 0 0 10px;
+    margin: 10px;
+    background: #35302D;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.mesas-container {
+    display: flex;
+    flex-direction: row;
+    width: 33%;
+}
+
+.mesas-input {
+    padding: 5px;
+    border-color: white;
+    border-radius: 5px;
+}
