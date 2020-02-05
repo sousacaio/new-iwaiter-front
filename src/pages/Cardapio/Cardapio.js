@@ -3,6 +3,7 @@ import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import CardCardapio from '../../components/Cards/CardCardapio'
+import ItemCardapio from '../ItemCardapio/ItemCardapio';
 import { Cont, Flexrow, Flexcolumn } from '../../components/GridArea/GridArea'
 import { useAlert } from 'react-alert'
 import './Cardapio.css';
@@ -83,21 +84,24 @@ const Cardapio = (props, history) => {
                             {filtrados.length > 0 ?
                                 filtrados.map((item, index) => {
                                     return (
-                                        <Flexrow key={index} className="item" >
-                                            <div key={index}
-                                                onClick={() => {
-                                                    props.history.push({
-                                                        pathname: 'item',
-                                                        state: { item: item.id }
-                                                    })
-                                                }}>
-                                                <CardCardapio
-                                                    foto={item.foto}
-                                                    descricao={item.descricao}
-                                                    nome={item.nome}
-                                                    valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                                    categoria={item.categoria} />
+                                        <Flexrow key={index} className="item"  >
+                                            <CardCardapio
+                                                foto={item.foto}
+                                                descricao={item.descricao}
+                                                nome={item.nome}
+                                                valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                categoria={item.categoria} />
+                                            <div id={`popup${item.id}`} className="overlay">
+                                                <div className="popup">
+                                                    <a className="close" href="#" >&times;</a>
+                                                    <div className="content">
+                                                        <ItemCardapio id={item.id} />
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <a href={`#popup${item.id}`} >
+                                                Editar
+                                        </a>
                                         </Flexrow>
                                     )
                                 })
@@ -105,15 +109,26 @@ const Cardapio = (props, history) => {
                                 data.map((item, index) => {
                                     return (
                                         <Flexrow key={index} className="item"  >
-                                            <div onClick={() => { props.history.push({ pathname: 'item', state: { item: item.id } }) }}>
-                                                <CardCardapio
-                                                    foto={item.foto}
-                                                    descricao={item.descricao}
-                                                    nome={item.nome}
-                                                    valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                                    categoria={item.categoria} />
+
+                                            <CardCardapio
+                                                foto={item.foto}
+                                                descricao={item.descricao}
+                                                nome={item.nome}
+                                                valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                categoria={item.categoria} />
+                                            <div id={`popup${item.id}`} className="overlay">
+                                                <div className="popup">
+                                                    <a className="close" href="#" >&times;</a>
+                                                    <div className="content">
+                                                        <ItemCardapio id={item.id} />
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <a href={`#popup${item.id}`} >
+                                                Editar
+                                            </a>
                                         </Flexrow>
+
                                     )
                                 })}
                         </div>

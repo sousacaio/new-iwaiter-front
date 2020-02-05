@@ -1,14 +1,15 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { Container, Coluna } from '../../components/GridArea/GridArea'
+import { Flexcolumn } from '../../components/GridArea/GridArea'
 import Menu from '../../components/Menu/Menu';
 import { useAlert } from 'react-alert'
 import './styles.css'
-import { camera } from '../../assets/camera.svg'
+import Camera from '../../assets/Cam.png'
 
 export default function ItemCardapio(props, history) {
     const alert = useAlert();
     const [thumbnail, setThumbnail] = useState(null);
+    const [foto, setFoto] = useState(null)
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -20,7 +21,7 @@ export default function ItemCardapio(props, history) {
     async function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData();
-        const id = props.location.state.item;
+        const id = props.id;
         data.append('valor', valor);
         data.append('categoria', categoria);
         data.append('nome', nome);
@@ -34,7 +35,6 @@ export default function ItemCardapio(props, history) {
                     })
                 } else {
                     alert.show('Atualizado!');
-                    props.history.push('/cardapio');
                 }
 
             }
@@ -43,78 +43,74 @@ export default function ItemCardapio(props, history) {
 
     useEffect(() => {
         function fetchData() {
-            api.get('/cardapio', { headers: { id: props.location.state.item } }).then((r) => {
+            api.get('/cardapio', { headers: { id: props.id } }).then((r) => {
+                console.log(r)
                 setNome(r.data.nome);
                 setValor(r.data.valor)
                 setCategoria(r.data.categoria);
                 setDescricao(r.data.descricao);
-                setThumbnail(r.data.thumbnail);
+                setFoto(r.data.foto);
             });
         }
         fetchData()
-    }, [props.location.state.item])
+    }, [props.id])
     return (
-        <Container>
-            <Coluna heigth={100} position="fixed" style={{ position: 'fixed' }}>
-                <Menu />
-            </Coluna>
-            <Coluna width={80} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
-                <form onSubmit={handleSubmit} className="f-c ard">
-                    <section className="grid ">
-                        <div className="item">
-                            <label htmlFor="nome">Nome</label><br />
-                            <input
-                                required
-                                className="input"
-                                id="nome"
-                                value={nome}
-                                onChange={event => setNome(event.target.value)}
-                            />
-                        </div>
-                        <div className="item">
-                            <label htmlFor="valor">Valor</label><br />
-                            <input
-                                required
-                                className="input"
-                                id="valor"
-                                value={valor}
-                                onChange={event => setValor(event.target.value)}
-                            />
-                        </div>
-                        <div className="item">
-                            <label htmlFor="valor">Descricao</label><br />
-                            <input
-                                required
-                                className="input"
-                                id="valor"
-                                value={descricao}
-                                onChange={event => setDescricao(event.target.value)}
-                            />
-                        </div>
-                        <div className="item">
-                            <label htmlFor="categoria">Categoria</label><br />
-                            <input
-                                required
-                                id="categoria"
-                                value={categoria}
-                                className="input"
-                                onChange={event => setCategoria(event.target.value)}
-                            />
-                        </div>
-                        <div className="item social">
-                            <label id="thumbnail" style={{ backgroundImage: `url(${preview})` }}
-                                className={thumbnail ? 'has-thumbnail' : ''}
-                            >
-                                <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
-                                <img src={`http://localhost:3000/files/${thumbnail}`} alt="Select img" />
-                            </label>
-                        </div>
-                        <button type="submit" className="btn">Alterar</button>
-                    </section>
-                </form >
+        <form onSubmit={handleSubmit} className="f-c ard">
+            <Flexcolumn >
+                <div className="item">
+                    <label htmlFor="nome">Nome</label><br />
+                    <input
+                        required
+                        className="input"
+                        id="nome"
+                        value={nome}
+                        onChange={event => setNome(event.target.value)}
+                    />
+                </div>
+                <div className="item">
+                    <label htmlFor="valor">Valor</label><br />
+                    <input
+                        required
+                        className="input"
+                        id="valor"
+                        value={valor}
+                        onChange={event => setValor(event.target.value)}
+                    />
+                </div>
+                <div className="item">
+                    <label htmlFor="valor">Descricao</label><br />
+                    <input
+                        required
+                        className="input"
+                        id="valor"
+                        value={descricao}
+                        onChange={event => setDescricao(event.target.value)}
+                    />
+                </div>
+                <div className="item">
+                    <label htmlFor="categoria">Categoria</label><br />
+                    <input
+                        required
+                        id="categoria"
+                        value={categoria}
+                        className="input"
+                        onChange={event => setCategoria(event.target.value)}
+                    />
+                </div>
+                <div className="item social">
+                    <label id="thumbnail" style={{ backgroundImage: `url(${preview})` }}
+                        className={thumbnail ? 'has-thumbnail' : ''}
+                    >
+                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
+                        {foto ? <img src={`http://localhost:3000/files/${foto}`} alt="Select img" /> :
+                            <img src={Camera} alt="Select img" />
+                        }
 
-            </Coluna>
-        </Container>
+                    </label>
+                </div>
+                <button type="submit" className="btn">Alterar</button>
+            </Flexcolumn>
+        </form >
     )
 }
 
