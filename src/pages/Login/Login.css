@@ -1,0 +1,5 @@
+.login-container {
+    background: #000 url('https://images.unsplash.com/photo-1556745763-1a6f0ddb0250?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=677&q=80') no-repeat;
+    background-size: cover;
+    -webkit-font-smoothing: antialised !important;
+}

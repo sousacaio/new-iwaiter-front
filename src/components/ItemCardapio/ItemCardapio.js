@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { Flexcolumn } from '../../components/GridArea/GridArea'
-import Menu from '../../components/Menu/Menu';
+import { Flexcolumn } from '../GridArea/GridArea'
 import { useAlert } from 'react-alert'
-import './styles.css'
-import Camera from '../../assets/Cam.png'
+import './ItemCardapio.css'
+import Camera from '../../assets/Cam.png';
 
 export default function ItemCardapio(props, history) {
     const alert = useAlert();
@@ -17,7 +16,6 @@ export default function ItemCardapio(props, history) {
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
     }, [thumbnail])
-    console.log(thumbnail)
     async function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData();
@@ -113,61 +111,3 @@ export default function ItemCardapio(props, history) {
         </form >
     )
 }
-
-// import React, { useState, useEffect } from 'react';
-// import api from '../../services/api';
-
-// const ItemCardapio = (props) => {
-//     const [data, setData] = useState([])
-//     const [ownerState, setOwnerState] = useState({
-//         nome: '', valor: '', categoria: '',
-//     });
-//     const handleOwnerChange = (e) => setOwnerState({
-//         ...ownerState, [e.target.name]: e.target.value,
-//     });
-//     function update() {
-//         console.log(ownerState)
-//         api.put('/cardapio', { ...ownerState }, { headers: { id: props.location.state.item } });
-//         //api.post('/cardapio', { ...cardapioState }, { headers: { _id: getIdBar() } }).then()
-//     }
-//     useEffect(() => {
-//         function fetchData() {
-//             api.get('/cardapio', { headers: { id: props.location.state.item } }).then((r) => setData(r.data));
-//         }
-//         fetchData()
-//     }, [props, ownerState])
-//     return (
-//         <div>
-//             <label>nome:</label>
-//             <input
-//                 type="text"
-//                 name="nome"
-//                 className="nome"
-//                 placeholder={data.nome}
-//                 value={ownerState.nome}
-//                 onChange={handleOwnerChange}
-//             />
-//             <label>Valor:</label>
-//             <input
-//                 type="text"
-//                 name="valor"
-//                 className="valor"
-//                 placeholder={data.valor}
-//                 value={ownerState.valor}
-//                 onChange={handleOwnerChange}
-//             />
-//             <label>categoria:</label>
-//             <input
-//                 type="text"
-//                 name="categoria"
-//                 className="categoria"
-//                 placeholder={data.categoria}
-//                 value={ownerState.categoria}
-//                 onChange={handleOwnerChange}
-//             />
-//             <div onClick={() => update()}>Alterar</div>
-//         </div>
-
-//     );
-// }
-// export default ItemCardapio;

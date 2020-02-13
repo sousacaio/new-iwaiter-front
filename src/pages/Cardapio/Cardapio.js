@@ -3,7 +3,7 @@ import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import CardCardapio from '../../components/Cards/CardCardapio'
-import ItemCardapio from '../ItemCardapio/ItemCardapio';
+import ItemCardapio from '../../components/ItemCardapio/ItemCardapio';
 import { Cont, Flexrow, Flexcolumn } from '../../components/GridArea/GridArea'
 import { useAlert } from 'react-alert'
 import './Cardapio.css';

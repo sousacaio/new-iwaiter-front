@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Menu from '../../components/Menu/Menu';
-import { Container, Coluna } from '../../components/GridArea/GridArea'
+import { Cont, Flexcolumn, Flexrow, Button, Input } from '../../components/GridArea/GridArea'
 import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
-import Card from '../../components/Cards/Card';
+import CountUp from 'react-countup'
+import CheckBox from '../../components/Checkbox/Checkbox';
 import './AddMesas.css'
 const AddMesas = (props) => {
     const [qtdInicial, setQtdInicial] = useState('');
+    const [numero, setNumero] = useState(0);
     const mesaObjeto = { id_bar: getIdBar(), ocupada: 'nao', numero: '' };
     /*Aplicando imutabilidade no state*/
     const [mesaState, setMesa] = useState([{ ...mesaObjeto },]);
     const [mesas, setMesas] = useState([]);
     const addCardapio = () => { setMesa([...mesaState, { ...mesaObjeto }]) };
+
+    const addPorNumero = (numero) => {
+        var arr = [];
+        var len = numero;
+        for (var i = 0; i < len; i++) {
+            arr.push({
+                numero: i + 1,
+                id_bar: getIdBar(),
+                ocupada: 'nao'
+            });
+        }
+        return arr;
+    }
 
     const handleCardapioChange = (e) => {
         const updatedCardapio = [...mesaState];
@@ -24,21 +39,13 @@ const AddMesas = (props) => {
         });
     }
     function adicionar() {
-        mesaState.map((item) => {
-            if (item.numero === '') {
-                alert('Há mesas sem número,mas você pode configurá-las mais tarde');
-            } else {
-                alert('Mesas adicionadas!')
-            }
-        });
-        api.post('/mesa', { quantidade: mesaState, id_bar: getIdBar() }).then(r => {
+        const resultado = addPorNumero(numero);
+        api.post('/mesa', { quantidade: resultado, id_bar: getIdBar() }).then(r => {
             checa(r);
             setMesas(r.data)
             window.location.reload();
         });
-
     }
-
     useEffect(() => {
         function checkCount() {
             api.get('/mesacheck', { headers: { id: getIdBar() } }).then(r => {
@@ -51,88 +58,161 @@ const AddMesas = (props) => {
         checkCount();
     }, []);
     return (
-        <Container >
-            <Coluna heigth={100} position="fixed" style={{ position: 'fixed' }}>
-                <Menu />
-            </Coluna>
-            <Coluna width={60} heigth={100} style={{ position: 'absolute', left: '20vw' }}>
-                <div align="middle"></div>
-                {qtdInicial === 0 ?
-                    mesaState.map((val, idx) => (
-                        <div key={idx}>
-                            <NovasMesas
-                                key={`cardapio-${idx}`}
-                                idx={idx}
-                                mesaState={mesaState}
-                                handleMesaChange={handleCardapioChange}
-                                adicionar={adicionar}
+        <Cont style={{ overflowX: 'hidden' }}>
+            <Flexrow size={10}>
+                <Flexcolumn size={2}>
+                    <Menu />
+                </Flexcolumn>
+                <Flexcolumn size={8}>
+                    {qtdInicial === 0 ?
+                        <> No momento vc n tem nenhuma mesa,escolha a quantidade de mesas:
+                        <input
+                                className="mesas-input" type="number"
+                                className="numero"
+                                value={numero} onChange={e => setNumero(e.target.value)}
                             />
-                        </div>
-                    )) : <AddMais qtd={qtdInicial}
-                        mesas={mesas}
-                        mesaState={mesaState}
-                        handleMesaChange={handleCardapioChange}
-                        adicionar={adicionar}
-                    />}
-                {qtdInicial === 0 ?
-                    <div>
-                        <div align="middle" style={{ margin: '10px' }}>
                             <input
                                 type="button"
                                 className="brk-btn"
-                                value="+"
-                                onClick={addCardapio}
+                                value="Adicionar"
+                                onClick={adicionar}
                             />
-                        </div>
-                        <div onClick={() => adicionar()}>
-                            [Adicionar]
-                    </div>
-                    </div> 
-                    :
-                     ''}
-            </Coluna>
-        </Container>
+                        </>
+                        : <AddMais qtd={qtdInicial}
+                            mesas={mesas}
+                            mesaState={mesaState}
+                            handleMesaChange={handleCardapioChange}
+                            adicionar={adicionar}
+
+                        />}
+                </Flexcolumn>
+            </Flexrow>
+        </Cont>
     );
 };
 
 const AddMais = (props) => {
     const { mesas } = props;
-    return (
-        <div>
-            {mesas.map((i) => {
-                return <div key={i.id} >
-                    <Card ocupado={i.ocupada} numero={i.numero} id={i.id} />
-                </div>
-            })}
-        </div>
-    )
-}
+    const [novasMesas, setNovasMesas] = useState('');
 
-const NovasMesas = ({ idx, mesaState, handleMesaChange }) => {
-    const numeroId = `numero-${idx}`;
+    const handleCheck = (event) => {
+        const id = event.target.value;
+        //console.log(id)
+        api.delete('/mesa', { data: { id } }).then(
+            (r) => {
+                console.log(r)
+                window.location.reload()
+            }
+
+        );
+    }
+    const addPorNumero = (numero, iniciaEm) => {
+        var title = [];
+        if (parseInt(numero) > parseInt(iniciaEm)) {
+            for (var i = parseInt(iniciaEm) - 1; i < parseInt(numero); i++) {
+                title.push({
+                    numero: (i + 1),
+                    id_bar: getIdBar(),
+                    ocupada: 'nao'
+                });
+            }
+        } else {
+            let soma = (parseInt(iniciaEm) + parseInt(numero));
+            for (var i = parseInt(iniciaEm) - 1; i < soma; i++) {
+                title.push({
+                    numero: (i + 1),
+                    id_bar: getIdBar(),
+                    ocupada: 'nao'
+                });
+            }
+        }
+        let filtered = title.filter(function (el) { return el != null });
+        let arrayLimpo = filtered.slice(1)
+        api.post('/mesa', { quantidade: arrayLimpo, id_bar: getIdBar() }).then(r => {
+            console.log(r)
+            window.location.reload()
+        });
+    }
+    const removeMesas = () => {
+
+    }
+    const addNovaMesa = () => {
+        const temNumero = mesas[mesas.length - 1]
+        addPorNumero(novasMesas, temNumero?.numero);
+    }
+    useEffect(() => {
+    }, [novasMesas, mesas])
     return (
-        <div key={`cardapio-${idx}`} className="mesas-card">
-            <div className="mesas-container">
-                <div className="margin-auto">
-                    # {idx + 1}
-                </div>
-                <div className="flex-column">
-                    <div className="margin-auto">
-                        <label htmlFor={numeroId}>{`Número da mesa:`}</label>
+        <>
+            <Flexrow size={10}>
+                <div className="container">
+                    <div className="container-header">
+                        <div className="container-header-cont">
+                            <div className="container-header-numero">
+                                <CountUp
+                                    end={mesas.length}
+                                    duration={2}
+                                /> mesas
+                            </div>
+                        </div>
                     </div>
-                    <div className="margin-auto">
-                        <input
-                            className="mesas-input" type="number" name={numeroId}
-                            data-idx={idx} id={numeroId} className="numero"
-                            value={mesaState[idx].numero} onChange={handleMesaChange}
+                    <div className="container-add-e-remove">
+                        <div className="container-add">
+                            <div className="container-texto">
+                                Adicionar mesas
+                            </div>
+                            <Input borda="#35302D" type="number" value={novasMesas} onChange={e => setNovasMesas(e.target.value)} />
+                            <br />
+                            <Button onClick={addNovaMesa} primary="#35302D">
+                                Adicionar
+                        </Button>
+                        </div>
+                        <div className="container-remove">
+                            <div className="container-texto">
+                                <div className="container-texto">
+                                    Remover mesas
+                            </div>
+                                {mesas.map((mesa) => (
+                                    <div>
+                                        <Input type="checkbox" value={mesa.id}
+                                            className="deletaMesa"
+                                            onChange={e => handleCheck(e)}
+                                        />{mesa.numero}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </Flexrow>
+            {/* <Flexrow size={1.5} style={{ overflowY: 'hidden' }}>
+                <div className="mesas-card-quantidade">
+                    <div className="mesas-card-quantidade-numero">
+                        Mesas:
+                <CountUp
+                            end={mesas.length}
+                            duration={2}
                         />
                     </div>
                 </div>
-            </div>
-        </div >
-    );
-};
+            </Flexrow>
+            <Flexrow size={3} style={{ marginTop: '2vh' }}>
+                <Flexcolumn size={5}>
+                    <div className="mesas-card-quantidade">
+                        Adicionar novas mesas:<br />
+ 
+                    </div>
+                </Flexcolumn>
+                <Flexcolumn size={5}>
+                    <div className="mesas-card-quantidade">
+                        remover mesas existentes:<br />
 
-
+                    </div>
+                </Flexcolumn>
+            </Flexrow> */}
+        </>
+    )
+}
 
 export default AddMesas;

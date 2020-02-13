@@ -79,8 +79,11 @@ const Login = (props) => {
         })
     }
     console.log(signup)
+    const Background =' https://images.unsplash.com/photo-1512805147242-c3e79caf64bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80';
     return (
-        <div>
+        <div style={{
+            backgroundImage: `url(${Background})`,
+        }}>
             {error !== '' ? alert.info(error) : ''}
             <section className="forms-section">
                 <h1 style={{ color: '#3b4465' }} className="section-title">iWaiter</h1>
