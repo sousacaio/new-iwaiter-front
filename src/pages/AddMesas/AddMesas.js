@@ -5,6 +5,7 @@ import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
 import CountUp from 'react-countup'
 import CheckBox from '../../components/Checkbox/Checkbox';
+import Wrapper from '../../components/Material-ui/Wrapper';
 import './AddMesas.css'
 const AddMesas = (props) => {
     const [qtdInicial, setQtdInicial] = useState('');
@@ -58,36 +59,29 @@ const AddMesas = (props) => {
         checkCount();
     }, []);
     return (
-        <Cont style={{ overflowX: 'hidden' }}>
-            <Flexrow size={10}>
-                <Flexcolumn size={2}>
-                    <Menu />
-                </Flexcolumn>
-                <Flexcolumn size={8}>
-                    {qtdInicial === 0 ?
-                        <> No momento vc n tem nenhuma mesa,escolha a quantidade de mesas:
+        <Wrapper>
+            {qtdInicial === 0 ?
+                <> No momento vc n tem nenhuma mesa,escolha a quantidade de mesas:
                         <input
-                                className="mesas-input" type="number"
-                                className="numero"
-                                value={numero} onChange={e => setNumero(e.target.value)}
-                            />
-                            <input
-                                type="button"
-                                className="brk-btn"
-                                value="Adicionar"
-                                onClick={adicionar}
-                            />
-                        </>
-                        : <AddMais qtd={qtdInicial}
-                            mesas={mesas}
-                            mesaState={mesaState}
-                            handleMesaChange={handleCardapioChange}
-                            adicionar={adicionar}
+                        className="mesas-input" type="number"
+                        className="numero"
+                        value={numero} onChange={e => setNumero(e.target.value)}
+                    />
+                    <input
+                        type="button"
+                        className="brk-btn"
+                        value="Adicionar"
+                        onClick={adicionar}
+                    />
+                </>
+                : <AddMais qtd={qtdInicial}
+                    mesas={mesas}
+                    mesaState={mesaState}
+                    handleMesaChange={handleCardapioChange}
+                    adicionar={adicionar}
 
-                        />}
-                </Flexcolumn>
-            </Flexrow>
-        </Cont>
+                />}
+        </Wrapper>
     );
 };
 

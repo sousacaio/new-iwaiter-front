@@ -30,7 +30,7 @@ const Menu = (history) => {
                             <Link to="/qr">Qr Codes</Link>
                         </Li>
                         <Li width={100} height={14.5}>
-                            <Link to="/configurações">Configurações</Link>
+                            <Link to="/configuracoes">Configurações</Link>
                         </Li>
                         <Li width={100} height={14.5}>
                             <Link to="" onClick={() => { handleLogout() }}>Sair</Link >

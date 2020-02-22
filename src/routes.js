@@ -5,8 +5,10 @@ import Cardapio from './pages/Cardapio/Cardapio';
 import QrCodes from './pages/QrCodes/QrCodes';
 import AddMesas from './pages/AddMesas/AddMesas';
 import AddCardapio from './pages/AddCardapio/AddCardapio';
-import Teste from './components/Testes/Testes';
+import Testes from './pages/Testes/Testes';
 import Main from './pages/Main/Main';
+import Configuracoes from './pages/Configuracoes/Configuracoes';
+
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
@@ -33,7 +35,8 @@ const Routes = () => (
       <PrivateRoute path="/cardapio" component={Cardapio} />
       <PrivateRoute path="/addcardapio" component={AddCardapio} />
       <PrivateRoute path="/qr" component={QrCodes} />
-      <PrivateRoute path="/testes" component={Teste} />
+      <PrivateRoute path="/testes" component={Testes} />
+      <PrivateRoute path="/configuracoes" component={Configuracoes} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>
