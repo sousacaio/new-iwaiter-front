@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Menu from '../../components/Menu/Menu';
-import { Cont, Flexcolumn, Flexrow, Button, Input } from '../../components/GridArea/GridArea'
 import Funcionamento from '../../components/Configuracoes/Funcionamento/Funcionamento';
 import Confs from '../../components/Configuracoes/Confs/Confs';
 import Couvert from '../../components/Configuracoes/Couvert/Couvert';
@@ -8,6 +6,15 @@ import axios from 'axios';
 import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
 import Wrapper from '../../components/Material-ui/Wrapper';
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, Divider, Typography, TextField, Button, Checkbox } from '@material-ui/core'
+const useStyles = makeStyles(theme => ({
+    toolbarTitle: {
+        flex: 1,
+        margin: theme.spacing(2, 2, 2, 2)
+    },
+
+}));
 const Configuracoes = () => {
     const [func, setFunc] = useState([]);
     const [couvert, setCouvert] = useState([])
@@ -28,11 +35,62 @@ const Configuracoes = () => {
             })
 
     }, [])
+    const classes = useStyles()
     return (
         <Wrapper>
-            <Funcionamento data={func} />
-            <Couvert data={couvert} />
-            <Confs data={confs} />
+            <Grid container xs={12} spacing={2}>
+                <Grid item xs={4}>
+                    <Paper  >
+                        <Typography
+                            component="h2"
+                            variant="h5"
+                            color="inherit"
+                            align="center"
+                            noWrap
+                            className={classes.toolbarTitle}
+                        >
+                            Funcionamento
+                        </Typography>
+                        <Divider variant="middle" />
+                        <Funcionamento data={func} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper >
+                        <Typography
+                            component="h2"
+                            variant="h5"
+                            color="inherit"
+                            align="center"
+                            noWrap
+                            className={classes.toolbarTitle}
+                        >
+                            Couvert
+                        </Typography>
+                        <Divider variant="middle" />
+                        <Couvert data={confs} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper >
+                        <Typography
+                            component="h2"
+                            variant="h5"
+                            color="inherit"
+                            align="center"
+                            noWrap
+                            className={classes.toolbarTitle}
+                        >
+                            Horários
+                        </Typography>
+                        <Divider variant="middle" />
+                        <Confs data={couvert} />
+                    </Paper>
+                </Grid>
+
+            </Grid>
+
+
         </Wrapper>
     )
 }

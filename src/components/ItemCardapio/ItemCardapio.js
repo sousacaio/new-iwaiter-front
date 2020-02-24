@@ -1,12 +1,26 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { Flexcolumn } from '../GridArea/GridArea'
 import { useAlert } from 'react-alert'
+import { Container  } from '@material-ui/core';
 import './ItemCardapio.css'
-import Camera from '../../assets/Cam.png';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+}));
 export default function ItemCardapio(props, history) {
     const alert = useAlert();
+    const classes = useStyles();
+
     const [thumbnail, setThumbnail] = useState(null);
     const [foto, setFoto] = useState(null)
     const [valor, setValor] = useState('');
@@ -53,9 +67,48 @@ export default function ItemCardapio(props, history) {
         fetchData()
     }, [props.id])
     return (
-        <form onSubmit={handleSubmit} className="f-c ard">
-            <Flexcolumn >
-                <div className="item">
+        <Container maxWidthMd>
+            <div className={classes.root}>
+                <div>
+                    <TextField
+                        id="standard-full-width"
+                        label={nome}
+                        defaultValue={nome}
+                        onChange={event => setNome(event.target.value)}
+                        style={{ margin: 8 }}
+                        placeholder="Nome"
+                        helperText="Nome do seu produto"
+                        fullWidth
+                        margin="normal"
+                    />
+                    <TextField
+                        label="None"
+                        id="margin-none"
+                        defaultValue="Default Value"
+                        className={classes.textField}
+                        helperText="Some important text"
+                    />
+                    <TextField
+                        label="Dense"
+                        id="margin-dense"
+                        defaultValue="Default Value"
+                        className={classes.textField}
+                        helperText="Some important text"
+                        margin="dense"
+                    />
+                    <TextField
+                        label="Normal"
+                        id="margin-normal"
+                        defaultValue="Default Value"
+                        className={classes.textField}
+                        helperText="Some important text"
+                        margin="normal"
+                    />
+                </div>
+            </div>
+            <form onSubmit={handleSubmit} className="">
+
+                <div >
                     <label htmlFor="nome">Nome</label><br />
                     <input
                         required
@@ -65,7 +118,7 @@ export default function ItemCardapio(props, history) {
                         onChange={event => setNome(event.target.value)}
                     />
                 </div>
-                <div className="item">
+                <div>
                     <label htmlFor="valor">Valor</label><br />
                     <input
                         required
@@ -75,7 +128,7 @@ export default function ItemCardapio(props, history) {
                         onChange={event => setValor(event.target.value)}
                     />
                 </div>
-                <div className="item">
+                <div>
                     <label htmlFor="valor">Descricao</label><br />
                     <input
                         required
@@ -85,7 +138,7 @@ export default function ItemCardapio(props, history) {
                         onChange={event => setDescricao(event.target.value)}
                     />
                 </div>
-                <div className="item">
+                <div>
                     <label htmlFor="categoria">Categoria</label><br />
                     <input
                         required
@@ -100,14 +153,14 @@ export default function ItemCardapio(props, history) {
                         className={thumbnail ? 'has-thumbnail' : ''}
                     >
                         <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
-                        {foto ? <img src={`http://localhost:3000/files/${foto}`} alt="Select img" /> :
+                        {/* {foto ? <img src={`http://localhost:3000/files/${foto}`} alt="Select img" /> :
                             <img src={Camera} alt="Select img" />
-                        }
+                        } */}
 
                     </label>
                 </div>
                 <button type="submit" className="btn">Alterar</button>
-            </Flexcolumn>
-        </form >
+            </form >
+        </Container>
     )
 }

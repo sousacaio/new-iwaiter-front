@@ -4,7 +4,7 @@ label#thumbnail{
   background-size: cover;
   cursor: pointer;
   display: flex;
-  height: 400px;
+  height: 40%;
   justify-content: center;
   align-items: center
 }

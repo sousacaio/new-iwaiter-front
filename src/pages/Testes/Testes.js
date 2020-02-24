@@ -17,7 +17,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../../components/Material-ui/listItems';
-import Deposits from '../../components/Material-ui/Deposits';
 import Orders from '../../components/Material-ui/Orders';
 
 const drawerWidth = 240;

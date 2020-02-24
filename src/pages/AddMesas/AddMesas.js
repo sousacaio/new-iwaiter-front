@@ -1,12 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import Menu from '../../components/Menu/Menu';
-import { Cont, Flexcolumn, Flexrow, Button, Input } from '../../components/GridArea/GridArea'
 import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
 import CountUp from 'react-countup'
-import CheckBox from '../../components/Checkbox/Checkbox';
 import Wrapper from '../../components/Material-ui/Wrapper';
-import './AddMesas.css'
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, Toolbar, Typography, TextField, Button, Checkbox } from '@material-ui/core'
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    toolbarTitle: {
+        flex: 1,
+    },
+    toolbarSecondary: {
+        justifyContent: 'space-between',
+        overflowX: 'auto',
+    },
+    toolbarLink: {
+        padding: theme.spacing(1),
+        flexShrink: 0,
+    },
+    submit: {
+        margin: theme.spacing(0),
+    },
+    paper: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    input: {
+        margin: theme.spacing(2, 0, 2, 2),
+        width: '90%'
+    }
+}));
 const AddMesas = (props) => {
     const [qtdInicial, setQtdInicial] = useState('');
     const [numero, setNumero] = useState(0);
@@ -14,7 +40,6 @@ const AddMesas = (props) => {
     /*Aplicando imutabilidade no state*/
     const [mesaState, setMesa] = useState([{ ...mesaObjeto },]);
     const [mesas, setMesas] = useState([]);
-    const addCardapio = () => { setMesa([...mesaState, { ...mesaObjeto }]) };
 
     const addPorNumero = (numero) => {
         var arr = [];
@@ -64,7 +89,6 @@ const AddMesas = (props) => {
                 <> No momento vc n tem nenhuma mesa,escolha a quantidade de mesas:
                         <input
                         className="mesas-input" type="number"
-                        className="numero"
                         value={numero} onChange={e => setNumero(e.target.value)}
                     />
                     <input
@@ -112,7 +136,7 @@ const AddMais = (props) => {
             }
         } else {
             let soma = (parseInt(iniciaEm) + parseInt(numero));
-            for (var i = parseInt(iniciaEm) - 1; i < soma; i++) {
+            for (let i = parseInt(iniciaEm) - 1; i < soma; i++) {
                 title.push({
                     numero: (i + 1),
                     id_bar: getIdBar(),
@@ -127,84 +151,118 @@ const AddMais = (props) => {
             window.location.reload()
         });
     }
-    const removeMesas = () => {
-
-    }
+ 
     const addNovaMesa = () => {
         const temNumero = mesas[mesas.length - 1]
         addPorNumero(novasMesas, temNumero?.numero);
     }
     useEffect(() => {
     }, [novasMesas, mesas])
+    const classes = useStyles();
+
     return (
         <>
-            <Flexrow size={10}>
-                <div className="container">
-                    <div className="container-header">
-                        <div className="container-header-cont">
-                            <div className="container-header-numero">
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Paper >
+                        <Toolbar>
+                            <Typography
+                                component="h2"
+                                variant="h5"
+                                color="inherit"
+                                align="center"
+                                noWrap
+                                className={classes.toolbarTitle}
+                            >
+                                Número de mesas:
                                 <CountUp
                                     end={mesas.length}
                                     duration={2}
-                                /> mesas
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container-add-e-remove">
-                        <div className="container-add">
-                            <div className="container-texto">
-                                Adicionar mesas
-                            </div>
-                            <Input borda="#35302D" type="number" value={novasMesas} onChange={e => setNovasMesas(e.target.value)} />
-                            <br />
-                            <Button onClick={addNovaMesa} primary="#35302D">
-                                Adicionar
-                        </Button>
-                        </div>
-                        <div className="container-remove">
-                            <div className="container-texto">
-                                <div className="container-texto">
-                                    Remover mesas
-                            </div>
-                                {mesas.map((mesa) => (
-                                    <div>
-                                        <Input type="checkbox" value={mesa.id}
-                                            className="deletaMesa"
-                                            onChange={e => handleCheck(e)}
-                                        />{mesa.numero}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                                />
 
-                </div>
-            </Flexrow>
-            {/* <Flexrow size={1.5} style={{ overflowY: 'hidden' }}>
-                <div className="mesas-card-quantidade">
-                    <div className="mesas-card-quantidade-numero">
-                        Mesas:
-                <CountUp
-                            end={mesas.length}
-                            duration={2}
+                            </Typography>
+                        </Toolbar>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper className={classes.toolbarTitle}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Numero de mesas"
+                            name="Numero de mesas"
+                            autoComplete="lname"
+                            type="number"
+                            className={classes.input}
+                            onChange={e => setNovasMesas(e.target.value)}
+
                         />
-                    </div>
-                </div>
-            </Flexrow>
-            <Flexrow size={3} style={{ marginTop: '2vh' }}>
-                <Flexcolumn size={5}>
-                    <div className="mesas-card-quantidade">
-                        Adicionar novas mesas:<br />
- 
-                    </div>
-                </Flexcolumn>
-                <Flexcolumn size={5}>
-                    <div className="mesas-card-quantidade">
-                        remover mesas existentes:<br />
+                        {/* <Button  primary="#35302D">
+                            Adicionar
+                     </Button> */}
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={addNovaMesa}
+                            className={classes.input}
+                        >
+                            Adicionar mesas
+                     </Button>
+                    </Paper>
+                </Grid>
+                <Grid item xs={8}>
+                    <Grid container item spacing={2}>
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper} style={{ backgroundColor: '#3f51b5' }}>
+                                <Typography
+                                    component="h2"
+                                    variant="h5"
+                                    align="center"
+                                    noWrap
+                                    className={classes.toolbarTitle}
+                                    style={{ color: '#fff' }}
+                                >
+                                    Clique no número da mesa para excluí-la:
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                        {mesas.map((mesa) => {
+                            console.log(mesa)
+                            const ocupada = mesa.ocupada === 'sim' ? true : false;
+                            const ocupadaBg = mesa.ocupada === 'sim' ? 'red' : '#fff';
+                            const ocupadaFonte = mesa.ocupada === 'sim' ? '#fff' : 'black';
+                            return (
+                                <Grid item xs={2}>
+                                    <Paper className={classes.paper} style={{ backgroundColor: ocupadaBg }}>
+                                        <Checkbox
+                                            disabled={ocupada}
+                                            checked={ocupada}
+                                            onChange={e => handleCheck(e)}
+                                            value={mesa.id}
+                                            style={{ color: ocupadaFonte }}
+                                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                                        />
+                                        <Typography
+                                            align="center"
+                                            noWrap
+                                            className={classes.toolbarTitle}
+                                            style={{ color: ocupadaFonte }}
+                                        >
+                                            {mesa.numero}
+                                        </Typography>
 
-                    </div>
-                </Flexcolumn>
-            </Flexrow> */}
+
+                                    </Paper>
+                                </Grid>
+                            )
+                        })}
+                    </Grid>
+                </Grid>
+            </Grid>
         </>
     )
 }

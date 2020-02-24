@@ -1,11 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
+import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api'
-import { Cont, Flexcolumn, Flexrow } from '../../components/GridArea/GridArea'
 import QRCode from 'qrcode.react';
 import Wrapper from '../../components/Material-ui/Wrapper';
+import { Grid, Paper, Button } from '@material-ui/core/'
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+        width: '100%',
+        height: '100%',
+    },
+    paper: {
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
 const QrCodes = (props) => {
+    const classes = useStyles();
     const [data, setData] = useState([]);
     useEffect(() => {
         function fetchData() {
@@ -25,28 +45,41 @@ const QrCodes = (props) => {
         downloadLink.click();
         document.body.removeChild(downloadLink);
     };
-    return (
-        <Wrapper>
-            <div>
+    function Qr() {
+        return (
+            <React.Fragment>
                 {data.map((item, index) => {
                     return (
-                        <div key={index} className="item">
-                            <QRCode
-                                id={item.numero}
-                                value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
-                                size={290}
-                                level={"H"}
-                                includeMargin={true}
-                            />
-                            <br />
-                            <div style={{ width: '100%', margin: 'auto' }}>
-                                <a href="/#" style={{
-                                    textDecoration: 'none',
-                                }} onClick={() => downloadQR(item.numero)}> Baixar Qr Code da mesa {item.numero} </a>
-                            </div>
-                        </div>)
+                        <Grid item xs={4}>
+                            <Paper className={classes.paper} >
+                                <div key={index}>
+                                    <QRCode
+                                        id={item.numero}
+                                        value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
+                                        size={290}
+                                        level={"H"}
+                                        includeMargin={true}
+                                    />
+                                    <br />
+                                    <Button size="small"
+                                        onClick={() => downloadQR(item.numero)}
+                                    >
+                                        Baixar Qr Code da mesa
+                                         {item.numero}</Button>
+                                </div>
+                            </Paper>
+                        </Grid>)
                 })}
-            </div>
+            </React.Fragment>
+        );
+    }
+    return (
+        <Wrapper>
+            <Grid container spacing={2}>
+                <Grid container item xs={12} spacing={3}>
+                    <Qr />
+                </Grid>
+            </Grid>
         </Wrapper>
     );
 };

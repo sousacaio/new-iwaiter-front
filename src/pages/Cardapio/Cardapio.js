@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import Menu from '../../components/Menu/Menu';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
-import CardCardapio from '../../components/Cards/CardCardapio'
-import ItemCardapio from '../../components/ItemCardapio/ItemCardapio';
-import { Cont, Flexrow, Flexcolumn } from '../../components/GridArea/GridArea'
 import { useAlert } from 'react-alert'
 import './Cardapio.css';
+import { makeStyles } from '@material-ui/core/styles';
 import Wrapper from '../../components/Material-ui/Wrapper';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box'
+import Camera from '../../assets/Cam.png'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import AppBar from '@material-ui/core/AppBar';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import ItemCardapio from '../../components/ItemCardapio/ItemCardapio';
 //https://codepen.io/qq7886/pen/MypEvw
 const Cardapio = (props, history) => {
     const [data, setData] = useState([]);
@@ -15,6 +28,16 @@ const Cardapio = (props, history) => {
     const [categoriaFiltro, setCategoriaFiltro] = useState('');
     const [filtrados, setFiltrados] = useState([]);
     const [categoria, setCategoria] = useState([]);
+    const [value, setValue] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
+    console.log(value)
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     const alert = useAlert();
 
     const handleNomeChange = (event) => {
@@ -52,9 +75,123 @@ const Cardapio = (props, history) => {
         }
         fetchData()
     }, [alert, nome]);
+    const useStyles = makeStyles(theme => ({
+        root: {
+            flexGrow: 1,
+            width: '100%',
+            backgroundColor: theme.palette.background.paper,
+        },
+        card: {
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        cardMedia: {
+            paddingTop: '56.25%', // 16:9
+        },
+        cardContent: {
+            flexGrow: 1,
+        },
+        modal: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        paper: {
+            backgroundColor: theme.palette.background.paper,
+            border: '2px solid #000',
+            boxShadow: theme.shadows[5],
+            padding: theme.spacing(2, 4, 3),
+        },
+    }));
+
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    function a11yProps(index) {
+        return {
+            id: `scrollable-auto-tab-${index}`,
+            'aria-controls': `scrollable-auto-tabpanel-${index}`,
+        };
+    }
+    const classes = useStyles();
     return (
         <Wrapper>
-            <Flexrow>
+            <div className={classes.root}>
+                <AppBar position="static">
+                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                        {categoria.map((cat, index) => (
+                            <Tab label={cat} {...a11yProps(index)} />
+                        ))}
+                    </Tabs>
+                </AppBar>
+                {/* {categoria.map((cat, index) => (
+                    <TabPanel value={index} index={index}>
+                        {cat}
+                    </TabPanel>
+                ))} */}
+            </div>
+            <Grid container spacing={4}>
+                {data.map(card => {
+                    const caminhoFoto = `http://localhost:3000/files/${card.foto}`;
+                    return <Grid item key={card} xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                            {card.foto ?
+                                <CardMedia
+                                    className={classes.cardMedia}
+                                    image={caminhoFoto}
+                                    title="Image title"
+                                /> :
+                                <CardMedia
+                                    className={classes.cardMedia}
+                                    image={Camera}
+                                    title="Image title"
+                                />
+                            }
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {card.nome}
+                                </Typography>
+                                <Typography>
+                                    {card.descricao}
+                                </Typography>
+                                <div>
+                                    <Modal
+                                        aria-labelledby="transition-modal-title"
+                                        aria-describedby="transition-modal-description"
+                                        className={classes.modal}
+                                        open={open}
+                                        onClose={handleClose}
+                                        closeAfterTransition
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                            timeout: 500,
+                                        }}
+                                        disableBackdropClick={false}
+                                    >
+                                        <Fade in={open}>
+                                            <div className={classes.paper}>
+                                                <ItemCardapio id={card.id} />
+                                            </div>
+                                        </Fade>
+                                    </Modal>
+                                </div>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" color="primary" onClick={handleOpen}>
+                                    View
+                                </Button>
+                                <Button size="small" color="primary">
+                                    Edit
+                                </Button>
+                            </CardActions>
+                        </Card>
+
+                    </Grid>
+                })}
+            </Grid>
+            {/* <Flexrow>
                 <div className="cardapio-navbar">
                     <input type="text" align="middle"
                         className="brk-btn"
@@ -127,8 +264,24 @@ const Cardapio = (props, history) => {
                             )
                         })}
                 </div>
-            </Flexrow>
+            </Flexrow>*/}
         </Wrapper >
     );
 };
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`scrollable-auto-tabpanel-${index}`}
+            aria-labelledby={`scrollable-auto-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
+    );
+}
 export default Cardapio;
