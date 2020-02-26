@@ -30,7 +30,7 @@ const Confs = (props) => {
     const classes = useStyles();
     useEffect(() => { }, [])
     return (
-        <Grid container>
+        <Grid container spacing={2}>
             <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
                     <TextField

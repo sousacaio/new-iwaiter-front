@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Divider, Typography, TextField, Button, Checkbox } from '@material-ui/core'
+import { Grid, Divider, Typography, TextField, Paper, Checkbox } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
         flex: 1,
@@ -25,6 +25,11 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    paper: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
 }));
 
 const Couvert = (props) => {
@@ -32,7 +37,7 @@ const Couvert = (props) => {
     useEffect(() => { }, [])
     console.log(props)
     return (
-        <Grid container>
+        <Grid container  spacing={2}>
             <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
                     <TextField
@@ -46,95 +51,103 @@ const Couvert = (props) => {
                 </form>
             </Grid>
             <Divider variant="fullWidth" />
-            <Grid item xs={12} className={classes.checkboxExterna}>
-                <Grid item xs={12} >
-                    <Grid item xs={12} className={classes.checkboxInterna}>
-                        <Checkbox
-                            checked={props.data.data?.seg}
-                            value={props.data.data?.seg}
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                        />
-                    </Grid>
+            <Grid item xs={3}>
+                <Paper className={classes.paper}>
+                    <Checkbox
+                        checked={props.data.data?.seg === 1 ? true : false}
+                        value={props.data.data?.seg}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Segunda
-                {props.data.data?.seg}
+                    >   Seg
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={3} >
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.ter}
+                        checked={props.data.data?.ter === 1 ? true : false}
                         value={props.data.data?.ter}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Terça
-                {props.data.data?.ter}
+                    >   Ter
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={3}>
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.qua}
+                        checked={props.data.data?.qua === 1 ? true : false}
                         value={props.data.data?.qua}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Quarta
-                {props.data.data?.qua}
+                    >   Qua
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={3}>
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.qui}
+                        checked={props.data.data?.qui === 1 ? true : false}
                         value={props.data.data?.qui}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Quinta
-                {props.data.data?.qui}
+                    >   Qui
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={4}>
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.sex}
+                        checked={props.data.data?.sex === 1 ? true : false}
                         value={props.data.data?.sex}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Sexta
-                {props.data.data?.sex}
+                    >   Sex
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={4}>
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.sab}
+                        checked={props.data.data?.sab === 1 ? true : false}
                         value={props.data.data?.sab}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Sabado
-                {props.data.data?.sab}
+                    >   Sab
                     </Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={4}>
+                <Paper className={classes.paper}>
                     <Checkbox
-                        checked={props.data.data?.dom}
+                        checked={props.data.data?.dom === 1 ? true : false}
                         value={props.data.data?.dom}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     <Typography
                         align="center"
                         noWrap
-                        className={classes.toolbarTitle}
-                    >Sabado
-                {props.data.data?.dom}
+                    >   Dom
                     </Typography>
-                </Grid>
+                </Paper>
             </Grid>
         </Grid>
     )

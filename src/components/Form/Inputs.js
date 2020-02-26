@@ -1,92 +1,99 @@
 import React from 'react';
+import { Grid, TextField, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    toolbarTitle: {
+        flex: 1,
+    },
+    toolbarSecondary: {
+        justifyContent: 'space-between',
+        overflowX: 'auto',
+    },
+    toolbarLink: {
+        padding: theme.spacing(1),
+        flexShrink: 0,
+    },
+    submit: {
+        margin: theme.spacing(0),
+    },
+    paper: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    input: {
+        margin: theme.spacing(2, 0, 2, 2),
+        width: '90%'
+    }
+}));
 const CatInputs = ({ idx, catState, handleCatChange }) => {
     const valorId = `valor-${idx}`;
     const nomeId = `nome-${idx}`;
     const categoriaId = `categoria-${idx}`;
+    const classes = useStyles();
     return (
-        <div key={`cardapio-${idx}`} style={{
-            display: 'flex',
-            height: '10vh',
-            flexDirection: 'row',
-            boxShadow: ' 0 0 10px',
-            margin: '10px',
-            background: '#35302D',
-            color: 'white',
-            borderRadius: '5px',
-            fontWeight: 'bold'
-        }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                width: '33%',
-            }}>
-                <div style={{ margin: 'auto' }}>
-                    # {idx + 1}
-                </div>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                    <div style={{ margin: 'auto' }}>
-                        <label htmlFor={nomeId}>{`Prato:`}</label>
+        <Grid item xs={12} key={`cardapio-${idx}`}>
+            <Paper className={classes.paper} >
+
+                <div  >
+                    <div >
+                        <div >
+                            <div >
+                                <label htmlFor={nomeId}>{`Prato:`}</label>
+                            </div>
+                            <div >
+                                <input
+                                    type="text"
+                                    name={nomeId}
+                                    data-idx={idx}
+                                    id={nomeId}
+                                    className="nome"
+                                    value={catState[idx].nome}
+                                    onChange={handleCatChange}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div style={{ margin: 'auto' }}>
-                        <input
-                            style={{ padding: '5px', borderColor: 'white', borderRadius: '5px' }}
-                            type="text"
-                            name={nomeId}
-                            data-idx={idx}
-                            id={nomeId}
-                            className="nome"
-                            value={catState[idx].nome}
-                            onChange={handleCatChange}
-                        />
+                    <div >
+                        <div >
+                            <label htmlFor={valorId}>Valor:</label>
+                        </div>
+                        <div  >
+                            <input
+
+                                type="text"
+                                name={valorId}
+                                data-idx={idx}
+                                id={valorId}
+                                className="valor"
+                                value={catState[idx].valor}
+                                onChange={handleCatChange}
+                            />
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '33%',
-            }}>
-                <div style={{ margin: 'auto' }}>
-                    <label htmlFor={valorId}>Valor:</label>
-                </div>
-                <div style={{ margin: 'auto' }} >
-                    <input
-                        style={{ padding: '5px', borderColor: 'white', borderRadius: '5px' }}
-                        type="text"
-                        name={valorId}
-                        data-idx={idx}
-                        id={valorId}
-                        className="valor"
-                        value={catState[idx].valor}
-                        onChange={handleCatChange}
-                    />
-                </div>
-            </div>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '20%',
-            }}>
-                <div style={{ margin: 'auto' }}>
-                    <label htmlFor={categoriaId}>Categoria:</label>
-                </div>
-                <div style={{ margin: 'auto' }}>
-                    <input
-                        style={{ padding: '5px', borderColor: 'white', borderRadius: '5px' }}
-                        type="text"
-                        name={categoriaId}
-                        data-idx={idx}
-                        id={categoriaId}
-                        className="categoria"
-                        value={catState[idx].categoria}
-                        onChange={handleCatChange}
-                    />
-                </div>
-            </div>
-        </div >
+                    <div>
+                        <div >
+                            <label htmlFor={categoriaId}>Categoria:</label>
+                        </div>
+                        <div >
+                            <input
+
+                                type="text"
+                                name={categoriaId}
+                                data-idx={idx}
+                                id={categoriaId}
+                                className="categoria"
+                                value={catState[idx].categoria}
+                                onChange={handleCatChange}
+                            />
+                        </div>
+                    </div>
+                </div >
+            </Paper>
+        </Grid>
     );
 };
 

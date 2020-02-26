@@ -199,9 +199,6 @@ const AddMais = (props) => {
                             onChange={e => setNovasMesas(e.target.value)}
 
                         />
-                        {/* <Button  primary="#35302D">
-                            Adicionar
-                     </Button> */}
                         <Button
                             type="submit"
                             fullWidth

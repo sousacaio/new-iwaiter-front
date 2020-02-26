@@ -8,6 +8,7 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import AddIcon from '@material-ui/icons/Add';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../../services/auth';
@@ -45,7 +46,17 @@ export const mainListItems = (
                 </Link>
             </ListItemIcon>
             <Link to="/cardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
-                <ListItemText primary="Adicionar cardápio" />
+                <ListItemText primary="Cardápio" />
+            </Link>
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+                    <ListAltIcon />
+                </Link>
+            </ListItemIcon>
+            <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+                <ListItemText primary="Add itens ao Cardapio" />
             </Link>
         </ListItem>
         <ListItem button>
