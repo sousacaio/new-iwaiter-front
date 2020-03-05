@@ -3,7 +3,7 @@ import CatInputs from './Inputs';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import { useAlert } from 'react-alert'
-import { Fab, Button, Divider, Grid, Paper, Typography } from '@material-ui/core';
+import { Fab, Button, Divider, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles(theme => ({

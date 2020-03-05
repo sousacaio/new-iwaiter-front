@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
 const Promos = (props) => {
     const [age, setAge] = React.useState('');
     const [promos, setPromos] = useState([]);

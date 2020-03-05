@@ -1,12 +1,66 @@
-
 import React, { useState } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api';
 import { armazenaIdBar, armazenaToken } from '../../services/auth';
 import { useAlert } from 'react-alert'
-import './login.scss';
-//https://codepen.io/frontendmax/pen/RazXVb
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://material-ui.com/">
+                Your Website
+      </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
 
-const Login = (props) => {
+const useStyles = makeStyles(theme => ({
+    root: {
+        height: '100vh',
+    },
+    image: {
+        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor:
+            theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    },
+    paper: {
+        margin: theme.spacing(8, 4),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
+
+export default function SignInSide(props) {
+    const classes = useStyles();
     const alert = useAlert()
     const [signin, setSignIn] = useState({ email: '', password: '' });
     const [signup, setSignUp] = useState({ email: '', password: '', pass2: '' });
@@ -69,98 +123,78 @@ const Login = (props) => {
             }
         }
     };
-    function trocaForm() {
-        const switchers = [...document.querySelectorAll('.switcher')]
-        switchers.forEach(item => {
-            item.addEventListener('click', function () {
-                switchers.forEach(item => item.parentElement.classList.remove('is-active'))
-                this.parentElement.classList.add('is-active')
-            })
-        })
-    }
-    console.log(signup)
-    const Background =' https://images.unsplash.com/photo-1512805147242-c3e79caf64bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80';
+
+
     return (
-        <div style={{
-            backgroundImage: `url(${Background})`,
-        }}>
-            {error !== '' ? alert.info(error) : ''}
-            <section className="forms-section">
-                <h1 style={{ color: '#3b4465' }} className="section-title">iWaiter</h1>
-                <div className="forms">
-                    <div className="form-wrapper is-active">
-                        <button type="button" className="switcher switcher-login" onClick={() => trocaForm()}>
+        <Grid container component="main" className={classes.root}>
+            <CssBaseline />
+            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Login
+          </Typography>
+                    <form className={classes.form} noValidate>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            autoComplete="email"
+                            autoFocus
+                            value={signin.email}
+                            name="email"
+                            onChange={handleLoginChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            onChange={handleLoginChange}
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            onClick={handleSignIn}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
                             Login
-        <span className="underline"></span>
-                        </button>
-                        <form onSubmit={handleSignIn} className="form form-login">
-                            <fieldset>
-                                <legend></legend>
-                                <div className="input-block">
-                                    <label htmlFor="login-email">E-mail</label>
-                                    <input
-                                        value={signin.email}
-                                        name="email"
-                                        onChange={handleLoginChange}
-                                        id="login-email"
-                                        type="email"
-                                        required />
-                                </div>
-                                <div className="input-block">
-                                    <label htmlFor="login-password">Senha</label>
-                                    <input
-                                        value={signin.password}
-                                        onChange={handleLoginChange}
-                                        id="login-password"
-                                        type="password"
-                                        name="password"
-                                        required />
-                                </div>
-                            </fieldset>
-                            <button type="submit" className="btn-login">Login</button>
-                        </form>
-                    </div>
-                    <div className="form-wrapper">
-                        <button type="button" className="switcher switcher-signup" onClick={() => trocaForm()}>
-                            Ainda não é cadastrado?!
-        <span className="underline"></span>
-                        </button>
-                        <form className="form form-signup" onSubmit={handleSignUp}>
-                            <fieldset>
-                                <legend>Please, enter your email, password and password confirmation for sign up.</legend>
-                                <div className="input-block">
-                                    <label htmlFor="signup-email">E-mail</label>
-                                    <input
-                                        value={signup.email}
-                                        onChange={handleSignUpChange}
-                                        id="email"
-                                        name="email"
-                                        type="email" required />
-                                </div>
-                                <div className="input-block">
-                                    <label htmlFor="signup-password">Senha</label>
-                                    <input
-                                        value={signup.password}
-                                        onChange={handleSignUpChange}
-                                        name="password"
-                                        id="password"
-                                        type="password" required />
-                                </div>
-                                <div className="input-block">
-                                    <label htmlFor="signup-password-confirm">Confirme sua senha</label>
-                                    <input
-                                        value={signup.pass2}
-                                        onChange={handleSignUpChange}
-                                        name="pass2"
-                                        id="signup-password-confirm" type="password" required />
-                                </div>
-                            </fieldset>
-                            <button type="submit" className="btn-signup">Continue</button>
-                        </form>
-                    </div>
+            </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Esqueceu a senha?
+                        </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="/signup" variant="body2">
+                                    {"Sua primeira vez aqui? Registre-se!"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                        <Box mt={5}>
+                            <Copyright />
+                        </Box>
+                    </form>
                 </div>
-            </section>
-        </div>
+            </Grid>
+        </Grid>
     );
 }
-export default Login;

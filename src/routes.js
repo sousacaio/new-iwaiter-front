@@ -1,6 +1,7 @@
 import React from "react";
 import App from './pages/Agora/Agora';
 import Login from './pages/Login/Login';
+import Signup from './pages/Signup/Signup';
 import Cardapio from './pages/Cardapio/Cardapio';
 import QrCodes from './pages/QrCodes/QrCodes';
 import AddMesas from './pages/AddMesas/AddMesas';
@@ -29,6 +30,7 @@ const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={Login} />
+      <Route exact path="/signup" component={Signup} />
       <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/main" component={Main} />
       <PrivateRoute path="/addmesas" component={AddMesas} />
