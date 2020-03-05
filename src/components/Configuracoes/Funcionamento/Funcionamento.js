@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Fab, Snackbar } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
@@ -38,12 +38,22 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     }
 }));
-const Funcionamento = (props) => {
+const Funcionamento = (props, location) => {
     const [altera, setAltera] = useState(false);
+    const [data, setData] = useState([]);
+    const [, updateState] = React.useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
     const [hora, setHora] = useState({
         abre: '00:00:00',
         fecha: '00:00:00'
     });
+    const getData = () => {
+        api.get('/bar/funcionamento', { headers: { id: getIdBar() } }).then(
+            (r) => {
+                setData(r.data);
+            }
+        )
+    }
     const [open, setOpen] = React.useState(false);
     const [state, setState] = React.useState({
         id_bar: parseInt(getIdBar()),
@@ -67,10 +77,14 @@ const Funcionamento = (props) => {
         element.abre = hora.abre;
         element.fecha = hora.fecha;
         confs.push({ confs: element });
-        console.log(confs)
-        api.put('/bar/funcionamento', { confs });
-        handleClick();
-
+        api.put('/bar/funcionamento', { confs }).then(
+            (r) => {
+                if (r.status === 200) {
+                    handleClick();
+                    setAltera(true)
+                }
+            }
+        );
     }
     const alterar = () => {
         setAltera(!altera)
@@ -88,7 +102,11 @@ const Funcionamento = (props) => {
 
         setOpen(false);
     };
-
+    React.useEffect(() => {
+        getData();
+        if (altera === true)
+            forceUpdate();
+    }, [altera])
 
     return (
         <Grid container spacing={2}>
@@ -97,7 +115,7 @@ const Funcionamento = (props) => {
                     Configurações alteradas com sucesso!
                 </Alert>
             </Snackbar>
-            <Fab color="secondary" aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
+            <Fab color={altera === false ? 'primary' : 'secondary'} aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
                 <EditIcon />
             </Fab>
             <Grid item xs={12}>
@@ -108,7 +126,7 @@ const Funcionamento = (props) => {
                                 id="time"
                                 label="Abre ás:"
                                 type="time"
-                                value={props.data.data?.abre}
+                                value={data.abre}
                                 className={classes.textField}
                                 name="abre"
                                 InputLabelProps={{ shrink: true }}
@@ -119,7 +137,7 @@ const Funcionamento = (props) => {
                                 label="Fecha ás:"
                                 type="time"
                                 name="fecha"
-                                value={props.data.data?.fecha}
+                                value={data.fecha}
                                 className={classes.textField}
                                 InputLabelProps={{ shrink: true }}
                                 inputProps={{ step: 300, }}
@@ -167,7 +185,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.seg === 1 ? true : false}
+                                checked={data.seg === 1 ? true : false}
                                 value="seg"
                                 name="seg"
                                 onChange={handleChangeWeekDays('seg')}
@@ -185,7 +203,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.ter === 1 ? true : false}
+                                checked={data.ter === 1 ? true : false}
                                 value="ter"
                                 name="ter"
                                 onChange={handleChangeWeekDays('ter')}
@@ -202,7 +220,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.qua === 1 ? true : false}
+                                checked={data.qua === 1 ? true : false}
                                 value="qua"
                                 name="qua"
                                 onChange={handleChangeWeekDays('qua')}
@@ -219,7 +237,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.qui === 1 ? true : false}
+                                checked={data.qui === 1 ? true : false}
                                 value="qui"
                                 name="qui"
                                 onChange={handleChangeWeekDays('qui')}
@@ -236,7 +254,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.sex === 1 ? true : false}
+                                checked={data.sex === 1 ? true : false}
                                 value="sex"
                                 name="sex"
                                 onChange={handleChangeWeekDays('sex')}
@@ -253,7 +271,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.sab === 1 ? true : false}
+                                checked={data.sab === 1 ? true : false}
                                 value="sab"
                                 name="sab"
                                 onChange={handleChangeWeekDays('sab')}
@@ -270,7 +288,7 @@ const Funcionamento = (props) => {
                     <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
-                                checked={props.data.data?.dom === 1 ? true : false}
+                                checked={data.dom === 1 ? true : false}
                                 value="dom"
                                 name="dom"
                                 onChange={handleChangeWeekDays('dom')}

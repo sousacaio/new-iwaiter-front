@@ -53,7 +53,7 @@ const Configuracoes = () => {
                             Promoções
                         </Typography>
                         <Divider variant="middle" />
-                        <Promos data={func} />
+                        <Promos  />
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
