@@ -104,8 +104,9 @@ const Funcionamento = (props, location) => {
     };
     React.useEffect(() => {
         getData();
-        if (altera === true)
+        if (altera === true) {
             forceUpdate();
+        }
     }, [altera])
 
     return (
