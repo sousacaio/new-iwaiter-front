@@ -152,6 +152,7 @@ const Couvert = (props) => {
                                 checked={data.seg === 1 ? true : false}
                                 value={data.seg}
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
+                                color="primary"
                             />
                             <Typography
                                 align="center"
@@ -166,6 +167,7 @@ const Couvert = (props) => {
                                 checked={data.ter === 1 ? true : false}
                                 value={data.ter}
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
+                                color="primary"
                             />
                             <Typography
                                 align="center"
@@ -179,6 +181,7 @@ const Couvert = (props) => {
                             <Checkbox
                                 checked={data.qua === 1 ? true : false}
                                 value={data.qua}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                             />
                             <Typography
@@ -193,6 +196,7 @@ const Couvert = (props) => {
                             <Checkbox
                                 checked={data.qui === 1 ? true : false}
                                 value={data.qui}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                             />
                             <Typography
@@ -207,6 +211,7 @@ const Couvert = (props) => {
                             <Checkbox
                                 checked={data.sex === 1 ? true : false}
                                 value={data.sex}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                             />
                             <Typography
@@ -221,6 +226,7 @@ const Couvert = (props) => {
                             <Checkbox
                                 checked={data.sab === 1 ? true : false}
                                 value={data.sab}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                             />
                             <Typography
@@ -235,6 +241,7 @@ const Couvert = (props) => {
                             <Checkbox
                                 checked={data.dom === 1 ? true : false}
                                 value={data.dom}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                             />
                             <Typography
