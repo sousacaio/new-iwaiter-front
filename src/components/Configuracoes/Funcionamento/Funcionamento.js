@@ -148,7 +148,7 @@ const Funcionamento = (props, location) => {
                                 id="time"
                                 label="Abre ás:"
                                 type="time"
-                                value={hora.abre}
+                                value={data.abre}
                                 name="abre"
                                 className={classes.textField}
                                 onChange={handleHora('abre')}
@@ -159,7 +159,7 @@ const Funcionamento = (props, location) => {
                                 id="time"
                                 label="Fecha ás:"
                                 type="time"
-                                value={hora.fecha}
+                                value={data.fecha}
                                 name="fecha"
                                 onChange={handleHora('fecha')}
                                 className={classes.textField}
