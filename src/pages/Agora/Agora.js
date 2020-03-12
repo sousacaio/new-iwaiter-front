@@ -4,8 +4,7 @@ import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import { makeStyles } from '@material-ui/core/styles';
 import Wrapper from '../../components/Material-ui/Wrapper';
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import { Grid, Paper } from '@material-ui/core'
 import Deposits from '../../components/Material-ui/Cards';
 /*
 *Falta fazer:

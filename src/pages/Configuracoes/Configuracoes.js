@@ -8,7 +8,7 @@ import api from '../../services/api';
 import { getIdBar } from '../../services/auth'
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Grid, Divider, Typography} from '@material-ui/core'
+import { Paper, Grid, Divider, Typography} from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
         flex: 1,
