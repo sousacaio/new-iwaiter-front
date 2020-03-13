@@ -81,7 +81,7 @@ const Confs = (props) => {
         getData();
         if (altera === true)
             forceUpdate();
-    }, [altera])
+    }, [altera,forceUpdate])
     return (
         <Grid container spacing={2}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -155,7 +155,6 @@ const Confs = (props) => {
                     <Button variant="contained" size="small" color="secondary" onClick={salvar} className={classes.margin}>
                         Salvar
                 </Button>}
-
             </Grid>
 
         </Grid>

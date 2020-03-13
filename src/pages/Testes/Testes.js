@@ -3,7 +3,10 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { CssBaseline, Drawer, AppBar, Toolbar, List, Typography } from '@material-ui/core';
 import { Divider, IconButton, Badge, Container, Grid, Paper } from '@material-ui/core';
-import {MenuIcon, ChevronLeft, Notifications} from '@material-ui/icons';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
 import { mainListItems, secondaryListItems } from '../../components/Material-ui/listItems';
 import Orders from '../../components/Material-ui/Orders';
 
@@ -133,7 +136,7 @@ export default function Dashboard() {
             >
                 <div className={classes.toolbarIcon}>
                     <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeft />
+                        <ChevronLeftIcon />
                     </IconButton>
                 </div>
                 <Divider />

@@ -40,23 +40,7 @@ const Configuracoes = () => {
     return (
         <Wrapper>
             <Grid container xs={12} spacing={2}>
-                <Grid item xs={12}>
-                    <Paper  >
-                        <Typography
-                            component="h2"
-                            variant="h5"
-                            color="inherit"
-                            align="center"
-                            noWrap
-                            className={classes.toolbarTitle}
-                        >
-                            Promoções
-                        </Typography>
-                        <Divider variant="middle" />
-                        <Promos  />
-                    </Paper>
-                </Grid>
-                <Grid item xs={4}>
+                 <Grid item xs={4}>
                     <Paper  >
                         <Typography
                             component="h2"
@@ -102,6 +86,22 @@ const Configuracoes = () => {
                         </Typography>
                         <Divider variant="middle" />
                         <Confs data={couvert} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper  >
+                        <Typography
+                            component="h2"
+                            variant="h5"
+                            color="inherit"
+                            align="center"
+                            noWrap
+                            className={classes.toolbarTitle}
+                        >
+                            Promoções
+                        </Typography>
+                        <Divider variant="middle" />
+                        <Promos  />
                     </Paper>
                 </Grid>
 

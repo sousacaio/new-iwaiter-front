@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar } from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import { Button, TextField, Checkbox, Box, Grid } from '@material-ui/core';
 import { CssBaseline, FormControlLabel, Link, Paper, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
