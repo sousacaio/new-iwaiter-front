@@ -6,7 +6,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api';
 import { armazenaIdBar, armazenaToken } from '../../services/auth';
-import { useAlert } from 'react-alert'
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -53,52 +52,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignInSide(props) {
     const classes = useStyles();
-    const alert = useAlert()
     const [signin, setSignIn] = useState({ email: '', password: '' });
-    const [signup, setSignUp] = useState({ email: '', password: '', pass2: '' });
-    const [error, setError] = useState('')
     const handleLoginChange = (e) => setSignIn({
         ...signin, [e.target.name]: e.target.value,
     });
-    const handleSignUpChange = (e) => setSignUp({
-        ...signup, [e.target.name]: e.target.value,
-    });
 
-    async function handleSignUp(e) {
-        e.preventDefault()
-        const { email, password, pass2 } = signup;
-        if (password === pass2) {
-            await api.post('/bar', {
-                email, password,
-            }).then((r) => {
-                loginBySignup(r.data.bar.email, r.data.bar.password);
-            })
-
-        } else {
-            alert.show('A senhas devem ser iguais!')
-        }
-    }
-    async function loginBySignup(email, password) {
-        try {
-            await api.post('/barauth',
-                { email: email, password: password }
-            ).then((response) => {
-                const { token } = response.data;
-                if (token) {
-                    armazenaToken(token);
-                    armazenaIdBar(response.data.bar.id)
-                    props.history.push("/mesas");
-                }
-            });
-        } catch (err) {
-            alert.show("Houve um problema com o login, verifique suas credenciais. T.T");
-        }
-    }
     async function handleSignIn(e) {
         e.preventDefault();
         const { email, password } = signin;
         if (!email || !password) {
-            setError("Preencha e-mail e senha para continuar!");
+            alert("Preencha e-mail e senha para continuar!");
         } else {
             try {
                 const response = await api.post('/barauth',
@@ -111,7 +74,7 @@ export default function SignInSide(props) {
                     props.history.push("/mesas");
                 }
             } catch (err) {
-                alert.show("Houve um problema com o login, verifique suas credenciais. T.T");
+                alert("Houve um problema com o login, verifique suas credenciais. T.T");
             }
         }
     };

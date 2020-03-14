@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
-import { useAlert } from 'react-alert'
 import './Cardapio.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Wrapper from '../../components/Material-ui/Wrapper';
-import { Button, Grid, Typography, Box } from '@material-ui/core';
-import { Card, CardActions, CardContent, CardMedia} from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+//import { Box } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia } from '@material-ui/core';
 import Camera from '../../assets/Cam.png';
 import { Tabs, Tab } from '@material-ui/core';
 import { AppBar, Modal, Backdrop, Fade } from '@material-ui/core';
@@ -14,13 +14,13 @@ import ItemCardapio from '../../components/ItemCardapio/ItemCardapio';
 //https://codepen.io/qq7886/pen/MypEvw
 const Cardapio = (props, history) => {
     const [data, setData] = useState([]);
-    const [nome, setNome] = useState('');
-    const [categoriaFiltro, setCategoriaFiltro] = useState('');
-    const [filtrados, setFiltrados] = useState([]);
+    const [nome,] = useState('');
+    //const [nome, setNome] = useState('');
+    // const [categoriaFiltro, setCategoriaFiltro] = useState('');
+    // const [filtrados, setFiltrados] = useState([]);
     const [categoria, setCategoria] = useState([]);
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
-    console.log(value)
     const handleOpen = () => {
         setOpen(true);
     };
@@ -28,32 +28,31 @@ const Cardapio = (props, history) => {
     const handleClose = () => {
         setOpen(false);
     };
-    const alert = useAlert();
 
-    const handleNomeChange = (event) => {
-        setNome(event.target.value);
-        filtraCardapioPorNome();
-    }
-    const handleCategoriaChange = (event) => {
-        setCategoriaFiltro(event.target.value);
-    }
+    // const handleNomeChange = (event) => {
+    //     setNome(event.target.value);
+    //     filtraCardapioPorNome();
+    // }
+    // const handleCategoriaChange = (event) => {
+    //     setCategoriaFiltro(event.target.value);
+    // }
 
-    function filtraCardapioPorNome() {
-        let profs = data;
-        let q = nome;
-        profs = profs.filter((profs) => {
-            return profs.nome.toLowerCase().indexOf(q) !== -1;
-        });
-        setFiltrados(profs);
-    }
-    function filtraCardapioPorCategoria() {
-        let profs = data;
-        let q = categoriaFiltro;
-        profs = profs.filter((profs) => {
-            return profs.categoria.toLowerCase().indexOf(q) !== -1;
-        });
-        setFiltrados(profs);
-    }
+    // function filtraCardapioPorNome() {
+    //     let profs = data;
+    //     let q = nome;
+    //     profs = profs.filter((profs) => {
+    //         return profs.nome.toLowerCase().indexOf(q) !== -1;
+    //     });
+    //     setFiltrados(profs);
+    // }
+    // function filtraCardapioPorCategoria() {
+    //     let profs = data;
+    //     let q = categoriaFiltro;
+    //     profs = profs.filter((profs) => {
+    //         return profs.categoria.toLowerCase().indexOf(q) !== -1;
+    //     });
+    //     setFiltrados(profs);
+    // }
 
     useEffect(() => {
         function fetchData() {
@@ -64,7 +63,7 @@ const Cardapio = (props, history) => {
                 })
         }
         fetchData()
-    }, [alert, nome]);
+    }, [nome]);
     const useStyles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
@@ -258,20 +257,20 @@ const Cardapio = (props, history) => {
         </Wrapper >
     );
 };
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+// function TabPanel(props) {
+//     const { children, value, index, ...other } = props;
 
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`scrollable-auto-tabpanel-${index}`}
-            aria-labelledby={`scrollable-auto-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box p={3}>{children}</Box>}
-        </Typography>
-    );
-}
+//     return (
+//         <Typography
+//             component="div"
+//             role="tabpanel"
+//             hidden={value !== index}
+//             id={`scrollable-auto-tabpanel-${index}`}
+//             aria-labelledby={`scrollable-auto-tab-${index}`}
+//             {...other}
+//         >
+//             {value === index && <Box p={3}>{children}</Box>}
+//         </Typography>
+//     );
+// }
 export default Cardapio;

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
 import { useAlert } from 'react-alert'
-import { Container  } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import './ItemCardapio.css'
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -22,7 +22,7 @@ export default function ItemCardapio(props, history) {
     const classes = useStyles();
 
     const [thumbnail, setThumbnail] = useState(null);
-    const [foto, setFoto] = useState(null)
+    const [, setFoto] = useState(null)
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -42,11 +42,9 @@ export default function ItemCardapio(props, history) {
         await api.put('/cardapio', data, { headers: { id: id } }).then(
             (r) => {
                 if (r.data.errors) {
-                    r.data.errors.map((r) => {
-                        alert.show(r.message);
-                    })
+                    alert.show('Ops,houve algum erro');
                 } else {
-                    alert.show('Atualizado!');
+                    alert('Atualizado!');
                 }
 
             }

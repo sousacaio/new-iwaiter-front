@@ -99,7 +99,7 @@ const Promos = () => {
         if (open === true) {
             forceUpdate();
         }
-    }, []);
+    }, [open,forceUpdate]);
     const classes = useStyles()
     return (
         <Grid container spacing={12}>

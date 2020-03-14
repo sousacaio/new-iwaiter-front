@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './Agora.css';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import { makeStyles } from '@material-ui/core/styles';

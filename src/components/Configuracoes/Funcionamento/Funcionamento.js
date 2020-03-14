@@ -107,7 +107,7 @@ const Funcionamento = (props, location) => {
         if (altera === true) {
             forceUpdate();
         }
-    }, [altera])
+    }, [altera,forceUpdate])
 
     return (
         <Grid container spacing={2}>

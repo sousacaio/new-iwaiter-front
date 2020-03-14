@@ -104,7 +104,7 @@ const Couvert = (props) => {
         if (altera === true) {
             forceUpdate();
         }
-    }, [altera])
+    }, [altera,forceUpdate])
     return (
         <Grid container spacing={2}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
