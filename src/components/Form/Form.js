@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import CatInputs from './Inputs';
 import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
-import { useAlert } from 'react-alert'
 import { Fab, Button, Divider, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -37,7 +36,6 @@ const useStyles = makeStyles(theme => ({
 
 //https://itnext.io/how-to-build-a-dynamic-controlled-form-with-react-hooks-2019-b39840f75c4f
 const Form = () => {
-    const alert = useAlert();
     const blankCardapio = { id_bar: getIdBar(), nome: '', valor: '', categoria: '' };
     const [cardapioState, setCardapioState] = useState([{ ...blankCardapio },]);
     const addCardapio = () => {
@@ -51,7 +49,7 @@ const Form = () => {
 
     function addProdCardapio() {
         api.post('/cardapio', { cardapioState }, { headers: { _id: getIdBar() } }).then((r) => {
-            alert.show(r.data.message)
+            alert(r.data.message)
         })
     }
     const classes = useStyles();

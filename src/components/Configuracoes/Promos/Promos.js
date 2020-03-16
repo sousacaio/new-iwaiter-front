@@ -3,11 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Grid,
     Divider, InputLabel, MenuItem, FormHelperText, FormControl, Select, Table, TableBody, TableCell,
-    TableHead, TableRow, TextField, Button, Snackbar
+    TableHead, TableRow, TextField, Button, Snackbar, InputAdornment
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
 import api from '../../../services/api';
 import { getIdBar } from '../../../services/auth';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -37,6 +42,37 @@ const Promos = () => {
     const [open, setOpen] = React.useState(false);
     const [severity, setSeverity] = React.useState('success');
     const [mensagem, setMensagem] = React.useState('')
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [idPraMudar, setId] = React.useState('');
+
+    const handleClickOpenDialog = (id) => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+    async function revogaDesconto(id) {
+        handleClickOpenDialog();
+        setId(id)
+    }
+    const confirmaRevogacao = () => {
+        handleCloseDialog();
+        api.put('/bar/revogaPromo', { id: idPraMudar },
+            { headers: { id_bar: getIdBar() } }).then((r) => {
+                if (r.status === 200) {
+                    forceUpdate();
+                    handleClick();
+                    setSeverity('success');
+                    setMensagem('Desconto revogado com sucesso!');
+                } else {
+                    forceUpdate();
+                    handleClick();
+                    setSeverity('error');
+                    setMensagem('Desconto revogado com sucesso!');
+                }
+            });
+    }
     const handleChangeAplicavel = event => {
         setAplicavel(event.target.value);
         setCategoria(null);
@@ -57,7 +93,7 @@ const Promos = () => {
     };
     const salvarNovoDesconto = async () => {
         await api.post('/bar/promo', { aplicavel, porcentagem, categoria },
-         { headers: { id_bar: getIdBar() } })
+            { headers: { id_bar: getIdBar() } })
             .then((r) => {
                 console.log(r)
                 if (r.data.status === 'created') {
@@ -78,6 +114,7 @@ const Promos = () => {
                 }
             });
     }
+
     useEffect(() => {
         async function getPromos() {
             await api.get('/bar/promos').then(
@@ -99,7 +136,7 @@ const Promos = () => {
         if (open === true) {
             forceUpdate();
         }
-    }, [open,forceUpdate]);
+    }, [open, forceUpdate]);
     const classes = useStyles()
     return (
         <Grid container spacing={12}>
@@ -108,6 +145,28 @@ const Promos = () => {
                     {mensagem}
                 </Alert>
             </Snackbar>
+            <Dialog
+                open={openDialog}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Tem certeza que deseja revogar o desconto desse produto?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        A partir do momento que você concordar,o preço anterior dele será restaurado
+                        e o preço do desconto será revogado.
+                 </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        Não,não quero fazer isso
+                </Button>
+                    <Button onClick={confirmaRevogacao} color="primary" autoFocus>
+                        Sim,eu quero fazer isso
+                     </Button>
+                </DialogActions>
+            </Dialog>
             <Grid container xs={12}>
                 <Grid xs={3}>
                     <FormControl className={classes.formControl}>
@@ -146,6 +205,10 @@ const Promos = () => {
                         <TextField id="Valor" label="Porcentagem"
                             onChange={e => setPorcentagem(e.target.value)}
                             fullWidth
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">%</InputAdornment>,
+                            }}
+                         
                             helperText="A quantia que você quer aplicar de desconto sobre o produto" />
                     </FormControl>
                 </Grid>
@@ -165,7 +228,6 @@ const Promos = () => {
                             <TableCell>Valor</TableCell>
                             <TableCell>Valor final</TableCell>
                             <TableCell></TableCell>
-                            <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -176,8 +238,7 @@ const Promos = () => {
                                     <TableCell>{promocoes.porcentagem}</TableCell>
                                     <TableCell>{promocoes.valor_ant}</TableCell>
                                     <TableCell>{promocoes.valor_produto}</TableCell>
-                                    <TableCell><Button variant="contained" color="primary">Alterar</Button></TableCell>
-                                    <TableCell><Button variant="contained" color="secondary">Revogar</Button></TableCell>
+                                    <TableCell><Button variant="contained" onClick={() => revogaDesconto(promocoes.id)} color="secondary">Revogar desconto</Button></TableCell>
                                 </TableRow>
                             )
                         })}
