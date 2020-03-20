@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, TextField, Button, Fab, Snackbar } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar } from '../../../services/auth';
+import { getIdBar,getToken } from '../../../services/auth';
 import api from '../../../services/api';
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
@@ -61,14 +61,14 @@ const Confs = (props) => {
         setOpen(false);
     };
     const getData = () => {
-        api.get('/bar/confs', { headers: { id: getIdBar() } }).then(
+        api.get('/bar/confs', { headers: { id: getIdBar(), token: getToken() } }).then(
             (r) => {
                 setData(r.data);
             }
         )
     }
     const salvar = () => {
-        api.put('/bar/confs', { confs }).then(
+        api.put('/bar/confs', { confs }, { headers: { token: getToken() } }).then(
             (r) => {
                 if (r.status === 200) {
                     handleClick();
@@ -81,7 +81,7 @@ const Confs = (props) => {
         getData();
         if (altera === true)
             forceUpdate();
-    }, [altera,forceUpdate])
+    }, [altera, forceUpdate])
     return (
         <Grid container spacing={2}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

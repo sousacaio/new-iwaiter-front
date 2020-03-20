@@ -3,6 +3,7 @@ import api from '../../services/api';
 import { useAlert } from 'react-alert'
 import { Container } from '@material-ui/core';
 import './ItemCardapio.css'
+import { getToken } from '../../services/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -39,14 +40,13 @@ export default function ItemCardapio(props, history) {
         data.append('nome', nome);
         data.append('descricao', descricao);
         data.append('thumbnail', thumbnail);
-        await api.put('/cardapio', data, { headers: { id: id } }).then(
+        await api.put('/cardapio', data, { headers: { id: id, token: getToken() } }).then(
             (r) => {
                 if (r.data.errors) {
                     alert.show('Ops,houve algum erro');
                 } else {
                     alert('Atualizado!');
                 }
-
             }
         );
     }

@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { Grid, Paper } from '@material-ui/core'
 import Deposits from '../../components/Material-ui/Cards';
+import { getToken } from '.././../services/auth';
 /*
 *Falta fazer:
 *Tratamento dos dados 
@@ -15,9 +16,10 @@ const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
         async function getMesas() {
-            api.get('/mesas', { headers: { id: getIdBar() } })
+            api.get(`/mesas/`, { headers: { id: getIdBar(), token: getToken() } })
                 .then((r) => {
                     setData(r.data.mesas);
+                    console.log(r)
                 })
         }
         getMesas();

@@ -7,7 +7,6 @@ import QrCodes from './pages/QrCodes/QrCodes';
 import AddMesas from './pages/AddMesas/AddMesas';
 import AddCardapio from './pages/AddCardapio/AddCardapio';
 import Testes from './pages/Testes/Testes';
-import Main from './pages/Main/Main';
 import Configuracoes from './pages/Configuracoes/Configuracoes';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -32,7 +31,6 @@ const Routes = () => (
       <Route exact path="/" component={Login} />
       <Route exact path="/signup" component={Signup} />
       <PrivateRoute path="/mesas" component={App} />
-      <PrivateRoute path="/main" component={Main} />
       <PrivateRoute path="/addmesas" component={AddMesas} />
       <PrivateRoute path="/cardapio" component={Cardapio} />
       <PrivateRoute path="/addcardapio" component={AddCardapio} />
