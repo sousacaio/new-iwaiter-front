@@ -50,7 +50,7 @@ const QrCodes = (props) => {
             <React.Fragment>
                 {data.map((item, index) => {
                     return (
-                        <Grid item xs={4}>
+                        <Grid item lg={4} xs={12} sm={6}>
                             <Paper className={classes.paper} >
                                 <div key={index}>
                                     <QRCode
