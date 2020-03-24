@@ -1,11 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import api from '../../services/api';
-import { useAlert } from 'react-alert'
 import { Container } from '@material-ui/core';
 import './ItemCardapio.css'
 import { getToken } from '../../services/auth';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { Grid, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -19,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 export default function ItemCardapio(props, history) {
-    const alert = useAlert();
     const classes = useStyles();
 
     const [thumbnail, setThumbnail] = useState(null);
@@ -43,7 +41,7 @@ export default function ItemCardapio(props, history) {
         await api.put('/cardapio', data, { headers: { id: id, token: getToken() } }).then(
             (r) => {
                 if (r.data.errors) {
-                    alert.show('Ops,houve algum erro');
+                    alert('Ops,houve algum erro');
                 } else {
                     alert('Atualizado!');
                 }
@@ -66,99 +64,102 @@ export default function ItemCardapio(props, history) {
     }, [props.id])
     return (
         <Container maxWidthMd>
-            <div className={classes.root}>
-                <div>
-                    <TextField
-                        id="standard-full-width"
-                        label={nome}
-                        defaultValue={nome}
-                        onChange={event => setNome(event.target.value)}
-                        style={{ margin: 8 }}
-                        placeholder="Nome"
-                        helperText="Nome do seu produto"
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="None"
-                        id="margin-none"
-                        defaultValue="Default Value"
-                        className={classes.textField}
-                        helperText="Some important text"
-                    />
-                    <TextField
-                        label="Dense"
-                        id="margin-dense"
-                        defaultValue="Default Value"
-                        className={classes.textField}
-                        helperText="Some important text"
-                        margin="dense"
-                    />
-                    <TextField
-                        label="Normal"
-                        id="margin-normal"
-                        defaultValue="Default Value"
-                        className={classes.textField}
-                        helperText="Some important text"
-                        margin="normal"
-                    />
+            <Grid>
+                <div className={classes.root}>
+                    <div>
+                        <TextField
+                            id="standard-full-width"
+                            label={nome}
+                            defaultValue={nome}
+                            onChange={event => setNome(event.target.value)}
+                            style={{ margin: 8 }}
+                            placeholder="Nome"
+                            helperText="Nome do seu produto"
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label="None"
+                            id="margin-none"
+                            defaultValue="Default Value"
+                            className={classes.textField}
+                            helperText="Some important text"
+                        />
+                        <TextField
+                            label="Dense"
+                            id="margin-dense"
+                            defaultValue="Default Value"
+                            className={classes.textField}
+                            helperText="Some important text"
+                            margin="dense"
+                        />
+                        <TextField
+                            label="Normal"
+                            id="margin-normal"
+                            defaultValue="Default Value"
+                            className={classes.textField}
+                            helperText="Some important text"
+                            margin="normal"
+                        />
+                    </div>
                 </div>
-            </div>
-            <form onSubmit={handleSubmit} className="">
+                <form onSubmit={handleSubmit} className="">
 
-                <div >
-                    <label htmlFor="nome">Nome</label><br />
-                    <input
-                        required
-                        className="input"
-                        id="nome"
-                        value={nome}
-                        onChange={event => setNome(event.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="valor">Valor</label><br />
-                    <input
-                        required
-                        className="input"
-                        id="valor"
-                        value={valor}
-                        onChange={event => setValor(event.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="valor">Descricao</label><br />
-                    <input
-                        required
-                        className="input"
-                        id="valor"
-                        value={descricao}
-                        onChange={event => setDescricao(event.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="categoria">Categoria</label><br />
-                    <input
-                        required
-                        id="categoria"
-                        value={categoria}
-                        className="input"
-                        onChange={event => setCategoria(event.target.value)}
-                    />
-                </div>
-                <div className="item social">
-                    <label id="thumbnail" style={{ backgroundImage: `url(${preview})` }}
-                        className={thumbnail ? 'has-thumbnail' : ''}
-                    >
-                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
-                        {/* {foto ? <img src={`http://localhost:3000/files/${foto}`} alt="Select img" /> :
+                    <div >
+                        <label htmlFor="nome">Nome</label><br />
+                        <input
+                            required
+                            className="input"
+                            id="nome"
+                            value={nome}
+                            onChange={event => setNome(event.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="valor">Valor</label><br />
+                        <input
+                            required
+                            className="input"
+                            id="valor"
+                            value={valor}
+                            onChange={event => setValor(event.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="valor">Descricao</label><br />
+                        <input
+                            required
+                            className="input"
+                            id="valor"
+                            value={descricao}
+                            onChange={event => setDescricao(event.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="categoria">Categoria</label><br />
+                        <input
+                            required
+                            id="categoria"
+                            value={categoria}
+                            className="input"
+                            onChange={event => setCategoria(event.target.value)}
+                        />
+                    </div>
+                    <div className="item social">
+                        <label id="thumbnail" style={{ backgroundImage: `url(${preview})` }}
+                            className={thumbnail ? 'has-thumbnail' : ''}
+                        >
+                            <input type="file" onChange={event => setThumbnail(event.target.files[0])} name="photo" />
+                            {/* {foto ? <img src={`http://localhost:3000/files/${foto}`} alt="Select img" /> :
                             <img src={Camera} alt="Select img" />
                         } */}
 
-                    </label>
-                </div>
-                <button type="submit" className="btn">Alterar</button>
-            </form >
+                        </label>
+                    </div>
+                    <button type="submit" className="btn">Alterar</button>
+
+                </form >
+            </Grid>
         </Container>
     )
 }
