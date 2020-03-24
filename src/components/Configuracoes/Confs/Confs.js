@@ -92,7 +92,7 @@ const Confs = (props) => {
             <Fab color={altera === false ? 'primary' : 'secondary'} aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
                 <EditIcon />
             </Fab>
-            <Grid item xs={12}>
+            <Grid item lg={4} xs={12} sm={6}>
                 <form className={classes.root} noValidate autoComplete="off">
                     {altera === false ? <>
                         <TextField
