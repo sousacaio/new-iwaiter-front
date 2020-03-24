@@ -48,7 +48,7 @@ const App = () => {
                 {data.map((i) => {
                     const bg = i.ocupada === 'sim' ? '#3f51b5' : '';
                     const fontColor = i.ocupada === 'sim' ? '#ffffff' : '';
-                    return <Grid item xs={4}>
+                    return <Grid item lg={4} xs={12} sm={6}>
                         <Paper className={classes.paper} style={{ backgroundColor: bg, color: fontColor }}>
                             <Deposits ocupado={i.ocupada} numero={i.numero} id={i.id} />
                         </Paper>
@@ -62,9 +62,7 @@ const App = () => {
     return (
         <Wrapper>
             <Grid container spacing={2}>
-                <Grid container item xs={12} spacing={3}>
-                    <FormRow />
-                </Grid>
+                <FormRow />
             </Grid>
         </Wrapper>
 
