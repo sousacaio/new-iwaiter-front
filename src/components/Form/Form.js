@@ -55,9 +55,9 @@ const Form = () => {
     const classes = useStyles();
     return (
         <div>
-            <Grid container item xs={12} spacing={3}>
+            <Grid container spacing={3}>
                 {cardapioState.map((val, idx) => (
-                    <Grid item xs={4}>
+                    <Grid item lg={4} xs={12} sm={6} >
                         <Paper className={classes.paper} >
                             <CatInputs
                                 key={`cardapio-${idx}`}
