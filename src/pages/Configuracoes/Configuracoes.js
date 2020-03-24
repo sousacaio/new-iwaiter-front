@@ -40,7 +40,7 @@ const Configuracoes = () => {
     return (
         <Wrapper>
             <Grid container xs={12} spacing={2}>
-                <Grid item xs={4}>
+                <Grid item lg={4} xs={12} sm={6}>
                     <Paper  >
                         <Typography
                             component="h2"
@@ -56,7 +56,7 @@ const Configuracoes = () => {
                         <Funcionamento data={func} />
                     </Paper>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item lg={4} xs={12} sm={6}>
                     <Paper >
                         <Typography
                             component="h2"
@@ -72,7 +72,7 @@ const Configuracoes = () => {
                         <Couvert data={confs} />
                     </Paper>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item lg={4} xs={12} sm={6}>
                     <Paper >
                         <Typography
                             component="h2"
@@ -88,7 +88,7 @@ const Configuracoes = () => {
                         <Confs data={couvert} />
                     </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item lg={4} xs={12} sm={6}>
                     <Paper  >
                         <Typography
                             component="h2"
