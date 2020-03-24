@@ -168,7 +168,7 @@ const Promos = () => {
                 </DialogActions>
             </Dialog>
             <Grid container xs={12}>
-                <Grid xs={3}>
+                <Grid lg={4} xs={12} sm={6}>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-helper-label">Produto</InputLabel>
                         <Select
@@ -184,7 +184,7 @@ const Promos = () => {
                         <FormHelperText>Escolha o produto que você deseja dar desconto!</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid xs={3}>
+                <Grid lg={4} xs={12} sm={6}>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                         <Select
@@ -200,7 +200,7 @@ const Promos = () => {
                         <FormHelperText>Escolha a categoria que você deseja dar desconto!</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid xs={3}>
+                <Grid lg={4} xs={12} sm={6}>
                     <FormControl className={classes.formControl}>
                         <TextField id="Valor" label="Porcentagem"
                             onChange={e => setPorcentagem(e.target.value)}
@@ -212,7 +212,7 @@ const Promos = () => {
                             helperText="A quantia que você quer aplicar de desconto sobre o produto" />
                     </FormControl>
                 </Grid>
-                <Grid xs={3}>
+                <Grid lg={4} xs={12} sm={6}>
                     <Button variant="contained"
                         onClick={salvarNovoDesconto}
                         className={classes.btn} color="primary">Habilitar desconto</Button>
@@ -221,6 +221,7 @@ const Promos = () => {
             <Divider variant="fullWidth" />
             <Grid container xs={12} >
                 <Table size="small">
+                <Grid lg={4} xs={12} sm={6}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Produto</TableCell>
@@ -230,6 +231,8 @@ const Promos = () => {
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
+                    </Grid>
+                    <Grid lg={4} xs={12} sm={6}>
                     <TableBody>
                         {promos.map((promocoes, id) => {
                             return (
@@ -244,6 +247,7 @@ const Promos = () => {
                         })}
 
                     </TableBody>
+                    </Grid>
                 </Table>
             </Grid>
         </Grid >
