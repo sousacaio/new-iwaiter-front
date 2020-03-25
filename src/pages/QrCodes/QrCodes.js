@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIdBar, getToken } from '../../services/auth'
+import { getIdBar } from '../../services/auth'
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api'
 import QRCode from 'qrcode.react';
@@ -29,7 +29,7 @@ const QrCodes = (props) => {
     const [data, setData] = useState([]);
     useEffect(() => {
         function fetchData() {
-            api.get('/mesas', { headers: { id: getIdBar(), token: getToken() } }).then((r) => { setData(r.data.mesas); console.log(r.data.mesas) })
+            api.get('/mesas', { headers: { id: getIdBar() } }).then((r) => { setData(r.data.mesas); console.log(r.data.mesas) })
         }
         fetchData()
     }, []);

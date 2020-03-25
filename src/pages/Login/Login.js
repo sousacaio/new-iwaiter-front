@@ -71,7 +71,6 @@ export default function SignInSide(props) {
                 if (token) {
                     armazenaToken(token);
                     armazenaIdBar(response.data.bar.id)
-                    console.log(response)
                     props.history.push("/mesas");
                 }
             } catch (err) {

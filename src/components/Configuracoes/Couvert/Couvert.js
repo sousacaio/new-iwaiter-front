@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Fab, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar,getToken } from '../../../services/auth';
+import { getIdBar } from '../../../services/auth';
 import api from '../../../services/api';
 import EditIcon from '@material-ui/icons/Edit';
 function Alert(props) {
@@ -46,7 +46,7 @@ const Couvert = (props) => {
     const forceUpdate = useCallback(() => updateState({}), []);
     const [valor, setValor] = useState(0);
     const getData = () => {
-        api.get('/bar/couvert', { headers: { id: getIdBar(), token: getToken() } }).then(
+        api.get('/bar/couvert', { headers: { id: getIdBar() } }).then(
             (r) => {
                 setData(r.data);
             }
@@ -74,7 +74,7 @@ const Couvert = (props) => {
         var element = state, confs = [];
         element.valor = valor;
         confs.push({ confs: element });
-        api.put('/bar/couvert', { confs }, { headers: { token: getToken() } }).then(
+        api.put('/bar/couvert', { confs }).then(
             (r) => {
                 if (r.status === 200) {
                     handleClick();
@@ -104,7 +104,7 @@ const Couvert = (props) => {
         if (altera === true) {
             forceUpdate();
         }
-    }, [altera, forceUpdate])
+    }, [altera,forceUpdate])
     return (
         <Grid container spacing={2}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

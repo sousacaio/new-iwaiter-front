@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { getIdBar, getToken } from '../../services/auth'
+import { getIdBar } from '../../services/auth'
 import CountUp from 'react-countup'
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -60,13 +60,13 @@ const AddMesas = (props) => {
         setMesa(updatedCardapio);
     };
     function checa() {
-        api.get('/mesacheck', { headers: { id: getIdBar(), token: getToken() } }).then(r => {
+        api.get('/mesacheck', { headers: { id: getIdBar() } }).then(r => {
             setQtdInicial(r.data)
         });
     }
     function adicionar() {
         const resultado = addPorNumero(numero);
-        api.post('/mesa', { quantidade: resultado, id_bar: getIdBar() }, { headers: { token: getToken() } }).then(r => {
+        api.post('/mesa', { quantidade: resultado, id_bar: getIdBar() }).then(r => {
             checa(r);
             setMesas(r.data)
             window.location.reload();
@@ -74,9 +74,9 @@ const AddMesas = (props) => {
     }
     useEffect(() => {
         function checkCount() {
-            api.get('/mesacheck', { headers: { id: getIdBar(), token: getToken() } }).then(r => {
+            api.get('/mesacheck', { headers: { id: getIdBar() } }).then(r => {
                 setQtdInicial(r.data);
-                r.data > 0 ? api.get('/mesas', { headers: { id: getIdBar() }, token: getToken() }).then(r => {
+                r.data > 0 ? api.get('/mesas', { headers: { id: getIdBar() } }).then(r => {
                     setMesas(r.data.mesas);
                 }) : setMesas(0)
             });
@@ -87,7 +87,7 @@ const AddMesas = (props) => {
         <Wrapper>
             {qtdInicial === 0 ?
                 <> No momento vc n tem nenhuma mesa,escolha a quantidade de mesas:
-                    <input
+                        <input
                         className="mesas-input" type="number"
                         value={numero} onChange={e => setNumero(e.target.value)}
                     />
@@ -116,7 +116,7 @@ const AddMais = (props) => {
     const handleCheck = (event) => {
         const id = event.target.value;
         //console.log(id)
-        api.delete('/mesa', { data: { id } }, { headers: { token: getToken() } }).then(
+        api.delete('/mesa', { data: { id } }).then(
             (r) => {
                 console.log(r)
                 window.location.reload()
@@ -151,7 +151,7 @@ const AddMais = (props) => {
             window.location.reload()
         });
     }
-
+ 
     const addNovaMesa = () => {
         const temNumero = mesas[mesas.length - 1]
         addPorNumero(novasMesas, temNumero?.numero);

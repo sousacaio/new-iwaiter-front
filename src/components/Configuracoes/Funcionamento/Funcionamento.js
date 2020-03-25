@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Fab, Snackbar } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar,getToken } from '../../../services/auth';
+import { getIdBar } from '../../../services/auth';
 import api from '../../../services/api';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -48,7 +48,7 @@ const Funcionamento = (props, location) => {
         fecha: '00:00:00'
     });
     const getData = () => {
-        api.get('/bar/funcionamento', { headers: { id: getIdBar(), token: getToken() } }).then(
+        api.get('/bar/funcionamento', { headers: { id: getIdBar() } }).then(
             (r) => {
                 setData(r.data);
             }
@@ -77,7 +77,7 @@ const Funcionamento = (props, location) => {
         element.abre = hora.abre;
         element.fecha = hora.fecha;
         confs.push({ confs: element });
-        api.put('/bar/funcionamento', { confs }, { headers: { token: getToken() } }).then(
+        api.put('/bar/funcionamento', { confs }).then(
             (r) => {
                 if (r.status === 200) {
                     handleClick();
@@ -107,7 +107,7 @@ const Funcionamento = (props, location) => {
         if (altera === true) {
             forceUpdate();
         }
-    }, [altera, forceUpdate])
+    }, [altera,forceUpdate])
 
     return (
         <Grid container spacing={2}>

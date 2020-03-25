@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIdBar, getToken } from '../../services/auth'
+import { getIdBar } from '../../services/auth'
 import api from '../../services/api'
 import './Cardapio.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,7 +56,7 @@ const Cardapio = (props, history) => {
 
     useEffect(() => {
         function fetchData() {
-            api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } })
+            api.get('/cardapios', { headers: { id: getIdBar() } })
                 .then((r) => {
                     setData(r.data.cardapio);
                     setCategoria(r.data.categorias)

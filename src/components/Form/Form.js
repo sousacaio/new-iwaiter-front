@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CatInputs from './Inputs';
-import { getIdBar, getToken } from '../../services/auth';
+import { getIdBar } from '../../services/auth';
 import api from '../../services/api';
 import { Fab, Button, Divider, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,7 +48,7 @@ const Form = () => {
     };
 
     function addProdCardapio() {
-        api.post('/cardapio', { cardapioState }, { headers: { _id: getIdBar(), token: getToken() } }).then((r) => {
+        api.post('/cardapio', { cardapioState }, { headers: { _id: getIdBar() } }).then((r) => {
             alert(r.data.message)
         })
     }
