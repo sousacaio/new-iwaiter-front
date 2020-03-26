@@ -6,6 +6,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api';
 import { armazenaIdBar, armazenaToken } from '../../services/auth';
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -56,18 +61,22 @@ export default function SignInSide(props) {
     const handleLoginChange = (e) => setSignIn({
         ...signin, [e.target.name]: e.target.value,
     });
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState([]);
 
     async function handleSignIn(e) {
         e.preventDefault();
         const { email, password } = signin;
-        if (!email || !password) {
-            alert("Preencha e-mail e senha para continuar!");
-        } else {
+   
             try {
                 const response = await api.post('/barauth',
                     { email: email, password: password }
                 );
-                const { token } = response.data;
+                const{ data:{ token,errors }} = response;
+                if(errors){
+                    setMessage(errors);
+                    setOpen(true)
+                }
                 if (token) {
                     armazenaToken(token);
                     armazenaIdBar(response.data.bar.id)
@@ -76,7 +85,7 @@ export default function SignInSide(props) {
             } catch (err) {
                 alert("Houve um problema com o login, verifique suas credenciais. T.T");
             }
-        }
+        
     };
 
 
@@ -91,7 +100,8 @@ export default function SignInSide(props) {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Login
-          </Typography>
+                        
+                    </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
@@ -122,6 +132,28 @@ export default function SignInSide(props) {
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
+                        <Collapse in={open}>
+                              {message.map((mensagens,i)=>{
+                                return <>   
+                                <Alert
+                            severity="error"
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => {setOpen(false);}}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }
+                            >                             
+                                {mensagens.message}
+                                 </Alert>
+                                </>
+                            })}
+                          
+                        </Collapse>
                         <Button
                             onClick={handleSignIn}
                             type="submit"
