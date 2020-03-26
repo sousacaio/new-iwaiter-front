@@ -119,7 +119,7 @@ const Funcionamento = (props, location) => {
             <Fab color={altera === false ? 'primary' : 'secondary'} aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
                 <EditIcon />
             </Fab>
-            <Grid item lg={4} xs={12} sm={6}>
+            <Grid item xs={12} >
                 <form className={classes.root} noValidate autoComplete="off">
                     {altera === false ?
                         <>
@@ -183,7 +183,7 @@ const Funcionamento = (props, location) => {
             </Grid>
             {altera === false ?
                 <>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.seg === 1 ? true : false}
@@ -201,7 +201,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.ter === 1 ? true : false}
@@ -218,7 +218,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qua === 1 ? true : false}
@@ -235,7 +235,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qui === 1 ? true : false}
@@ -252,7 +252,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sex === 1 ? true : false}
@@ -269,7 +269,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sab === 1 ? true : false}
@@ -286,7 +286,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.dom === 1 ? true : false}
@@ -306,7 +306,7 @@ const Funcionamento = (props, location) => {
                 </> :
                 <>
 
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.seg}
@@ -323,7 +323,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.ter}
@@ -339,7 +339,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.qua}
@@ -355,7 +355,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.qui}
@@ -371,7 +371,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.sex}
@@ -387,7 +387,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item  xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.sab}
@@ -403,7 +403,7 @@ const Funcionamento = (props, location) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.dom}
