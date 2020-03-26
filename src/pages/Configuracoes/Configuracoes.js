@@ -89,7 +89,7 @@ const Configuracoes = () => {
                         <Confs data={couvert} />
                     </Paper>
                 </Grid>
-                <Grid item lg={4} xs={12} sm={6}>
+                <Grid item xs={12} >
                     <Paper  >
                         <Typography
                             component="h2"

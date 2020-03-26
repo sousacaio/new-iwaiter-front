@@ -115,7 +115,7 @@ const Couvert = (props) => {
             <Fab color={altera === false ? 'primary' : 'secondary'} aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
                 <EditIcon />
             </Fab>
-            <Grid item lg={4} xs={12} sm={6}>
+            <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
                     {altera === false ?
                         <TextField
@@ -146,7 +146,7 @@ const Couvert = (props) => {
             <Divider variant="fullWidth" />
             {altera === false ?
                 <>
-                    <Grid item lg={4} xs={12} sm={6}>
+                    <Grid item xs={4} lg={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.seg === 1 ? true : false}
@@ -161,7 +161,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6} >
+                    <Grid xs={4} lg={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.ter === 1 ? true : false}
@@ -176,7 +176,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qua === 1 ? true : false}
@@ -191,7 +191,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qui === 1 ? true : false}
@@ -206,7 +206,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sex === 1 ? true : false}
@@ -221,7 +221,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sab === 1 ? true : false}
@@ -236,7 +236,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.dom === 1 ? true : false}
@@ -254,7 +254,7 @@ const Couvert = (props) => {
                 </>
                 :
                 <>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.seg}
@@ -269,7 +269,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6} >
+                    <Grid xs={4} lg={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.ter}
@@ -284,7 +284,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="qua"
@@ -299,7 +299,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="qui"
@@ -314,7 +314,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="sex"
@@ -329,7 +329,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="sab"
@@ -344,7 +344,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid lg={4} xs={12} sm={6}>
+                    <Grid xs={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.dom}
