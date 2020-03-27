@@ -5,10 +5,10 @@ import Couvert from '../../components/Configuracoes/Couvert/Couvert';
 import Promos from '../../components/Configuracoes/Promos/Promos';
 import axios from 'axios';
 import api from '../../services/api';
-import { getIdBar } from '../../services/auth'
+import { getIdBar, getToken } from '../../services/auth'
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Grid, Divider, Typography} from '@material-ui/core';
+import { Paper, Grid, Divider, Typography } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
         flex: 1,
@@ -24,9 +24,9 @@ const Configuracoes = () => {
     useEffect(() => {
         let randomPromise = Promise.resolve(200);
         axios.all([
-            api.get('/bar/couvert', { headers: { id: getIdBar() } }),
-            api.get('/bar/funcionamento', { headers: { id: getIdBar() } }),
-            api.get('/bar/confs', { headers: { id: getIdBar() } }),
+            api.get('/bar/couvert', { headers: { id: getIdBar(), token: getToken() } }),
+            api.get('/bar/funcionamento', { headers: { id: getIdBar(), token: getToken() } }),
+            api.get('/bar/confs', { headers: { id: getIdBar(), token: getToken() } }),
             randomPromise
         ])
             .then((responses) => {
@@ -39,9 +39,8 @@ const Configuracoes = () => {
     const classes = useStyles()
     return (
         <Wrapper>
-            <Grid container xs={12} spacing={2}>
-
-                 <Grid item lg={4} xs={12} sm={6}>
+            <Grid container spacing={2}>
+                <Grid item lg={4} md={6} sm={12} xs={12} >
                     <Paper  >
                         <Typography
                             component="h2"
@@ -57,7 +56,7 @@ const Configuracoes = () => {
                         <Funcionamento data={func} />
                     </Paper>
                 </Grid>
-                <Grid item lg={4} xs={12} sm={6}>
+                <Grid item lg={4} md={6} sm={12} xs={12}>
                     <Paper >
                         <Typography
                             component="h2"
@@ -73,7 +72,7 @@ const Configuracoes = () => {
                         <Couvert data={confs} />
                     </Paper>
                 </Grid>
-                <Grid item lg={4} xs={12} sm={6}>
+                <Grid item lg={4} md={12} xs={12} sm={12}>
                     <Paper >
                         <Typography
                             component="h2"
@@ -102,7 +101,7 @@ const Configuracoes = () => {
                             Promoções
                         </Typography>
                         <Divider variant="middle" />
-                        <Promos  />
+                        <Promos />
                     </Paper>
                 </Grid>
 

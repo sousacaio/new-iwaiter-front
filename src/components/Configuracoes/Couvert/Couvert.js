@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Fab, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar } from '../../../services/auth';
+import { getIdBar, getToken } from '../../../services/auth';
 import api from '../../../services/api';
 import EditIcon from '@material-ui/icons/Edit';
 function Alert(props) {
@@ -45,13 +45,6 @@ const Couvert = (props) => {
     const [data, setData] = useState([])
     const forceUpdate = useCallback(() => updateState({}), []);
     const [valor, setValor] = useState(0);
-    const getData = () => {
-        api.get('/bar/couvert', { headers: { id: getIdBar() } }).then(
-            (r) => {
-                setData(r.data);
-            }
-        )
-    }
     const [open, setOpen] = React.useState(false);
     const [state, setState] = React.useState({
         id_bar: parseInt(getIdBar()),
@@ -64,6 +57,13 @@ const Couvert = (props) => {
         dom: false,
     });
 
+    const getData = () => {
+        api.get('/bar/couvert', { headers: { id: getIdBar(), token: getToken() } }).then(
+            (r) => {
+                setData(r.data);
+            }
+        )
+    }
     const handleValor = event => {
         setValor(event.target.value);
     };
@@ -74,12 +74,11 @@ const Couvert = (props) => {
         var element = state, confs = [];
         element.valor = valor;
         confs.push({ confs: element });
-        api.put('/bar/couvert', { confs }).then(
+        api.put('/bar/couvert', { confs }, { headers: { token: getToken() } }).then(
             (r) => {
                 if (r.status === 200) {
                     handleClick();
                     alterar();
-
                 }
             }
         );
@@ -104,7 +103,7 @@ const Couvert = (props) => {
         if (altera === true) {
             forceUpdate();
         }
-    }, [altera,forceUpdate])
+    }, [altera, forceUpdate])
     return (
         <Grid container spacing={2}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -146,7 +145,7 @@ const Couvert = (props) => {
             <Divider variant="fullWidth" />
             {altera === false ?
                 <>
-                    <Grid item xs={4} lg={3} >
+                    <Grid item xs={4} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.seg === 1 ? true : false}
@@ -161,7 +160,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3} >
+                    <Grid item xs={4} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.ter === 1 ? true : false}
@@ -176,7 +175,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qua === 1 ? true : false}
@@ -191,7 +190,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.qui === 1 ? true : false}
@@ -206,7 +205,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sex === 1 ? true : false}
@@ -221,7 +220,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.sab === 1 ? true : false}
@@ -236,7 +235,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={data.dom === 1 ? true : false}
@@ -254,7 +253,7 @@ const Couvert = (props) => {
                 </>
                 :
                 <>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.seg}
@@ -269,7 +268,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3} >
+                    <Grid item xs={4} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.ter}
@@ -284,7 +283,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="qua"
@@ -299,7 +298,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="qui"
@@ -314,7 +313,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="sex"
@@ -329,7 +328,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 name="sab"
@@ -344,7 +343,7 @@ const Couvert = (props) => {
                     </Typography>
                         </Paper>
                     </Grid>
-                    <Grid xs={4} lg={3}>
+                    <Grid item xs={3} >
                         <Paper className={classes.paper}>
                             <Checkbox
                                 checked={state.dom}

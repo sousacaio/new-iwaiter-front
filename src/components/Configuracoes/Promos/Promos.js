@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
 import api from '../../../services/api';
-import { getIdBar } from '../../../services/auth';
+import { getIdBar, getToken } from '../../../services/auth';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -58,7 +58,7 @@ const Promos = () => {
     }
     const confirmaRevogacao = () => {
         handleCloseDialog();
-        api.put('/bar/revogaPromo', { id: idPraMudar },
+        api.put('/bar/revogaPromo', { id: idPraMudar, token: getToken() },
             { headers: { id_bar: getIdBar() } }).then((r) => {
                 if (r.status === 200) {
                     forceUpdate();
@@ -93,9 +93,8 @@ const Promos = () => {
     };
     const salvarNovoDesconto = async () => {
         await api.post('/bar/promo', { aplicavel, porcentagem, categoria },
-            { headers: { id_bar: getIdBar() } })
+            { headers: { id_bar: getIdBar(), token: getToken() } })
             .then((r) => {
-                console.log(r)
                 if (r.data.status === 'created') {
                     forceUpdate();
                     handleClick();
@@ -117,7 +116,7 @@ const Promos = () => {
 
     useEffect(() => {
         async function getPromos() {
-            await api.get('/bar/promos').then(
+            await api.get('/bar/promos', { headers: { token: getToken() } }).then(
                 (result) => {
                     setPromos(result.data.promo)
                 }
@@ -139,7 +138,7 @@ const Promos = () => {
     }, [open, forceUpdate]);
     const classes = useStyles()
     return (
-        <Grid container spacing={12}>
+        <Grid container >
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity={severity}>
                     {mensagem}
@@ -167,8 +166,8 @@ const Promos = () => {
                      </Button>
                 </DialogActions>
             </Dialog>
-            <Grid container xs={12}>
-                <Grid  lg={3} xs={5}>
+            <Grid container >
+                <Grid item lg={3} xs={5}>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-helper-label">Produto</InputLabel>
                         <Select
@@ -178,13 +177,14 @@ const Promos = () => {
                             onChange={handleChangeAplicavel}
                         >
                             {cardapios.map((item) => (
-                                <MenuItem value={item.id}>{item.nome}</MenuItem>
+                                <MenuItem key={item.id} value={item.id}>{item.nome}</MenuItem>
+
                             ))}
                         </Select>
                         <FormHelperText>Escolha o produto que você deseja dar desconto!</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid lg={3} xs={5} >
+                <Grid item lg={3} xs={5} >
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                         <Select
@@ -194,13 +194,13 @@ const Promos = () => {
                             onChange={handleChangeCategoria}
                         >
                             {cat.map((item, ids) => (
-                                <MenuItem value={item}>{item}</MenuItem>
+                                <MenuItem key={ids} value={item}>{item}</MenuItem>
                             ))}
                         </Select>
                         <FormHelperText>Escolha a categoria que você deseja dar desconto!</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid  lg={3} xs={5} >
+                <Grid item lg={3} xs={5} >
                     <FormControl className={classes.formControl}>
                         <TextField id="Valor" label="Porcentagem"
                             onChange={e => setPorcentagem(e.target.value)}
@@ -208,20 +208,20 @@ const Promos = () => {
                             InputProps={{
                                 endAdornment: <InputAdornment position="start">%</InputAdornment>,
                             }}
-                         
+
                             helperText="A quantia que você quer aplicar de desconto sobre o produto" />
                     </FormControl>
                 </Grid>
-                <Grid  xs={3}>
+                <Grid item xs={3}>
                     <Button variant="contained"
                         onClick={salvarNovoDesconto}
                         className={classes.btn} color="primary">Habilitar desconto</Button>
                 </Grid>
             </Grid>
             <Divider variant="fullWidth" />
-            <Grid container xs={12} >
+            <Grid container >
                 <Table size="small">
-                
+
                     <TableHead>
                         <TableRow>
                             <TableCell>Produto</TableCell>
@@ -232,11 +232,11 @@ const Promos = () => {
                         </TableRow>
                     </TableHead>
 
-                    
+
                     <TableBody>
                         {promos.map((promocoes, id) => {
                             return (
-                                <TableRow>
+                                <TableRow key={id}>
                                     <TableCell>{promocoes.nome_produto}</TableCell>
                                     <TableCell>{promocoes.porcentagem}</TableCell>
                                     <TableCell>{promocoes.valor_ant}</TableCell>
@@ -247,7 +247,7 @@ const Promos = () => {
                         })}
 
                     </TableBody>
-                    
+
                 </Table>
             </Grid>
         </Grid >
