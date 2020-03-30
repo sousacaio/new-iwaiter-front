@@ -11,7 +11,17 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import camera from '../../assets/camera.svg';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
 import './Configs.css';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: '100%'
@@ -24,14 +34,29 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         margin: theme.spacing(1),
+    }, modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     },
 }));
 
 const Conta = () => {
     const [data, setData] = useState([]);
+    const [errorsPwd, setErrorsPwd] = useState([]);
+    const [errors, setErrors] = useState([]);
     const [, updateState] = React.useState();
+    const [open, setOpen] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [openAlertPwd, setOpenAlertPwd] = React.useState(false);
+    const [password, setPassword] = useState('');
     const forceUpdate = useCallback(() => updateState({}), []);
-
     const [thumbnail, setThumbnail] = useState(null);
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
@@ -69,17 +94,49 @@ const Conta = () => {
             phone: data.phone
         }, { headers: { id: getIdBar(), token: getToken() } })
             .then((r) => {
-                if (r) alert('Dados alterados!'); forceUpdate();
+                if (!r.data.errors) {
+                    alert('Dados alterados!');
+                    setErrors([]);
+                    forceUpdate();
+                } else {
+                    setErrors(r.data.errors);
+                    setOpenAlert(true)
+                }
             });
     }
+    const handlePwdChange = async () => {
+        if (!password) {
+            alert('Digite uma senha!');
+        } else {
+            await api.put('/bar', { password }, { headers: { id: getIdBar(), token: getToken() } })
+                .then((r) => {
+                    if (!r.data.errors) {
+                        alert('Senha alterada!');
+                        handleClose();
+                        setErrorsPwd([]);
+                    } else {
+                        setErrorsPwd(r.data.errors);
+                        setOpenAlertPwd(true)
+                    }
+                });
+        }
+
+    }
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         getData();
     }, [forceUpdate]);
-    var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${data.foto}`
+    var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${data.foto}`;
     const classes = useStyles();
     return (
         <Wrapper>
-            {JSON.stringify(data)}
             <React.Fragment>
                 <Grid container spacing={3}>
                     <Grid item lg={4} xs={12} sm={6}>
@@ -158,6 +215,28 @@ const Conta = () => {
                                     }}
                                 />
                             </div>
+                            <Collapse in={openAlert}>
+                                {errors.map((mensagens, i) => {
+                                    return <>
+                                        <Alert
+                                            severity="error"
+                                            action={
+                                                <IconButton
+                                                    aria-label="close"
+                                                    color="inherit"
+                                                    size="small"
+                                                    onClick={() => { setOpenAlert(false); }}
+                                                >
+                                                    <CloseIcon fontSize="inherit" />
+                                                </IconButton>
+                                            }
+                                        >
+                                            {mensagens.message}
+                                        </Alert>
+                                    </>
+                                })}
+
+                            </Collapse>
                             <Grid item xs={12}>
                                 <Button
                                     variant="contained"
@@ -176,7 +255,7 @@ const Conta = () => {
                                 color="primary"
                                 fullWidth
                                 className={classes.button}
-
+                                onClick={handleClickOpen}
                                 startIcon={<VpnKeyIcon />}
                             >
                                 Trocar senha
@@ -185,6 +264,56 @@ const Conta = () => {
                     </Grid>
 
                 </Grid>
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Troca de senha</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Após trocar de senha,sua nova senha entrará imediatamente em vigor
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            name="password"
+                            id="password"
+                            label="Nova senha"
+                            type="password"
+                            fullWidth
+                            onChange={(event) => {
+                                setPassword(event.target.value)
+                            }}
+                        />
+                        <Collapse in={openAlertPwd}>
+                            {errorsPwd.map((mensagens, i) => {
+                                return <>
+                                    <Alert
+                                        severity="error"
+                                        action={
+                                            <IconButton
+                                                aria-label="close"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={() => { setOpenAlertPwd(false); }}
+                                            >
+                                                <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
+                                    >
+                                        {mensagens.message}
+                                    </Alert>
+                                </>
+                            })}
+
+                        </Collapse>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancelar
+                     </Button>
+                        <Button onClick={handlePwdChange} color="primary">
+                            Confirmar nova senha
+                    </Button>
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
         </Wrapper>
     )
