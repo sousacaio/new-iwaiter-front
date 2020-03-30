@@ -8,6 +8,7 @@ import AddMesas from './pages/AddMesas/AddMesas';
 import AddCardapio from './pages/AddCardapio/AddCardapio';
 import Testes from './pages/Testes/Testes';
 import Main from './pages/Main/Main';
+import Conta from './pages/Configs/Configs';
 import Configuracoes from './pages/Configuracoes/Configuracoes';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -39,6 +40,7 @@ const Routes = () => (
       <PrivateRoute path="/qr" component={QrCodes} />
       <PrivateRoute path="/testes" component={Testes} />
       <PrivateRoute path="/configuracoes" component={Configuracoes} />
+      <PrivateRoute path="/conta" component={Conta} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>

@@ -19,81 +19,70 @@ function handleLogout() {
 export const mainListItems = (
 
     <div>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/mesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/mesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <FormatListBulletedIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/mesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+                </ListItemIcon>
                 <ListItemText primary="Comandas" />
-            </Link>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/addmesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+            </ListItem>
+        </Link>
+        <Link to="/addmesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
+
                     <LocalDiningIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/addmesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+
+                </ListItemIcon>
+
                 <ListItemText primary="Mesas" />
-            </Link>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/cardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+
+            </ListItem>
+        </Link>
+        <Link to="/cardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <AddIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/cardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+                </ListItemIcon>
                 <ListItemText primary="Cardápio" />
-            </Link>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+            </ListItem>
+        </Link>
+        <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <ListAltIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+                </ListItemIcon>
                 <ListItemText primary="Add itens ao Cardapio" />
-            </Link>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
+            </ListItem>
+        </Link>
+        <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <CameraAltIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
+                </ListItemIcon>
                 <ListItemText primary="Qr codes" />
-            </Link>
-        </ListItem>
+            </ListItem>
+        </Link>
     </div >
 );
 export const secondaryListItems = (
     <div>
         <ListSubheader inset>Saved reports</ListSubheader>
-        <ListItem button>
-            <ListItemIcon>
-                <Link to="/configuracoes" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/configuracoes" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <SettingsIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="/configuracoes" style={{ textDecoration: 'none', color: 'inherit', }}>
+                </ListItemIcon>
                 <ListItemText primary="Configurações" />
-            </Link>
-        </ListItem>
-        <ListItem button>
-
-            <ListItemIcon>
-                <Link to="" onClick={() => handleLogout()} style={{ textDecoration: 'none', color: 'inherit', }}>
+            </ListItem>
+        </Link>
+        <Link to="" onClick={() => handleLogout()} style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
                     <ExitToAppIcon />
-                </Link>
-            </ListItemIcon>
-            <Link to="" onClick={() => handleLogout()} style={{ textDecoration: 'none', color: 'inherit'}}>
+                </ListItemIcon>
                 <ListItemText primary="Sair" />
-            </Link>
-        </ListItem>
+            </ListItem>
+        </Link>
     </div>
 );

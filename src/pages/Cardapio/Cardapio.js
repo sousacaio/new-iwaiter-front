@@ -123,7 +123,7 @@ const Cardapio = (props, history) => {
             </div>
             <Grid container spacing={4}>
                 {data.map(card => {
-                    const caminhoFoto = `http://localhost:3000/files/${card.foto}`;
+                    const caminhoFoto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${card.foto}`;
                     return <Grid item key={card} xs={12} sm={6} md={4}>
                         <Card className={classes.card}>
                             {card.foto ?

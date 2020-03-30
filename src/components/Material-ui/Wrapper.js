@@ -14,7 +14,9 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { mainListItems, secondaryListItems } from '../../components/Material-ui/listItems';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -125,6 +127,13 @@ export default function Wrapper(props) {
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         Waiter
                      </Typography>
+                    <Link to="/conta" style={{ textDecoration: 'none', color: 'inherit', }}>
+                        <IconButton color="inherit">
+                            <Badge color="secondary">
+                                <SettingsIcon />
+                            </Badge>
+                        </IconButton>
+                    </Link>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsIcon />
