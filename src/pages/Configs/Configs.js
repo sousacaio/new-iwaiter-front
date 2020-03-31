@@ -120,7 +120,6 @@ const Conta = () => {
                     }
                 });
         }
-
     }
     const handleClickOpen = () => {
         setOpen(true);
@@ -129,7 +128,6 @@ const Conta = () => {
     const handleClose = () => {
         setOpen(false);
     };
-
     useEffect(() => {
         getData();
     }, [forceUpdate]);

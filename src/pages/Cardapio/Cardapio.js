@@ -1,276 +1,236 @@
 import React, { useEffect, useState } from 'react';
-import { getIdBar } from '../../services/auth'
+import { getIdBar, getToken } from '../../services/auth'
 import api from '../../services/api'
-import './Cardapio.css';
-import { makeStyles } from '@material-ui/core/styles';
+import camera from '../../assets/camera.svg'
 import Wrapper from '../../components/Material-ui/Wrapper';
-import { Button, Grid, Typography } from '@material-ui/core';
-//import { Box } from '@material-ui/core';
-import { Card, CardActions, CardContent, CardMedia } from '@material-ui/core';
-import Camera from '../../assets/Cam.png';
-import { Tabs, Tab } from '@material-ui/core';
-import { AppBar, Modal, Backdrop, Fade } from '@material-ui/core';
-import ItemCardapio from '../../components/ItemCardapio/ItemCardapio';
-//https://codepen.io/qq7886/pen/MypEvw
+import { Grid } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import './Cardapio.css';
+const useStyles = makeStyles((theme) => ({
+
+    rootCard: {
+        maxWidth: 345,
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+    root: {
+        flexGrow: 1,
+        padding: theme.spacing(1),
+        margin: theme.spacing(1)
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
+    },
+}));
+
 const Cardapio = (props, history) => {
-    const [data, setData] = useState([]);
-    const [nome,] = useState('');
-    //const [nome, setNome] = useState('');
-    // const [categoriaFiltro, setCategoriaFiltro] = useState('');
-    // const [filtrados, setFiltrados] = useState([]);
-    const [categoria, setCategoria] = useState([]);
-    const [value, setValue] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    // const handleNomeChange = (event) => {
-    //     setNome(event.target.value);
-    //     filtraCardapioPorNome();
-    // }
-    // const handleCategoriaChange = (event) => {
-    //     setCategoriaFiltro(event.target.value);
-    // }
-
-    // function filtraCardapioPorNome() {
-    //     let profs = data;
-    //     let q = nome;
-    //     profs = profs.filter((profs) => {
-    //         return profs.nome.toLowerCase().indexOf(q) !== -1;
-    //     });
-    //     setFiltrados(profs);
-    // }
-    // function filtraCardapioPorCategoria() {
-    //     let profs = data;
-    //     let q = categoriaFiltro;
-    //     profs = profs.filter((profs) => {
-    //         return profs.categoria.toLowerCase().indexOf(q) !== -1;
-    //     });
-    //     setFiltrados(profs);
-    // }
-
-    useEffect(() => {
-        function fetchData() {
-            api.get('/cardapios', { headers: { id: getIdBar() } })
-                .then((r) => {
-                    setData(r.data.cardapio);
-                    setCategoria(r.data.categorias)
-                })
-        }
-        fetchData()
-    }, [nome]);
-    const useStyles = makeStyles(theme => ({
-        root: {
-            flexGrow: 1,
-            width: '100%',
-            backgroundColor: theme.palette.background.paper,
-        },
-        card: {
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-        },
-        cardMedia: {
-            paddingTop: '56.25%', // 16:9
-        },
-        cardContent: {
-            flexGrow: 1,
-        },
-        modal: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        paper: {
-            backgroundColor: theme.palette.background.paper,
-            border: '2px solid #000',
-            boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
-        },
-    }));
-
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-    function a11yProps(index) {
-        return {
-            id: `scrollable-auto-tab-${index}`,
-            'aria-controls': `scrollable-auto-tabpanel-${index}`,
-        };
-    }
     const classes = useStyles();
+    const [data, setData] = useState([]);
+    const [categoria, setCategoria] = useState('');
+    async function fetchData() {
+        const response = await api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } });
+        setData(response.data.cardapio);
+    }
+    function SearchFilterFunction(text) {
+        //se n tiver texto,traz os dados dnv
+        if (!text) {
+            fetchData();
+        }
+        const newData = data.filter(function (item) {
+            const itemData = item.nome ? item.nome.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        setData(newData);
+    }
+    function SearchFilterByCategory(cat) {
+        if (cat === null) {
+            fetchData()
+        } else {
+            doFilter(cat)
+        }
+    }
+    function doFilter(cat) {
+        const newData = data.filter(function (item) {
+            const itemData = item.categoria ? item.categoria.toUpperCase() : ''.toUpperCase();
+            const textData = cat.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        setData(newData);
+    }
+    useEffect(() => {
+        fetchData()
+    }, []);
     return (
         <Wrapper>
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                        {categoria.map((cat, index) => (
-                            <Tab label={cat} {...a11yProps(index)} />
-                        ))}
-                    </Tabs>
-                </AppBar>
-                {/* {categoria.map((cat, index) => (
-                    <TabPanel value={index} index={index}>
-                        {cat}
-                    </TabPanel>
-                ))} */}
-            </div>
-            <Grid container spacing={4}>
-                {data.map(card => {
-                    const caminhoFoto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${card.foto}`;
-                    return <Grid item key={card} xs={12} sm={6} md={4}>
-                        <Card className={classes.card}>
-                            {card.foto ?
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image={caminhoFoto}
-                                    title="Image title"
-                                /> :
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image={Camera}
-                                    title="Image title"
-                                />
-                            }
-                            <CardContent className={classes.cardContent}>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    {card.nome}
-                                </Typography>
-                                <Typography>
-                                    {card.descricao}
-                                </Typography>
-                                <div>
-                                    <Modal
-                                        aria-labelledby="transition-modal-title"
-                                        aria-describedby="transition-modal-description"
-                                        className={classes.modal}
-                                        open={open}
-                                        onClose={handleClose}
-                                        closeAfterTransition
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
-                                        disableBackdropClick={false}
-                                    >
-                                        <Fade in={open}>
-                                            <div className={classes.paper}>
-                                                <ItemCardapio id={card.id} />
-                                            </div>
-                                        </Fade>
-                                    </Modal>
-                                </div>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" color="primary" onClick={handleOpen}>
-                                    View
-                                </Button>
-                                <Button size="small" color="primary">
-                                    Edit
-                                </Button>
-                            </CardActions>
-                        </Card>
 
-                    </Grid>
+            <Grid container spacing={4}>
+                <div className={classes.root}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            {!categoria ?
+                                <>
+                                    <Typography className={classes.title} variant="h6" noWrap
+                                        onClick={() => { setCategoria('comidas'); SearchFilterByCategory('comidas'); }}
+                                    >
+                                        Comidas
+                                    </Typography>
+                                    <Typography className={classes.title} variant="h6" noWrap>
+                                        |
+                                    </Typography>
+                                    <Typography className={classes.title} variant="h6" noWrap
+                                        onClick={() => { setCategoria('bebidas'); SearchFilterByCategory('bebidas') }}>
+                                        Bebidas
+                                    </Typography>
+                                    <Typography className={classes.title} variant="h6" noWrap>
+                                        |
+                                    </Typography>
+                                    <Typography className={classes.title} variant="h6" noWrap
+                                        onClick={() => { setCategoria('sobremesas'); SearchFilterByCategory('sobremesas') }}
+                                    >
+                                        Sobremesas
+                                     </Typography>
+                                </>
+                                :
+                                <Typography className={classes.title} variant="h6" noWrap
+                                    onClick={() => { SearchFilterByCategory(null); setCategoria(null) }}
+                                >
+                                    Clique aqui para dar reload no cardápio
+                            </Typography>
+                            }
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    onChange={e => SearchFilterFunction(e.target.value)}
+                                    placeholder="Pesquisa..."
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />
+                            </div>
+                        </Toolbar>
+
+                    </AppBar>
+                </div>
+            </Grid>
+            <br />
+            <br />
+            <Grid container>
+                {data.map((item, index) => {
+                    var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${item.foto}`;
+                    return (
+                        <Grid item lg={4} xs={12} sm={6}>
+                            <div key={index}>
+                                <Card className={classes.root}>
+                                    <CardActionArea>
+                                        {item.foto ? <CardMedia
+                                            component="img"
+                                            alt="Contemplative Reptile"
+                                            height="140"
+                                            image={foto}
+                                            title="Contemplative Reptile"
+                                        /> : <CardMedia
+                                                component="img"
+                                                alt="Contemplative Reptile"
+                                                height="140"
+                                                image={camera}
+                                                title="Contemplative Reptile"
+                                            />}
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {item.nome}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {item.descricao}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions>
+                                        <Button size="small" color="primary" onClick={() => alert(item.id)}>
+                                            Editar
+                                            </Button>
+                                        <Button size="small" color="primary">
+                                            {item.categoria}
+                                        </Button>
+                                        <Button size="small" color="primary">
+                                            R${item.valor}
+                                        </Button>
+                                        <Button size="small" color="primary">
+                                            Promoções ativas
+                                            </Button>
+                                    </CardActions>
+                                </Card>
+                            </div>
+                        </Grid>
+                    );
                 })}
             </Grid>
-            {/* <Flexrow>
-                <div className="cardapio-navbar">
-                    <input type="text" align="middle"
-                        className="brk-btn"
-                        value={nome}
-                        placeholder="Pesquise por nome"
-                        onChange={(event) => handleNomeChange(event)}
-                    />
-                    <div>
-                        <select value={categoriaFiltro} onChange={handleCategoriaChange} className="brk-btn">
-                            <option disabled >Escolha uma das suas categorias </option>
-                            {categoria.map((categorias, index) => (
-                                <option value={categorias}>{categorias} </option>
-                            ))}
-                        </select>
-                        <div className="brk-btn" onClick={() => filtraCardapioPorCategoria()}>
-                            Pesquisar por categoria
-                            </div>
-                    </div>
-                </div>
-            </Flexrow>
-            <Flexrow>
-                <div class="masonry">
-                    {filtrados.length > 0 ?
-                        filtrados.map((item, index) => {
-                            return (
-                                <Flexrow key={index} className="item"  >
-                                    <CardCardapio
-                                        foto={item.foto}
-                                        descricao={item.descricao}
-                                        nome={item.nome}
-                                        valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                        categoria={item.categoria} />
-                                    <div id={`popup${item.id}`} className="overlay">
-                                        <div className="popup">
-                                            <a className="close" href="#" >&times;</a>
-                                            <div className="content">
-                                                <ItemCardapio id={item.id} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href={`#popup${item.id}`} >
-                                        Editar
-                                        </a>
-                                </Flexrow>
-                            )
-                        })
-                        :
-                        data.map((item, index) => {
-                            return (
-                                <Flexrow key={index} className="item"  >
-
-                                    <CardCardapio
-                                        foto={item.foto}
-                                        descricao={item.descricao}
-                                        nome={item.nome}
-                                        valor={Number(item.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                        categoria={item.categoria} />
-                                    <div id={`popup${item.id}`} className="overlay">
-                                        <div className="popup">
-                                            <a className="close" href="#" >&times;</a>
-                                            <div className="content">
-                                                <ItemCardapio id={item.id} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href={`#popup${item.id}`} >
-                                        Editar
-                                            </a>
-                                </Flexrow>
-                            )
-                        })}
-                </div>
-            </Flexrow>*/}
         </Wrapper >
     );
 };
-// function TabPanel(props) {
-//     const { children, value, index, ...other } = props;
 
-//     return (
-//         <Typography
-//             component="div"
-//             role="tabpanel"
-//             hidden={value !== index}
-//             id={`scrollable-auto-tabpanel-${index}`}
-//             aria-labelledby={`scrollable-auto-tab-${index}`}
-//             {...other}
-//         >
-//             {value === index && <Box p={3}>{children}</Box>}
-//         </Typography>
-//     );
-// }
 export default Cardapio;
