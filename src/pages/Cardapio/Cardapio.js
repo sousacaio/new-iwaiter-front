@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { getIdBar, getToken } from '../../services/auth'
 import api from '../../services/api'
 import AddIcon from '@material-ui/icons/Add';
@@ -23,6 +23,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
 import '../Configs/Configs.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +97,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Cardapio = (props, history) => {
     const classes = useStyles();
+    const [, updateState] = React.useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
     const [thumbnail, setThumbnail] = useState(null);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [errors, setErrors] = useState([]);
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null;
     }, [thumbnail])
@@ -108,9 +116,33 @@ const Cardapio = (props, history) => {
         setItems({ ...itens, [name]: event.target.value });
     };
     const addProdCardapio = async () => {
-        await api.post('/cardapio', { itens, thumbnail }, { headers: { _id: getIdBar(), token: getToken() } }).then((r) => {
-            console.log(r);
-        })
+        if (thumbnail) {
+            const form = new FormData();
+            form.append('thumbnail', thumbnail);
+            form.append('nome', itens.nome);
+            form.append('descricao', itens.descricao);
+            form.append('valor', itens.valor);
+            form.append('categoria', itens.categoria);
+            await api.post('/cardapio', form,
+                { headers: { id_bar: getIdBar(), token: getToken() } }).then((r) => {
+                    if (!r.data.errors) {
+                        alert('Produto criado!');
+                        //nao mostra error
+                        setErrors([]);
+                        //fecha o modal
+                        handleClose();
+                        //traz os dados do banco
+                        fetchData()
+                        //força o reload do componente
+                        forceUpdate();
+                    } else {
+                        setErrors(r.data.errors);
+                        setOpenAlert(true)
+                    }
+                })
+        } else {
+            alert('É necessária uma foto pro seu produto!');
+        }
     }
     const [data, setData] = useState([]);
     const [categoria, setCategoria] = useState('');
@@ -192,7 +224,7 @@ const Cardapio = (props, history) => {
                                     onClick={() => { SearchFilterByCategory(null); setCategoria(null) }}
                                 >
 
-                                    <RefreshIcon fontSize="large" />
+                                    <RefreshIcon fontSize="large" style={{ margin: 10 }} />
 
                                 </Typography>
                             }
@@ -227,16 +259,16 @@ const Cardapio = (props, history) => {
                                     <CardActionArea>
                                         {item.foto ? <CardMedia
                                             component="img"
-                                            alt="Contemplative Reptile"
+                                            alt="Foto do produto"
                                             height="140"
                                             image={foto}
-                                            title="Contemplative Reptile"
+                                            title="Foto do produto"
                                         /> : <CardMedia
                                                 component="img"
-                                                alt="Contemplative Reptile"
+                                                alt="Foto do produto"
                                                 height="140"
                                                 image={camera}
-                                                title="Contemplative Reptile"
+                                                title="Foto do produto"
                                             />}
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -276,6 +308,27 @@ const Cardapio = (props, history) => {
                     <DialogContentText>
                         Após adicionar o produto,ele entrará imediatamente no seu menu
                         </DialogContentText>
+                    <Collapse in={openAlert}>
+                        {errors.map((mensagens, i) => {
+                            return <>
+                                <Alert
+                                    severity="error"
+                                    action={
+                                        <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => { setOpenAlert(false); }}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }
+                                >
+                                    {mensagens.message}
+                                </Alert>
+                            </>
+                        })}
+                    </Collapse>
                     <TextField
                         autoFocus
                         margin="dense"
@@ -328,8 +381,6 @@ const Cardapio = (props, history) => {
                         <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
                         <img src={camera} alt="Select img" />
                     </label>
-                    {JSON.stringify(itens)}
-                    {JSON.stringify(thumbnail)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
