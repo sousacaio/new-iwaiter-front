@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { getIdBar, getToken } from '../../services/auth'
 import api from '../../services/api'
-import camera from '../../assets/camera.svg'
+import AddIcon from '@material-ui/icons/Add';
 import Wrapper from '../../components/Material-ui/Wrapper';
-import { Grid } from '@material-ui/core'
+import { Grid, Fab, TextField } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import camera from '../../assets/camera.svg';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Card from '@material-ui/core/Card';
@@ -16,7 +18,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import './Cardapio.css';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import '../Configs/Configs.css';
+
 const useStyles = makeStyles((theme) => ({
 
     rootCard: {
@@ -85,8 +93,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Cardapio = (props, history) => {
     const classes = useStyles();
+    const [thumbnail, setThumbnail] = useState(null);
+    const preview = useMemo(() => {
+        return thumbnail ? URL.createObjectURL(thumbnail) : null;
+    }, [thumbnail])
+    const [itens, setItems] = useState({
+        id_bar: getIdBar(),
+        nome: '',
+        descricao: '',
+        valor: '',
+        categoria: '',
+    })
+    const handleItem = name => event => {
+        setItems({ ...itens, [name]: event.target.value });
+    };
+    const addProdCardapio = async () => {
+        await api.post('/cardapio', { itens, thumbnail }, { headers: { _id: getIdBar(), token: getToken() } }).then((r) => {
+            console.log(r);
+        })
+    }
     const [data, setData] = useState([]);
     const [categoria, setCategoria] = useState('');
+    const [open, setOpen] = React.useState(false);
+
     async function fetchData() {
         const response = await api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } });
         setData(response.data.cardapio);
@@ -118,6 +147,13 @@ const Cardapio = (props, history) => {
         });
         setData(newData);
     }
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     useEffect(() => {
         fetchData()
     }, []);
@@ -155,8 +191,10 @@ const Cardapio = (props, history) => {
                                 <Typography className={classes.title} variant="h6" noWrap
                                     onClick={() => { SearchFilterByCategory(null); setCategoria(null) }}
                                 >
-                                    Clique aqui para dar reload no cardápio
-                            </Typography>
+
+                                    <RefreshIcon fontSize="large" />
+
+                                </Typography>
                             }
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
@@ -229,6 +267,79 @@ const Cardapio = (props, history) => {
                     );
                 })}
             </Grid>
+            <Fab color="primary" onClick={handleClickOpen} style={{ position: 'fixed', bottom: '5%', right: '3%' }} aria-label="add">
+                <AddIcon />
+            </Fab>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Adicionar produto</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Após adicionar o produto,ele entrará imediatamente no seu menu
+                        </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="nome"
+                        id="nome"
+                        label="Nome do produto"
+                        type="text"
+                        value={itens.nome}
+                        onChange={handleItem('nome')}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        name="descricao"
+                        id="descricao"
+                        label="Descrição"
+                        type="text"
+                        value={itens.descricao}
+                        onChange={handleItem('descricao')}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        name="valor"
+                        id="valor"
+                        label="Valor"
+                        type="number"
+                        value={itens.valor}
+                        onChange={handleItem('valor')}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        name="categoria"
+                        id="categoria"
+                        label="Categoria"
+                        type="number"
+                        value={itens.categoria}
+                        onChange={handleItem('categoria')}
+                        fullWidth
+                    />
+                    <br />
+                    <Typography>Foto do produto:</Typography>
+                    <br />
+                    <label
+                        id="thumbnail"
+                        style={{ backgroundImage: `url(${preview})` }}
+                        className={thumbnail ? 'has-thumbnail' : ''}
+                    >
+                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
+                        <img src={camera} alt="Select img" />
+                    </label>
+                    {JSON.stringify(itens)}
+                    {JSON.stringify(thumbnail)}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancelar
+                     </Button>
+                    <Button onClick={addProdCardapio} color="primary">
+                        Adicionar novo produto
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Wrapper >
     );
 };
