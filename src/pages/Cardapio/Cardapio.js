@@ -1,34 +1,18 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getIdBar, getToken } from '../../services/auth'
 import api from '../../services/api'
 import AddIcon from '@material-ui/icons/Add';
 import Wrapper from '../../components/Material-ui/Wrapper';
-import { Grid, Fab, TextField } from '@material-ui/core'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
+import {
+    Grid, Fab, AppBar, Toolbar, Typography, InputBase, Card,
+    CardActionArea, CardActions, CardContent, CardMedia, Button
+} from '@material-ui/core'
 import RefreshIcon from '@material-ui/icons/Refresh';
-import camera from '../../assets/camera.svg';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Alert from '@material-ui/lab/Alert';
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import CloseIcon from '@material-ui/icons/Close';
 import '../Configs/Configs.css';
-
+import AddCardapio from '../../components/Cardapio/AddCardapio';
+import ItemCardapio from '../../components/Cardapio/ItemCardapio';
 const useStyles = makeStyles((theme) => ({
 
     rootCard: {
@@ -97,57 +81,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Cardapio = (props, history) => {
     const classes = useStyles();
-    const [, updateState] = React.useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
-    const [thumbnail, setThumbnail] = useState(null);
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [errors, setErrors] = useState([]);
-    const preview = useMemo(() => {
-        return thumbnail ? URL.createObjectURL(thumbnail) : null;
-    }, [thumbnail])
-    const [itens, setItems] = useState({
-        id_bar: getIdBar(),
-        nome: '',
-        descricao: '',
-        valor: '',
-        categoria: '',
-    })
-    const handleItem = name => event => {
-        setItems({ ...itens, [name]: event.target.value });
-    };
-    const addProdCardapio = async () => {
-        if (thumbnail) {
-            const form = new FormData();
-            form.append('thumbnail', thumbnail);
-            form.append('nome', itens.nome);
-            form.append('descricao', itens.descricao);
-            form.append('valor', itens.valor);
-            form.append('categoria', itens.categoria);
-            await api.post('/cardapio', form,
-                { headers: { id_bar: getIdBar(), token: getToken() } }).then((r) => {
-                    if (!r.data.errors) {
-                        alert('Produto criado!');
-                        //nao mostra error
-                        setErrors([]);
-                        //fecha o modal
-                        handleClose();
-                        //traz os dados do banco
-                        fetchData()
-                        //força o reload do componente
-                        forceUpdate();
-                    } else {
-                        setErrors(r.data.errors);
-                        setOpenAlert(true)
-                    }
-                })
-        } else {
-            alert('É necessária uma foto pro seu produto!');
-        }
-    }
     const [data, setData] = useState([]);
+    const [idUpdateForm, setIdUpdateForm] = useState(0);
     const [categoria, setCategoria] = useState('');
-    const [open, setOpen] = React.useState(false);
-
+    const [formState, setFormState] = useState(false);
     async function fetchData() {
         const response = await api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } });
         setData(response.data.cardapio);
@@ -179,19 +116,25 @@ const Cardapio = (props, history) => {
         });
         setData(newData);
     }
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    function openForm() {
+        setFormState(true)
+    }
+    function closeForm() {
+        setFormState(false)
+    }
+    function openUpdateForm(id) {
+        setIdUpdateForm(id)
+    }
+    async function clean() {
+        const val = 0;
+        setIdUpdateForm(val);
+    }
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     useEffect(() => {
         fetchData()
-    }, []);
+    }, [idUpdateForm]);
     return (
         <Wrapper>
-
             <Grid container spacing={4}>
                 <div className={classes.root}>
                     <AppBar position="static">
@@ -223,9 +166,7 @@ const Cardapio = (props, history) => {
                                 <Typography className={classes.title} variant="h6" noWrap
                                     onClick={() => { SearchFilterByCategory(null); setCategoria(null) }}
                                 >
-
                                     <RefreshIcon fontSize="large" style={{ margin: 10 }} />
-
                                 </Typography>
                             }
                             <div className={classes.search}>
@@ -247,8 +188,6 @@ const Cardapio = (props, history) => {
                     </AppBar>
                 </div>
             </Grid>
-            <br />
-            <br />
             <Grid container>
                 {data.map((item, index) => {
                     var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${item.foto}`;
@@ -267,7 +206,7 @@ const Cardapio = (props, history) => {
                                                 component="img"
                                                 alt="Foto do produto"
                                                 height="140"
-                                                image={camera}
+                                                image="https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
                                                 title="Foto do produto"
                                             />}
                                         <CardContent>
@@ -275,14 +214,24 @@ const Cardapio = (props, history) => {
                                                 {item.nome}
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                {item.descricao}
+                                                {item.descricao}...
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                     <CardActions>
-                                        <Button size="small" color="primary" onClick={() => alert(item.id)}>
+                                        <Button size="small" color="primary" onClick={() => openUpdateForm(item.id)}>
                                             Editar
-                                            </Button>
+                                            <ItemCardapio
+                                                id={item.id}
+                                                nome={item.nome}
+                                                categoria={item.categoria}
+                                                valor={item.valor}
+                                                foto={item.foto}
+                                                idItem={idUpdateForm}
+                                                fetchData={fetchData}
+                                                clean={clean}
+                                            />
+                                        </Button>
                                         <Button size="small" color="primary">
                                             {item.categoria}
                                         </Button>
@@ -299,98 +248,10 @@ const Cardapio = (props, history) => {
                     );
                 })}
             </Grid>
-            <Fab color="primary" onClick={handleClickOpen} style={{ position: 'fixed', bottom: '5%', right: '3%' }} aria-label="add">
+            <Fab color="primary" onClick={() => openForm()} style={{ position: 'fixed', bottom: '5%', right: '3%' }} aria-label="add">
                 <AddIcon />
             </Fab>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Adicionar produto</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Após adicionar o produto,ele entrará imediatamente no seu menu
-                        </DialogContentText>
-                    <Collapse in={openAlert}>
-                        {errors.map((mensagens, i) => {
-                            return <>
-                                <Alert
-                                    severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => { setOpenAlert(false); }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                >
-                                    {mensagens.message}
-                                </Alert>
-                            </>
-                        })}
-                    </Collapse>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        name="nome"
-                        id="nome"
-                        label="Nome do produto"
-                        type="text"
-                        value={itens.nome}
-                        onChange={handleItem('nome')}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        name="descricao"
-                        id="descricao"
-                        label="Descrição"
-                        type="text"
-                        value={itens.descricao}
-                        onChange={handleItem('descricao')}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        name="valor"
-                        id="valor"
-                        label="Valor"
-                        type="number"
-                        value={itens.valor}
-                        onChange={handleItem('valor')}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        name="categoria"
-                        id="categoria"
-                        label="Categoria"
-                        type="number"
-                        value={itens.categoria}
-                        onChange={handleItem('categoria')}
-                        fullWidth
-                    />
-                    <br />
-                    <Typography>Foto do produto:</Typography>
-                    <br />
-                    <label
-                        id="thumbnail"
-                        style={{ backgroundImage: `url(${preview})` }}
-                        className={thumbnail ? 'has-thumbnail' : ''}
-                    >
-                        <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
-                        <img src={camera} alt="Select img" />
-                    </label>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancelar
-                     </Button>
-                    <Button onClick={addProdCardapio} color="primary">
-                        Adicionar novo produto
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <AddCardapio closeForm={closeForm} open={formState} fetchData={fetchData} />
         </Wrapper >
     );
 };
