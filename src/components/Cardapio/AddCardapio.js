@@ -88,7 +88,7 @@ const AddCardapio = ({ open, closeForm, fetchData }) => {
                                         </IconButton>
                                     }
                                 >
-                                    {mensagens.message}
+                                    {mensagens}
                                 </Alert>
                             </>
                         })}

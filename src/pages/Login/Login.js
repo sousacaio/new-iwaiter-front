@@ -67,25 +67,25 @@ export default function SignInSide(props) {
     async function handleSignIn(e) {
         e.preventDefault();
         const { email, password } = signin;
-   
-            try {
-                const response = await api.post('/barauth',
-                    { email: email, password: password }
-                );
-                const{ data:{ token,errors }} = response;
-                if(errors){
-                    setMessage(errors);
-                    setOpen(true)
-                }
-                if (token) {
-                    armazenaToken(token);
-                    armazenaIdBar(response.data.bar.id)
-                    props.history.push("/mesas");
-                }
-            } catch (err) {
-                alert("Houve um problema com o login, verifique suas credenciais. T.T");
+
+        try {
+            const response = await api.post('/barauth',
+                { email: email, password: password }
+            );
+            const { data: { errors } } = response;
+            if (errors) {
+                setMessage(errors);
+                setOpen(true)
+            } else {
+                const { data: { data: { token } } } = response;
+                armazenaToken(token);
+                armazenaIdBar(response.data.data.bar.id)
+                props.history.push("/mesas");
             }
-        
+        } catch (err) {
+            console.log(err)
+        }
+
     };
 
 
@@ -100,7 +100,6 @@ export default function SignInSide(props) {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Login
-                        
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
@@ -133,26 +132,26 @@ export default function SignInSide(props) {
                             label="Remember me"
                         />
                         <Collapse in={open}>
-                              {message.map((mensagens,i)=>{
-                                return <>   
-                                <Alert
-                            severity="error"
-                                action={
-                                    <IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size="small"
-                                        onClick={() => {setOpen(false);}}
+                            {message.map((mensagens, i) => {
+                                return <>
+                                    <Alert
+                                        severity="error"
+                                        action={
+                                            <IconButton
+                                                aria-label="close"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={() => { setOpen(false); }}
+                                            >
+                                                <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
                                     >
-                                        <CloseIcon fontSize="inherit" />
-                                    </IconButton>
-                                }
-                            >                             
-                                {mensagens.message}
-                                 </Alert>
+                                        {mensagens}
+                                    </Alert>
                                 </>
                             })}
-                          
+
                         </Collapse>
                         <Button
                             onClick={handleSignIn}

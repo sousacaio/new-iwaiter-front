@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
     },
 }));
-const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem }) => {
+const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem ,descricao}) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
@@ -44,31 +44,36 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem }) => {
         nome: nome,
         categoria: categoria,
         valor: valor,
-        foto: foto
+        foto: foto,
+        descricao:descricao
     });
     const [openAlert, setOpenAlert] = React.useState(false);
     const [errors, setErrors] = useState([]);
     const update = async () => {
         const form = new FormData();
-        form.append('nome', data.nome);
-        form.append('descricao', data.descricao);
-        form.append('valor', data.valor);
-        form.append('categoria', data.categoria);
-        await api.put('/cardapio', form,
-            { headers: { id: id, token: getToken() } }).then((r) => {
-                console.log(r)
-                if (!r.data.errors) {
-                    alert('Produto alterado!');
-                    //nao mostra error
-                    setErrors([]);
-                    //fecha o modal
-                    handleClose();
-                } else {
-                    //rola a página pra cima caso tenha algum erro                     
-                    setErrors(r.data.errors);
-                    setOpenAlert(true)
-                }
-            })
+        if (data.nome && data.descricao && data.valor && data.categoria) {
+            form.append('nome', data.nome);
+            form.append('descricao', data.descricao);
+            form.append('valor', data.valor);
+            form.append('categoria', data.categoria);
+            await api.put('/cardapio', form,
+                { headers: { id: id, token: getToken() } }).then((r) => {
+                    console.log(r)
+                    if (!r.data.errors) {
+                        alert(r.data.message);
+                        //nao mostra error
+                        setErrors([]);
+                        //fecha o modal
+                        handleClose();
+                    } else {
+                        //rola a página pra cima caso tenha algum erro                     
+                        setErrors(r.data.errors);
+                        setOpenAlert(true)
+                    }
+                })
+        }else{
+            alert('Preencha todos os dados do seu produto!');
+        }
     }
     const handleItem = name => event => {
         setData({ ...data, [name]: event.target.value });
@@ -140,7 +145,7 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem }) => {
                                         </IconButton>
                                     }
                                 >
-                                    {mensagens.message}
+                                    {mensagens}
                                 </Alert>
                             </>
                         })}
@@ -155,7 +160,7 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem }) => {
                         value={data.nome}
                         onChange={handleItem('nome')}
                         fullWidth
-                    />{data.nome}
+                    />
                     <TextField
                         margin="dense"
                         name="descricao"

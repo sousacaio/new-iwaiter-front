@@ -87,7 +87,7 @@ const Cardapio = (props, history) => {
     const [formState, setFormState] = useState(false);
     async function fetchData() {
         const response = await api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } });
-        setData(response.data.cardapio);
+        setData(response.data.data);
     }
     function SearchFilterFunction(text) {
         //se n tiver texto,traz os dados dnv
@@ -225,6 +225,7 @@ const Cardapio = (props, history) => {
                                                 id={item.id}
                                                 nome={item.nome}
                                                 categoria={item.categoria}
+                                                descricao={item.descricao}
                                                 valor={item.valor}
                                                 foto={item.foto}
                                                 idItem={idUpdateForm}

@@ -94,12 +94,13 @@ const Conta = () => {
             phone: data.phone
         }, { headers: { id: getIdBar(), token: getToken() } })
             .then((r) => {
-                if (!r.data.errors) {
-                    alert('Dados alterados!');
+                const { data: { message, errors } } = r;
+                if (!errors) {
+                    alert(message);
                     setErrors([]);
                     forceUpdate();
                 } else {
-                    setErrors(r.data.errors);
+                    setErrors(errors);
                     setOpenAlert(true)
                 }
             });
@@ -189,7 +190,6 @@ const Conta = () => {
                                         shrink: true,
                                     }}
                                 />
-
                                 <TextField
                                     required
                                     id="endereco"
@@ -229,7 +229,7 @@ const Conta = () => {
                                                 </IconButton>
                                             }
                                         >
-                                            {mensagens.message}
+                                            {mensagens}
                                         </Alert>
                                     </>
                                 })}
@@ -296,7 +296,7 @@ const Conta = () => {
                                             </IconButton>
                                         }
                                     >
-                                        {mensagens.message}
+                                        {mensagens}
                                     </Alert>
                                 </>
                             })}
