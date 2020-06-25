@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Fab, Snackbar } from '@material-ui/core'
+import { Grid, Divider, TextField, Button, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar, getToken } from '../../../services/auth';
+import { getId } from '../../../services/auth';
 import api from '../../../services/api';
-import EditIcon from '@material-ui/icons/Edit';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -40,47 +39,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Couvert = (props) => {
-    const [altera, setAltera] = useState(false);
-    const [, updateState] = React.useState();
     const [data, setData] = useState([])
+    const [open, setOpen] = useState(0);
+    const [, updateState] = React.useState();
     const forceUpdate = useCallback(() => updateState({}), []);
-    const [valor, setValor] = useState(0);
-    const [open, setOpen] = React.useState(false);
-    const [state, setState] = React.useState({
-        id_bar: parseInt(getIdBar()),
-        seg: false,
-        ter: false,
-        qua: false,
-        qui: false,
-        sex: false,
-        sab: false,
-        dom: false,
-    });
-
-    const getData = () => {
-        api.get('/bar/couvert', { headers: { id: getIdBar(), token: getToken() } }).then(
-            (r) => {
-                setData(r.data);
+    const [altera, setAltera] = useState(false);
+    const getData = async () => {
+        await api.get(`establishment/${getId()}/settings`).then((r) => {
+            if (r) {
+                const { data: { data } } = r;
+                const { settings } = data[0];
+                setData(settings);
             }
-        )
+        })
     }
-    const handleValor = event => {
-        setValor(event.target.value);
+    const handleValor = name => event => {
+        setData({ ...data, [name]: event.target.value });
     };
-    const handleChangeWeekDays = name => event => {
-        setState({ ...state, [name]: event.target.checked });
-    };
+
     const salvar = () => {
-        var element = state, confs = [];
-        element.valor = valor;
-        confs.push({ confs: element });
-        api.put('/bar/couvert', { confs }, { headers: { token: getToken() } }).then(
-            (r) => {
-                if (r.status === 200) {
-                    handleClick();
-                    alterar();
-                }
+        api.put(`establishment/${getId()}/settings`, data).then((r) => {
+            if (r.status === 200) {
+                handleClick();
+                alterar();
             }
+        }
         );
     }
     const alterar = () => {
@@ -96,6 +79,7 @@ const Couvert = (props) => {
         if (reason === 'clickaway') {
             return;
         }
+
         setOpen(false);
     };
     useEffect(() => {
@@ -111,271 +95,59 @@ const Couvert = (props) => {
                     Configurações de couvert alteradas com sucesso!
                 </Alert>
             </Snackbar>
-            <Fab color={altera === false ? 'primary' : 'secondary'} aria-label="edit" style={{ marginRight: '0px' }} onClick={alterar}>
-                <EditIcon />
-            </Fab>
             <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
-                    {altera === false ?
-                        <TextField
-                            label="Valor"
-                            type="text"
-                            value={data.valor}
-                            disabled
-                            className={classes.textField}
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{ step: 300, }}
-                        />
-                        :
-                        <TextField
-                            label="Valor"
-                            type="text"
-                            name="valor"
-                            required
-                            value={valor}
-                            onChange={handleValor}
-                            className={classes.textField}
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{ step: 300, }}
-                        />
-                    }
+
+                    <TextField
+                        label="Valor"
+                        type="text"
+                        value={data.couvert}
+                        onChange={handleValor('couvert')}
+                        className={classes.textField}
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{ step: 300, }}
+                    />
+                    <TextField
+                        id="time"
+                        label="Gorjeta"
+                        type="text"
+                        value={data.gorjeta}
+                        name="gorjeta"
+                        onChange={handleValor('gorjeta')}
+                        className={classes.textField}
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{ step: 300, }}
+                    />
+                    <Divider variant="fullWidth" />
+                    <TextField
+                        id="time"
+                        label="Embalagem"
+                        type="text"
+                        value={data.embalagem}
+                        name="embalagem"
+                        onChange={handleValor('embalagem')}
+                        className={classes.textField}
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{ step: 300, }}
+                    />
 
                 </form>
             </Grid>
             <Divider variant="fullWidth" />
-            {altera === false ?
-                <>
-                    <Grid item xs={4} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.seg === 1 ? true : false}
-                                value={data.seg}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                color="primary"
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Seg
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={4} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.ter === 1 ? true : false}
-                                value={data.ter}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                color="primary"
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Ter
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.qua === 1 ? true : false}
-                                value={data.qua}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Qua
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.qui === 1 ? true : false}
-                                value={data.qui}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Qui
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.sex === 1 ? true : false}
-                                value={data.sex}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Sex
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.sab === 1 ? true : false}
-                                value={data.sab}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Sab
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={data.dom === 1 ? true : false}
-                                value={data.dom}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Dom
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                </>
-                :
-                <>
-                    <Grid item xs={4}>
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={state.seg}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('seg')}
-                                name="seg"
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Seg
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={4} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={state.ter}
-                                name="ter"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('ter')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Ter
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                name="qua"
-                                checked={state.qua}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('qua')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Qua
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                name="qui"
-                                checked={state.qui}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('qui')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Qui
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                name="sex"
-                                checked={state.sex}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('sex')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Sex
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                name="sab"
-                                checked={state.sab}
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('sab')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Sab
-                    </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3} >
-                        <Paper className={classes.paper}>
-                            <Checkbox
-                                checked={state.dom}
-                                name="domg"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                                onChange={handleChangeWeekDays('dom')}
-                            />
-                            <Typography
-                                align="center"
-                                noWrap
-                            >   Dom
-                    </Typography>
-                        </Paper>
-                    </Grid>
 
-                </>
-
-
-            }
             <Grid container
                 direction="row"
                 justify="center"
                 alignItems="center"
             >
-                {altera === false ? '' :
-                    <Button variant="contained"
-                        size="small"
-                        color="secondary"
-                        onClick={salvar}
-                        className={classes.margin}>
-                        Salvar
-                </Button>}
+
+                <Button variant="contained"
+                    size="small"
+                    color="primary"
+                    onClick={salvar}
+                    className={classes.margin}>
+                    Salvar
+                </Button>
 
             </Grid>
         </Grid>

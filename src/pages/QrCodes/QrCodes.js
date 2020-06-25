@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIdBar } from '../../services/auth'
+import { getId } from '../../services/auth'
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../../services/api'
 import QRCode from 'qrcode.react';
@@ -27,10 +27,12 @@ const useStyles = makeStyles(theme => ({
 const QrCodes = (props) => {
     const classes = useStyles();
     const [data, setData] = useState([]);
+    function fetchData() {
+        api.get(`establishment/${getId()}/points`).then((r) => {
+            setData(r.data.data[0].points)
+        })
+    }
     useEffect(() => {
-        function fetchData() {
-            api.get('/mesas', { headers: { id: getIdBar() } }).then((r) => { setData(r.data.mesas); console.log(r.data.mesas) })
-        }
         fetchData()
     }, []);
     function downloadQR(idImg) {
@@ -54,18 +56,17 @@ const QrCodes = (props) => {
                             <Paper className={classes.paper} >
                                 <div key={index}>
                                     <QRCode
-                                        id={item.numero}
-                                        value={`http://localhost:3000/?mesa=${item.numero}&bar=${getIdBar()}`}
+                                        id={item._id}
+                                        value={`http://localhost:3000/?mesa=${item._id}&bar=${getId()}`}
                                         size={290}
                                         level={"H"}
                                         includeMargin={true}
                                     />
                                     <br />
                                     <Button size="small"
-                                        onClick={() => downloadQR(item.numero)}
+                                        onClick={() => downloadQR(item._id)}
                                     >
-                                        Baixar Qr Code da mesa
-                                         {item.numero}</Button>
+                                        Baixar Qr Code da mesa {item.num}</Button>
                                 </div>
                             </Paper>
                         </Grid>)

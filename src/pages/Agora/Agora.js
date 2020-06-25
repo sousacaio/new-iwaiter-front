@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getIdBar } from '../../services/auth';
+import { getId } from '../../services/auth';
 import api from '../../services/api';
 import { makeStyles } from '@material-ui/core/styles';
 import Wrapper from '../../components/Material-ui/Wrapper';
@@ -15,7 +15,7 @@ const App = () => {
     const [data, setData] = useState([]);
     useEffect(() => {
         async function getMesas() {
-            api.get('/mesas', { headers: { id: getIdBar() } })
+            api.get('/mesas', { headers: { id: getId() } })
                 .then((r) => {
                     setData(r.data.mesas);
                 })

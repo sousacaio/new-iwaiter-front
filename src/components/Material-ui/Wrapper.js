@@ -127,7 +127,7 @@ export default function Wrapper(props) {
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         Waiter
                      </Typography>
-                    <Link to="/conta" style={{ textDecoration: 'none', color: 'inherit', }}>
+                    <Link to="/account" style={{ textDecoration: 'none', color: 'inherit', }}>
                         <IconButton color="inherit">
                             <Badge color="secondary">
                                 <SettingsIcon />

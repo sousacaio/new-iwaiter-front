@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Divider, TextField, Button, Fab, Snackbar } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
 import MuiAlert from '@material-ui/lab/Alert';
-import { getIdBar, getToken } from '../../../services/auth';
+import { getId, getToken } from '../../../services/auth';
 import api from '../../../services/api';
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
@@ -34,6 +34,8 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 const Confs = (props) => {
+    const { gorjeta, couvert } = props;
+    console.log(props)
     const classes = useStyles();
     const [altera, setAltera] = useState(false);
     const [data, setData] = useState([]);
@@ -41,7 +43,7 @@ const Confs = (props) => {
     const forceUpdate = useCallback(() => updateState({}), []);
     const [open, setOpen] = React.useState(false);
     const [confs, setConfs] = useState({
-        id_bar: parseInt(getIdBar()),
+        id_bar: parseInt(getId()),
         gorjeta: 0,
         embalagem: 0
     })
@@ -61,7 +63,7 @@ const Confs = (props) => {
         setOpen(false);
     };
     const getData = () => {
-        api.get('/bar/confs', { headers: { id: getIdBar(), token: getToken() } }).then(
+        api.get('/bar/confs', { headers: { id: getId(), token: getToken() } }).then(
             (r) => {
                 setData(r.data);
             }

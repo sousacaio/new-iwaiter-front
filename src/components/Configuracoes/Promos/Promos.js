@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert';
 import api from '../../../services/api';
-import { getIdBar, getToken } from '../../../services/auth';
+import { getId, getToken } from '../../../services/auth';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -59,7 +59,7 @@ const Promos = () => {
     const confirmaRevogacao = () => {
         handleCloseDialog();
         api.put('/bar/revogaPromo', { id: idPraMudar, token: getToken() },
-            { headers: { id_bar: getIdBar() } }).then((r) => {
+            { headers: { id_bar: getId() } }).then((r) => {
                 if (r.status === 200) {
                     forceUpdate();
                     handleClick();
@@ -93,7 +93,7 @@ const Promos = () => {
     };
     const salvarNovoDesconto = async () => {
         await api.post('/bar/promo', { aplicavel, porcentagem, categoria },
-            { headers: { id_bar: getIdBar(), token: getToken() } })
+            { headers: { id_bar: getId(), token: getToken() } })
             .then((r) => {
                 if (r.data.status === 'created') {
                     forceUpdate();
@@ -123,7 +123,7 @@ const Promos = () => {
             );
         }
         async function getCardapios() {
-            await api.get('/cardapios', { headers: { id: getIdBar() } }).then(
+            await api.get('/cardapios', { headers: { id: getId() } }).then(
                 (result) => {
                     setCardapios(result.data.cardapio)
                     setCat(result.data.categorias)

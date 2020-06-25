@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import api from '../../services/api';
 import { makeStyles } from '@material-ui/core/styles';
-import { getIdBar, getToken } from '../../services/auth'
+import { getId } from '../../services/auth'
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -11,15 +11,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import camera from '../../assets/camera.svg';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Alert from '@material-ui/lab/Alert';
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import CloseIcon from '@material-ui/icons/Close';
 import './Configs.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,86 +40,31 @@ const useStyles = makeStyles((theme) => ({
 
 const Conta = () => {
     const [data, setData] = useState([]);
-    const [errorsPwd, setErrorsPwd] = useState([]);
-    const [errors, setErrors] = useState([]);
     const [, updateState] = React.useState();
-    const [open, setOpen] = React.useState(false);
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [openAlertPwd, setOpenAlertPwd] = React.useState(false);
-    const [password, setPassword] = useState('');
     const forceUpdate = useCallback(() => updateState({}), []);
-    const [thumbnail, setThumbnail] = useState(null);
-    const preview = useMemo(() => {
-        return thumbnail ? URL.createObjectURL(thumbnail) : null;
-    }, [thumbnail])
     const handleData = name => event => {
         setData({ ...data, [name]: event.target.value });
     };
 
     function getData() {
-        api.get('/bar', { headers: { id: getIdBar(), token: getToken() } }).then(r => {
-            setData(r.data.bar);
+        api.get(`establishment/${getId()}/account`).then(r => {
+            console.log(r);
         });
     }
-    async function handlePhoto() {
-        if (thumbnail) {
-            const form = new FormData();
-            form.append('thumbnail', thumbnail);
-            await api.post('/barphoto', form, { headers: { id: getIdBar(), token: getToken() } }).then(
-                (r) => {
-                    console.log(r)
-                    if (r) {
-                        alert('Foto de perfil do bar alterada!');
-                        forceUpdate();
-                    }
-                });
-        } else {
-            alert('Escolha uma foto de perfil!');
-        }
-    }
+
     async function handleForm() {
         await api.put('/bar', {
             nome: data.nome,
             endereco: data.endereco,
             email: data.email,
             phone: data.phone
-        }, { headers: { id: getIdBar(), token: getToken() } })
+        })
             .then((r) => {
-                const { data: { message, errors } } = r;
-                if (!errors) {
-                    alert(message);
-                    setErrors([]);
-                    forceUpdate();
-                } else {
-                    setErrors(errors);
-                    setOpenAlert(true)
-                }
+
             });
     }
-    const handlePwdChange = async () => {
-        if (!password) {
-            alert('Digite uma senha!');
-        } else {
-            await api.put('/bar', { password }, { headers: { id: getIdBar(), token: getToken() } })
-                .then((r) => {
-                    if (!r.data.errors) {
-                        alert('Senha alterada!');
-                        handleClose();
-                        setErrorsPwd([]);
-                    } else {
-                        setErrorsPwd(r.data.errors);
-                        setOpenAlertPwd(true)
-                    }
-                });
-        }
-    }
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     useEffect(() => {
         getData();
     }, [forceUpdate]);
@@ -150,13 +86,11 @@ const Conta = () => {
                                 />
                             </CardActionArea>
                             <br />
-                            <form onSubmit={handlePhoto}>
+                            <form >
                                 <label
                                     id="thumbnail"
-                                    style={{ backgroundImage: `url(${preview})` }}
-                                    className={thumbnail ? 'has-thumbnail' : ''}
                                 >
-                                    <input type="file" onChange={event => setThumbnail(event.target.files[0])} />
+                                    <input type="file" />
                                     <img src={camera} alt="Select img" />
                                 </label>
                                 <Button size="small" type="submit" color="primary" style={{ marginLeft: '35%', marginBottom: 10, marginTop: -5 }}>
@@ -213,28 +147,7 @@ const Conta = () => {
                                     }}
                                 />
                             </div>
-                            <Collapse in={openAlert}>
-                                {errors.map((mensagens, i) => {
-                                    return <>
-                                        <Alert
-                                            severity="error"
-                                            action={
-                                                <IconButton
-                                                    aria-label="close"
-                                                    color="inherit"
-                                                    size="small"
-                                                    onClick={() => { setOpenAlert(false); }}
-                                                >
-                                                    <CloseIcon fontSize="inherit" />
-                                                </IconButton>
-                                            }
-                                        >
-                                            {mensagens}
-                                        </Alert>
-                                    </>
-                                })}
 
-                            </Collapse>
                             <Grid item xs={12}>
                                 <Button
                                     variant="contained"
@@ -253,7 +166,6 @@ const Conta = () => {
                                 color="primary"
                                 fullWidth
                                 className={classes.button}
-                                onClick={handleClickOpen}
                                 startIcon={<VpnKeyIcon />}
                             >
                                 Trocar senha
@@ -262,56 +174,6 @@ const Conta = () => {
                     </Grid>
 
                 </Grid>
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Troca de senha</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Após trocar de senha,sua nova senha entrará imediatamente em vigor
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            name="password"
-                            id="password"
-                            label="Nova senha"
-                            type="password"
-                            fullWidth
-                            onChange={(event) => {
-                                setPassword(event.target.value)
-                            }}
-                        />
-                        <Collapse in={openAlertPwd}>
-                            {errorsPwd.map((mensagens, i) => {
-                                return <>
-                                    <Alert
-                                        severity="error"
-                                        action={
-                                            <IconButton
-                                                aria-label="close"
-                                                color="inherit"
-                                                size="small"
-                                                onClick={() => { setOpenAlertPwd(false); }}
-                                            >
-                                                <CloseIcon fontSize="inherit" />
-                                            </IconButton>
-                                        }
-                                    >
-                                        {mensagens}
-                                    </Alert>
-                                </>
-                            })}
-
-                        </Collapse>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancelar
-                     </Button>
-                        <Button onClick={handlePwdChange} color="primary">
-                            Confirmar nova senha
-                    </Button>
-                    </DialogActions>
-                </Dialog>
             </React.Fragment>
         </Wrapper>
     )

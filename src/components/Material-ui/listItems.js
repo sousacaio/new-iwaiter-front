@@ -8,7 +8,6 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import AddIcon from '@material-ui/icons/Add';
-import ListAltIcon from '@material-ui/icons/ListAlt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../../services/auth';
@@ -19,7 +18,7 @@ function handleLogout() {
 export const mainListItems = (
 
     <div>
-        <Link to="/mesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/orders" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
                     <FormatListBulletedIcon />
@@ -39,23 +38,15 @@ export const mainListItems = (
 
             </ListItem>
         </Link>
-        <Link to="/cardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/catalog" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
                     <AddIcon />
                 </ListItemIcon>
-                <ListItemText primary="Cardápio" />
+                <ListItemText primary="Catalogo" />
             </ListItem>
         </Link>
-        <Link to="/addcardapio" style={{ textDecoration: 'none', color: 'inherit', }}>
-            <ListItem button>
-                <ListItemIcon>
-                    <ListAltIcon />
-                </ListItemIcon>
-                <ListItemText primary="Add itens ao Cardapio" />
-            </ListItem>
-        </Link>
-        <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
+         <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
                     <CameraAltIcon />

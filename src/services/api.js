@@ -1,14 +1,25 @@
 import axios from 'axios';
-//import { getToken } from "./auth";
-const api = axios.create({
-    baseURL: 'http://localhost:3000/api'
-})
+import { getToken } from "./auth";
 
-// api.interceptors.request.use(async config => {
-//     const token = getToken();
-//     if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
+const api = axios.create({
+    baseURL: 'http://localhost:3000/v1/'
+})
+//api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
+api.interceptors.request.use(async config => {
+    const token = getToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+// api.interceptors.response.use(function (response) {
+//     return response;
+// }, function (error) {
+//     if (401 === error.response.status) {
+//         alert(error.response.data.message)
+//     } else {
+//         return Promise.reject(error);
 //     }
-//     return config;
 // });
 export default api;

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Funcionamento from '../../components/Configuracoes/Funcionamento/Funcionamento';
-import Confs from '../../components/Configuracoes/Confs/Confs';
 import Couvert from '../../components/Configuracoes/Couvert/Couvert';
-import Promos from '../../components/Configuracoes/Promos/Promos';
-import axios from 'axios';
 import api from '../../services/api';
-import { getIdBar, getToken } from '../../services/auth'
+import { getId } from '../../services/auth'
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Grid, Divider, Typography } from '@material-ui/core';
@@ -17,30 +14,23 @@ const useStyles = makeStyles(theme => ({
 
 }));
 const Configuracoes = () => {
-    const [func, setFunc] = useState([]);
-    const [couvert, setCouvert] = useState([])
-    const [confs, setConfs] = useState([])
-
-    useEffect(() => {
-        let randomPromise = Promise.resolve(200);
-        axios.all([
-            api.get('/bar/couvert', { headers: { id: getIdBar(), token: getToken() } }),
-            api.get('/bar/funcionamento', { headers: { id: getIdBar(), token: getToken() } }),
-            api.get('/bar/confs', { headers: { id: getIdBar(), token: getToken() } }),
-            randomPromise
-        ])
-            .then((responses) => {
-                setConfs(responses[0]);
-                setFunc(responses[1])
-                setCouvert(responses[2])
-            })
-
-    }, [])
+    const [data, setData] = useState([]);
+    async function fetchData() {
+        await api.get(`establishment/${getId()}/settings`).then((r) => {
+            if (r) {
+                const { data: { data } } = r;
+                const { settings } = data[0];
+                setData(settings);
+            }
+        })
+    }
+    console.log(data)
+    useEffect(() => { fetchData() }, []);
     const classes = useStyles()
     return (
         <Wrapper>
             <Grid container spacing={2}>
-                <Grid item lg={4} md={6} sm={12} xs={12} >
+                <Grid item lg={6} md={8} sm={12} xs={12} >
                     <Paper  >
                         <Typography
                             component="h2"
@@ -53,7 +43,7 @@ const Configuracoes = () => {
                             Horários
                         </Typography>
                         <Divider variant="middle" />
-                        <Funcionamento data={func} />
+                        <Funcionamento />
                     </Paper>
                 </Grid>
                 <Grid item lg={4} md={6} sm={12} xs={12}>
@@ -69,10 +59,10 @@ const Configuracoes = () => {
                             Couvert
                         </Typography>
                         <Divider variant="middle" />
-                        <Couvert data={confs} />
+                        <Couvert />
                     </Paper>
                 </Grid>
-                <Grid item lg={4} md={12} xs={12} sm={12}>
+                {/* <Grid item lg={4} md={12} xs={12} sm={12}>
                     <Paper >
                         <Typography
                             component="h2"
@@ -85,7 +75,7 @@ const Configuracoes = () => {
                             Funcionamento
                         </Typography>
                         <Divider variant="middle" />
-                        <Confs data={couvert} />
+                        <Confs data={data} />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} >
@@ -103,7 +93,7 @@ const Configuracoes = () => {
                         <Divider variant="middle" />
                         <Promos />
                     </Paper>
-                </Grid>
+                </Grid> */}
 
             </Grid>
 

@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { getToken } from '../../services/auth'
+import { getId } from '../../services/auth'
 import api from '../../services/api';
 import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText,
-    IconButton, Collapse, TextField, Button,
+    IconButton, TextField, Button, GridList, GridListTile, GridListTileBar,
+    InputLabel, MenuItem, Select
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import CloseIcon from '@material-ui/icons/Close';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import '../../pages/Configs/Configs.css';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,43 +31,38 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         color: 'white',
     },
+    formControl: {
+        minWidth: 400,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
 }));
-const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem ,descricao}) => {
+const ItemCardapio = ({ clean, id, name, value, category, photo, idItem, description }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
         id: id,
-        nome: nome,
-        categoria: categoria,
-        valor: valor,
-        foto: foto,
-        descricao:descricao
+        name: name,
+        category: category,
+        value: value,
+        photo: photo,
+        description: description
     });
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [errors, setErrors] = useState([]);
     const update = async () => {
-        const form = new FormData();
-        if (data.nome && data.descricao && data.valor && data.categoria) {
-            form.append('nome', data.nome);
-            form.append('descricao', data.descricao);
-            form.append('valor', data.valor);
-            form.append('categoria', data.categoria);
-            await api.put('/cardapio', form,
-                { headers: { id: id, token: getToken() } }).then((r) => {
-                    console.log(r)
-                    if (!r.data.errors) {
-                        alert(r.data.message);
-                        //nao mostra error
-                        setErrors([]);
-                        //fecha o modal
-                        handleClose();
-                    } else {
-                        //rola a página pra cima caso tenha algum erro                     
-                        setErrors(r.data.errors);
-                        setOpenAlert(true)
-                    }
-                })
-        }else{
+        if (data.name && data.description && data.value && data.category) {
+            await api.put(`establishment/${getId()}/catalog/${id}`, data).then((r) => {
+                console.log(r)
+                if (!r.data.errors) {
+                    alert(r.data.message);
+                    //nao mostra error
+                    //fecha o modal
+                    handleClose();
+                } else {
+                    alert(r.data.message);
+                }
+            })
+        } else {
             alert('Preencha todos os dados do seu produto!');
         }
     }
@@ -82,24 +73,24 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem ,descric
         await setOpen(false);
         await clean()
     }
-    var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${foto}`
     //Se o idItem for igual ao id selecionado no componente pai,o modal é aberto
     useEffect(() => {
         if (idItem === id) { setOpen(true) }
     }, [id, idItem]);
+    var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${photo}`
     return (
         <>
             <Dialog open={open} onClose={() => { handleClose(); }} aria-labelledby="form-dialog-title">
 
-                {foto ?
+                {photo ?
                     <GridList cellHeight={300} spacing={5} className={classes.gridList}>
                         <GridListTile cols={2} rows={1}>
-                            <img src={pic} alt={nome} />
+                            <img src={pic} alt={name} />
                             <GridListTileBar
-                                title={nome}
+                                title={name}
                                 titlePosition="top"
                                 actionIcon={
-                                    <IconButton aria-label={`star ${nome}`} className={classes.icon}>
+                                    <IconButton aria-label={`star ${name}`} className={classes.icon}>
                                         <StarBorderIcon />
                                     </IconButton>
                                 }
@@ -111,12 +102,12 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem ,descric
                     :
                     <GridList cellHeight={300} spacing={5} className={classes.gridList}>
                         <GridListTile cols={2} rows={1}>
-                            <img src="https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80" alt={nome} />
+                            <img src="https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80" alt={name} />
                             <GridListTileBar
-                                title={nome}
+                                title={name}
                                 titlePosition="top"
                                 actionIcon={
-                                    <IconButton aria-label={`star ${nome}`} className={classes.icon}>
+                                    <IconButton aria-label={`star ${name}`} className={classes.icon}>
                                         <StarBorderIcon />
                                     </IconButton>
                                 }
@@ -129,68 +120,48 @@ const ItemCardapio = ({ clean, id, nome, valor, categoria, foto, idItem ,descric
                     <DialogContentText>
                         As alterações entrarão imediatamente no seu menu
                     </DialogContentText>
-                    <Collapse in={openAlert}>
-                        {errors.map((mensagens, i) => {
-                            return <>
-                                <Alert
-                                    severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => { setOpenAlert(false); }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                >
-                                    {mensagens}
-                                </Alert>
-                            </>
-                        })}
-                    </Collapse>
                     <TextField
                         autoFocus
                         margin="dense"
-                        name="nome"
-                        id="nome"
-                        label="Nome do produto"
+                        name="name"
+                        id="name"
+                        label="name do produto"
                         type="text"
-                        value={data.nome}
-                        onChange={handleItem('nome')}
+                        value={data.name}
+                        onChange={handleItem('name')}
                         fullWidth
                     />
                     <TextField
                         margin="dense"
-                        name="descricao"
-                        id="descricao"
+                        name="description"
+                        id="description"
                         label="Descrição"
                         type="text"
-                        value={data.descricao}
-                        onChange={handleItem('descricao')}
+                        value={data.description}
+                        onChange={handleItem('description')}
                         fullWidth
                     />
                     <TextField
                         margin="dense"
-                        name="valor"
-                        id="valor"
-                        label="Valor"
+                        name="value"
+                        id="value"
+                        label="value"
                         type="number"
-                        value={data.valor}
-                        onChange={handleItem('valor')}
+                        value={data.value}
+                        onChange={handleItem('value')}
                         fullWidth
                     />
-                    <TextField
-                        margin="dense"
-                        name="categoria"
-                        id="categoria"
-                        label="Categoria"
-                        type="number"
-                        value={data.categoria}
-                        onChange={handleItem('categoria')}
-                        fullWidth
-                    />
+                    <InputLabel htmlFor="age-native-simple">Categoria</InputLabel>
+                    <Select
+                        value={data.category}
+                        onChange={handleItem('category')}
+                        autoWidth
+                    >
+                        <MenuItem value="comidas">Comidas</MenuItem>
+                        <MenuItem value="bebidas">Bebidas</MenuItem>
+                        <MenuItem value="sobremesas">Sobremesas</MenuItem>
+                    </Select>
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => { handleClose(); }} color="primary">

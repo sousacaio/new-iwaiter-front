@@ -1,14 +1,20 @@
 export const TOKEN_KEY = "token";
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
-export const getIdBar = () => localStorage.getItem('idbar');
-export const armazenaToken = token => {
+export const getId = () => localStorage.getItem('_id');
+export const setToken = token => {
   localStorage.setItem(TOKEN_KEY, token);
 };
-export const armazenaIdBar = token => {
-  localStorage.setItem('idbar', token);
+export const setId = token => {
+  localStorage.setItem('_id', token);
 };
 export const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
+};
+export const setData = data => {
+  localStorage.setItem('data', data);
+};
+export const getData = () => {
+  JSON.parse(localStorage.getItem('data'))
 };
 

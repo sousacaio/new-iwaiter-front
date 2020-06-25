@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIdBar, getToken } from '../../services/auth'
+import { getId } from '../../services/auth'
 import api from '../../services/api'
 import AddIcon from '@material-ui/icons/Add';
 import Wrapper from '../../components/Material-ui/Wrapper';
@@ -86,8 +86,8 @@ const Cardapio = (props, history) => {
     const [categoria, setCategoria] = useState('');
     const [formState, setFormState] = useState(false);
     async function fetchData() {
-        const response = await api.get('/cardapios', { headers: { id: getIdBar(), token: getToken() } });
-        setData(response.data.data);
+        const response = await api.get(`establishment/${getId()}/catalog`);
+        setData(response.data.data[0].catalog);
     }
     function SearchFilterFunction(text) {
         //se n tiver texto,traz os dados dnv
@@ -95,7 +95,7 @@ const Cardapio = (props, history) => {
             fetchData();
         }
         const newData = data.filter(function (item) {
-            const itemData = item.nome ? item.nome.toUpperCase() : ''.toUpperCase();
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
             const textData = text.toUpperCase();
             return itemData.indexOf(textData) > -1;
         });
@@ -110,7 +110,7 @@ const Cardapio = (props, history) => {
     }
     function doFilter(cat) {
         const newData = data.filter(function (item) {
-            const itemData = item.categoria ? item.categoria.toUpperCase() : ''.toUpperCase();
+            const itemData = item.category ? item.category.toUpperCase() : ''.toUpperCase();
             const textData = cat.toUpperCase();
             return itemData.indexOf(textData) > -1;
         });
@@ -192,11 +192,11 @@ const Cardapio = (props, history) => {
                 {data.map((item, index) => {
                     var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${item.foto}`;
                     return (
-                        <Grid item lg={4} xs={12} sm={6}>
-                            <div key={index}>
+                        <Grid key={index} item lg={4} xs={12} sm={6}>
+                            <div>
                                 <Card className={classes.root}>
                                     <CardActionArea>
-                                        {item.foto ? <CardMedia
+                                        {item.photo ? <CardMedia
                                             component="img"
                                             alt="Foto do produto"
                                             height="140"
@@ -211,33 +211,33 @@ const Cardapio = (props, history) => {
                                             />}
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                {item.nome}
+                                                {item.name}
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                {item.descricao}...
+                                                {item.description}...
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                     <CardActions>
-                                        <Button size="small" color="primary" onClick={() => openUpdateForm(item.id)}>
+                                        <Button size="small" color="primary" onClick={() => openUpdateForm(item._id)}>
                                             Editar
                                             <ItemCardapio
-                                                id={item.id}
-                                                nome={item.nome}
-                                                categoria={item.categoria}
-                                                descricao={item.descricao}
-                                                valor={item.valor}
-                                                foto={item.foto}
+                                                id={item._id}
+                                                name={item.name}
+                                                category={item.category}
+                                                description={item.description}
+                                                value={item.value}
+                                                photo={item.photo}
                                                 idItem={idUpdateForm}
                                                 fetchData={fetchData}
                                                 clean={clean}
                                             />
                                         </Button>
                                         <Button size="small" color="primary">
-                                            {item.categoria}
+                                            {item.category}
                                         </Button>
                                         <Button size="small" color="primary">
-                                            R${item.valor}
+                                            R${item.value}
                                         </Button>
                                         <Button size="small" color="primary">
                                             Promoções ativas
