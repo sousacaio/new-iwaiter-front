@@ -2,7 +2,7 @@ import React from "react";
 import App from './pages/Agora/Agora';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
-import Cardapio from './pages/Cardapio/Cardapio';
+import Catalog from './pages/Catalog/Catalog';
 import QrCodes from './pages/QrCodes/QrCodes';
 import Points from './pages/Points/Points';
 import Testes from './pages/Testes/Testes';
@@ -34,7 +34,7 @@ const Routes = () => (
       <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/orders" component={Main} />
       <PrivateRoute path="/points" component={Points} />
-      <PrivateRoute path="/catalog" component={Cardapio} />
+      <PrivateRoute path="/catalog" component={Catalog} />
       <PrivateRoute path="/qr" component={QrCodes} />
       <PrivateRoute path="/testes" component={Testes} />
       <PrivateRoute path="/configuracoes" component={Configuracoes} />

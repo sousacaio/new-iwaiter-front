@@ -6,80 +6,14 @@ import Wrapper from '../../components/Material-ui/Wrapper';
 import {
     Grid, Fab, AppBar, Toolbar, Typography, InputBase, Card,
     CardActionArea, CardActions, CardContent, CardMedia, Button
-} from '@material-ui/core'
-import RefreshIcon from '@material-ui/icons/Refresh';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+} from '@material-ui/core';
 import '../Configs/Configs.css';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import SearchIcon from '@material-ui/icons/Search';
 import AddCardapio from '../../components/Cardapio/AddCardapio';
 import ItemCardapio from '../../components/Cardapio/ItemCardapio';
-const useStyles = makeStyles((theme) => ({
-
-    rootCard: {
-        maxWidth: 345,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-    root: {
-        flexGrow: 1,
-        padding: theme.spacing(1),
-        margin: theme.spacing(1)
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-}));
-
-const Cardapio = (props, history) => {
+import { useStyles } from './styles';
+const Catalog = (props, history) => {
     const classes = useStyles();
     const [data, setData] = useState([]);
     const [idUpdateForm, setIdUpdateForm] = useState(0);
@@ -257,4 +191,4 @@ const Cardapio = (props, history) => {
     );
 };
 
-export default Cardapio;
+export default Catalog;
