@@ -23,7 +23,6 @@ export const checkAndBringPoints = async () => {
     try {
         const points = await api.get(`establishment/${getId()}/points`);
         const { data: { data } } = points;
-        console.log(data)
         if (data) {
             return data
         } else {
@@ -57,7 +56,6 @@ export const createNewPoint = async (points, newPoint) => {
             warning('Não é possível adicionar um ponto com o número repetido!')
         }
     } catch (error) {
-        console.log(error)
         failure('Houve um problema ao criar seu ponto');
     }
 

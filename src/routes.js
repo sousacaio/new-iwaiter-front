@@ -4,7 +4,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Cardapio from './pages/Cardapio/Cardapio';
 import QrCodes from './pages/QrCodes/QrCodes';
-import AddMesas from './pages/AddMesas/AddMesas';
+import Points from './pages/Points/Points';
 import Testes from './pages/Testes/Testes';
 import Main from './pages/Orders/Orders';
 import Conta from './pages/Configs/Configs';
@@ -33,7 +33,7 @@ const Routes = () => (
       <Route exact path="/signup" component={Signup} />
       <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/orders" component={Main} />
-      <PrivateRoute path="/addmesas" component={AddMesas} />
+      <PrivateRoute path="/points" component={Points} />
       <PrivateRoute path="/catalog" component={Cardapio} />
       <PrivateRoute path="/qr" component={QrCodes} />
       <PrivateRoute path="/testes" component={Testes} />

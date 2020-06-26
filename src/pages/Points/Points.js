@@ -4,7 +4,7 @@ import Wrapper from '../../components/Material-ui/Wrapper';
 import { Paper, Grid, Toolbar, Typography, TextField, Button, Checkbox } from '@material-ui/core'
 import { useStyles } from './styles';
 import { deleteUniquePoint, checkAndBringPoints, createNewPoint } from '../../utils/requisitions/points'
-const AddMesas = () => {
+const Points = () => {
     const [points, setPoints] = useState([]);
     const [newPoints, setNewPoints] = useState(0);
     const [mustReload, setMustReload] = useState(false);
@@ -135,4 +135,4 @@ const AddMesas = () => {
 };
 
 
-export default AddMesas;
+export default Points;

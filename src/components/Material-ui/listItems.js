@@ -26,7 +26,7 @@ export const mainListItems = (
                 <ListItemText primary="Comandas" />
             </ListItem>
         </Link>
-        <Link to="/addmesas" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/points" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
 
