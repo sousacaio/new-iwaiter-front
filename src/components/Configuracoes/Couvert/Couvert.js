@@ -1,100 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Divider, TextField, Button, Snackbar } from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert';
-import { getId } from '../../../services/auth';
-import api from '../../../services/api';
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-const useStyles = makeStyles(theme => ({
-    toolbarTitle: {
-        flex: 1,
-    },
-    root: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: '100%'
-    },
-    checkboxInterna: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    checkboxExterna: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    paper: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    }
-}));
-
+import React, { useState, useEffect } from 'react';
+import { Grid, Divider, TextField, Button } from '@material-ui/core'
+import { getSettings, saveCouvertSettings } from '../../../utils/requisitions/settings';
+import { useStyles } from './styles';
 const Couvert = (props) => {
+    const classes = useStyles();
     const [data, setData] = useState([])
-    const [open, setOpen] = useState(0);
-    const [, updateState] = React.useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
-    const [altera, setAltera] = useState(false);
+    const [shouldUpdate, setShouldUpdate] = useState(false)
     const getData = async () => {
-        await api.get(`establishment/${getId()}/settings`).then((r) => {
-            if (r) {
-                const { data: { data } } = r;
-                const { settings } = data[0];
-                setData(settings);
-            }
-        })
+        const response = await getSettings()
+        if (response) {
+            setData(response);
+        }
     }
     const handleValor = name => event => {
         setData({ ...data, [name]: event.target.value });
     };
 
-    const salvar = () => {
-        api.put(`establishment/${getId()}/settings`, data).then((r) => {
-            if (r.status === 200) {
-                handleClick();
-                alterar();
-            }
+    const salvar = async () => {
+        const response = await saveCouvertSettings(data)
+        if (response) {
+            setShouldUpdate(!shouldUpdate)
         }
-        );
-    }
-    const alterar = () => {
-        setAltera(!altera)
     }
 
-    const classes = useStyles();
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
     useEffect(() => {
         getData();
-        if (altera === true) {
-            forceUpdate();
-        }
-    }, [altera, forceUpdate])
+    }, [shouldUpdate])
     return (
         <Grid container spacing={2}>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    Configurações de couvert alteradas com sucesso!
-                </Alert>
-            </Snackbar>
             <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
 

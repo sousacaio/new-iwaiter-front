@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Funcionamento from '../../components/Configuracoes/Funcionamento/Funcionamento';
 import Couvert from '../../components/Configuracoes/Couvert/Couvert';
-import api from '../../services/api';
-import { getId } from '../../services/auth'
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Grid, Divider, Typography } from '@material-ui/core';
@@ -11,21 +9,9 @@ const useStyles = makeStyles(theme => ({
         flex: 1,
         margin: theme.spacing(2, 2, 2, 2)
     },
-
 }));
 const Configuracoes = () => {
-    const [data, setData] = useState([]);
-    async function fetchData() {
-        await api.get(`establishment/${getId()}/settings`).then((r) => {
-            if (r) {
-                const { data: { data } } = r;
-                const { settings } = data[0];
-                setData(settings);
-            }
-        })
-    }
-    console.log(data)
-    useEffect(() => { fetchData() }, []);
+
     const classes = useStyles()
     return (
         <Wrapper>
