@@ -9,7 +9,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import '../../pages/Configs/Configs.css';
 import { updateEstablishmentCatalog } from '../../utils/requisitions/catalog';
 
-const EditCatalog = ({ id, name, value, category, photo, description, mustReload }) => {
+const EditCatalog = ({ id, name, value, category, photo, description, mustReload, parentState }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
@@ -19,13 +19,11 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
         photo: photo,
         description: description
     });
-    const [shouldUpdate, setShouldUpdate] = useState(false);
     const update = async () => {
         const response = await updateEstablishmentCatalog(data, id);
         if (response) {
-            setShouldUpdate(true)
             setOpen(false)
-            mustReload(shouldUpdate)
+            mustReload(!parentState)
         }
     }
     const handleItem = name => event => {
