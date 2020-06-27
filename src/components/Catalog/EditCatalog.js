@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getId } from '../../services/auth'
-import api from '../../services/api';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { useStyles } from './ItemStyles';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText,
     IconButton, TextField, Button, GridList, GridListTile, GridListTileBar,
@@ -9,61 +7,25 @@ import {
 } from '@material-ui/core';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import '../../pages/Configs/Configs.css';
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-        width: 'auto',
-        height: 450,
-        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-        transform: 'translateZ(0)',
-    },
-    titleBar: {
-        background:
-            'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
-            'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-    },
-    icon: {
-        color: 'white',
-    },
-    formControl: {
-        minWidth: 400,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
-const ItemCardapio = ({ clean, id, name, value, category, photo, idItem, description }) => {
+import { updateEstablishmentCatalog } from '../../utils/requisitions/catalog';
+
+const EditCatalog = ({ id, name, value, category, photo, description, mustReload }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
-        id: id,
         name: name,
         category: category,
         value: value,
         photo: photo,
         description: description
     });
+    const [shouldUpdate, setShouldUpdate] = useState(false);
     const update = async () => {
-        if (data.name && data.description && data.value && data.category) {
-            await api.put(`establishment/${getId()}/catalog/${id}`, data).then((r) => {
-                console.log(r)
-                if (!r.data.errors) {
-                    alert(r.data.message);
-                    //nao mostra error
-                    //fecha o modal
-                    handleClose();
-                } else {
-                    alert(r.data.message);
-                }
-            })
-        } else {
-            alert('Preencha todos os dados do seu produto!');
+        const response = await updateEstablishmentCatalog(data, id);
+        if (response) {
+            setShouldUpdate(true)
+            setOpen(false)
+            mustReload(shouldUpdate)
         }
     }
     const handleItem = name => event => {
@@ -71,15 +33,17 @@ const ItemCardapio = ({ clean, id, name, value, category, photo, idItem, descrip
     };
     async function handleClose() {
         await setOpen(false);
-        await clean()
     }
-    //Se o idItem for igual ao id selecionado no componente pai,o modal é aberto
-    useEffect(() => {
-        if (idItem === id) { setOpen(true) }
-    }, [id, idItem]);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
     var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${photo}`
     return (
         <>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Editar
+            </Button>
             <Dialog open={open} onClose={() => { handleClose(); }} aria-labelledby="form-dialog-title">
 
                 {photo ?
@@ -176,4 +140,4 @@ const ItemCardapio = ({ clean, id, name, value, category, photo, idItem, descrip
     )
 
 }
-export default ItemCardapio;
+export default EditCatalog;

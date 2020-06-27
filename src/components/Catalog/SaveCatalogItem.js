@@ -1,16 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import { getId } from '../../services/auth'
-import api from '../../services/api'
+import React, { useState } from 'react';
+import AddIcon from '@material-ui/icons/Add';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    TextField, Button,  MenuItem, Select
+    TextField, Button, MenuItem, Select, Fab
 } from '@material-ui/core';
 import '../../pages/Configs/Configs.css';
+import { saveEstablishmentCatalog } from '../../utils/requisitions/catalog'
 
-const AddCardapio = ({ open, closeForm, fetchData }) => {
-    const forceUpdate = useCallback(() => updateState({}), []);
-    const [, updateState] = React.useState();
-
+const SaveCatalogItem = ({ mustReload, parentState }) => {
+    const [formState, setFormState] = useState(false);
     const [itens, setItems] = useState({
         name: '',
         description: '',
@@ -20,23 +18,27 @@ const AddCardapio = ({ open, closeForm, fetchData }) => {
     const handleItem = name => event => {
         setItems({ ...itens, [name]: event.target.value });
     };
-    //Esse closeForm é a função que tá vindo do pai do componente
-    const handleCloseForm = () => {
-        closeForm();
-    };
-    const addProdCardapio = async () => {
-        await api.post(`establishment/${getId()}/catalog`, itens).then((r) => {
-            alert(r.data.message);
-            handleCloseForm();
-            forceUpdate();
-            fetchData();
-        })
 
+    function openForm() {
+        setFormState(true)
+    }
+    function closeForm() {
+        setFormState(false)
+    }
+    const addProdCardapio = async () => {
+        const response = await saveEstablishmentCatalog(itens);
+        if (response) {
+            closeForm()
+            mustReload(!parentState)
+        }
     }
 
     return (
         <>
-            <Dialog open={open} onClose={handleCloseForm} aria-labelledby="form-dialog-title">
+            <Fab color="primary" onClick={() => openForm()} style={{ position: 'fixed', bottom: '5%', right: '3%' }} aria-label="add">
+                <AddIcon />
+            </Fab>
+            <Dialog open={formState} onClose={closeForm} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Adicionar produto</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -85,9 +87,9 @@ const AddCardapio = ({ open, closeForm, fetchData }) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseForm} color="primary">
+                    <Button onClick={closeForm} color="primary">
                         Cancelar
-             </Button>
+                        </Button>
                     <Button onClick={addProdCardapio} color="primary">
                         Adicionar novo produto
             </Button>
@@ -98,4 +100,4 @@ const AddCardapio = ({ open, closeForm, fetchData }) => {
     )
 
 }
-export default AddCardapio;
+export default SaveCatalogItem;

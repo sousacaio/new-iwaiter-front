@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { getId } from '../../services/auth'
-import api from '../../services/api'
-import AddIcon from '@material-ui/icons/Add';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import {
-    Grid, Fab, AppBar, Toolbar, Typography, InputBase, Card,
+    Grid, AppBar, Toolbar, Typography, InputBase, Card,
     CardActionArea, CardActions, CardContent, CardMedia, Button
 } from '@material-ui/core';
 import '../Configs/Configs.css';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchIcon from '@material-ui/icons/Search';
-import AddCardapio from '../../components/Cardapio/AddCardapio';
-import ItemCardapio from '../../components/Cardapio/ItemCardapio';
+import SaveCatalogItem from '../../components/Catalog/SaveCatalogItem';
+import EditCatalog from '../../components/Catalog/EditCatalog';
 import { useStyles } from './styles';
-const Catalog = (props, history) => {
+import { fetchEstablishmentCatalog } from '../../utils/requisitions/catalog';
+
+const Catalog = () => {
     const classes = useStyles();
     const [data, setData] = useState([]);
-    const [idUpdateForm, setIdUpdateForm] = useState(0);
     const [categoria, setCategoria] = useState('');
-    const [formState, setFormState] = useState(false);
+    const [mustReload, setMustReload] = useState(false)
     async function fetchData() {
-        const response = await api.get(`establishment/${getId()}/catalog`);
-        setData(response.data.data[0].catalog);
+        const response = await fetchEstablishmentCatalog();
+        setData(response);
     }
-    function SearchFilterFunction(text) {
-        //se n tiver texto,traz os dados dnv
+    function SearchByName(text) {
         if (!text) {
             fetchData();
         }
@@ -35,38 +32,23 @@ const Catalog = (props, history) => {
         });
         setData(newData);
     }
-    function SearchFilterByCategory(cat) {
-        if (cat === null) {
+    function SearchByCategory(category) {
+        if (category === null) {
             fetchData()
         } else {
-            doFilter(cat)
+            const newData = data.filter(function (item) {
+                const itemData = item.category ? item.category.toUpperCase() : ''.toUpperCase();
+                const textData = category.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setData(newData);
         }
     }
-    function doFilter(cat) {
-        const newData = data.filter(function (item) {
-            const itemData = item.category ? item.category.toUpperCase() : ''.toUpperCase();
-            const textData = cat.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-        });
-        setData(newData);
-    }
-    function openForm() {
-        setFormState(true)
-    }
-    function closeForm() {
-        setFormState(false)
-    }
-    function openUpdateForm(id) {
-        setIdUpdateForm(id)
-    }
-    async function clean() {
-        const val = 0;
-        setIdUpdateForm(val);
-    }
+
 
     useEffect(() => {
         fetchData()
-    }, [idUpdateForm]);
+    }, [mustReload]);
     return (
         <Wrapper>
             <Grid container spacing={4}>
@@ -76,7 +58,7 @@ const Catalog = (props, history) => {
                             {!categoria ?
                                 <>
                                     <Typography className={classes.title} variant="h6" noWrap
-                                        onClick={() => { setCategoria('comidas'); SearchFilterByCategory('comidas'); }}
+                                        onClick={() => { setCategoria('comidas'); SearchByCategory('comidas'); }}
                                     >
                                         Comidas
                                     </Typography>
@@ -84,21 +66,21 @@ const Catalog = (props, history) => {
                                         |
                                     </Typography>
                                     <Typography className={classes.title} variant="h6" noWrap
-                                        onClick={() => { setCategoria('bebidas'); SearchFilterByCategory('bebidas') }}>
+                                        onClick={() => { setCategoria('bebidas'); SearchByCategory('bebidas') }}>
                                         Bebidas
                                     </Typography>
                                     <Typography className={classes.title} variant="h6" noWrap>
                                         |
                                     </Typography>
                                     <Typography className={classes.title} variant="h6" noWrap
-                                        onClick={() => { setCategoria('sobremesas'); SearchFilterByCategory('sobremesas') }}
+                                        onClick={() => { setCategoria('sobremesas'); SearchByCategory('sobremesas') }}
                                     >
                                         Sobremesas
                                      </Typography>
                                 </>
                                 :
                                 <Typography className={classes.title} variant="h6" noWrap
-                                    onClick={() => { SearchFilterByCategory(null); setCategoria(null) }}
+                                    onClick={() => { SearchByCategory(null); setCategoria(null) }}
                                 >
                                     <RefreshIcon fontSize="large" style={{ margin: 10 }} />
                                 </Typography>
@@ -108,7 +90,7 @@ const Catalog = (props, history) => {
                                     <SearchIcon />
                                 </div>
                                 <InputBase
-                                    onChange={e => SearchFilterFunction(e.target.value)}
+                                    onChange={e => SearchByName(e.target.value)}
                                     placeholder="Pesquisa..."
                                     classes={{
                                         root: classes.inputRoot,
@@ -153,20 +135,16 @@ const Catalog = (props, history) => {
                                         </CardContent>
                                     </CardActionArea>
                                     <CardActions>
-                                        <Button size="small" color="primary" onClick={() => openUpdateForm(item._id)}>
-                                            Editar
-                                            <ItemCardapio
-                                                id={item._id}
-                                                name={item.name}
-                                                category={item.category}
-                                                description={item.description}
-                                                value={item.value}
-                                                photo={item.photo}
-                                                idItem={idUpdateForm}
-                                                fetchData={fetchData}
-                                                clean={clean}
-                                            />
-                                        </Button>
+                                        <EditCatalog
+                                            id={item._id}
+                                            name={item.name}
+                                            category={item.category}
+                                            description={item.description}
+                                            value={item.value}
+                                            photo={item.photo}
+                                            mustReload={setMustReload}
+                                            parentState={mustReload}
+                                        />
                                         <Button size="small" color="primary">
                                             {item.category}
                                         </Button>
@@ -175,7 +153,7 @@ const Catalog = (props, history) => {
                                         </Button>
                                         <Button size="small" color="primary">
                                             Promoções ativas
-                                            </Button>
+                                        </Button>
                                     </CardActions>
                                 </Card>
                             </div>
@@ -183,10 +161,11 @@ const Catalog = (props, history) => {
                     );
                 })}
             </Grid>
-            <Fab color="primary" onClick={() => openForm()} style={{ position: 'fixed', bottom: '5%', right: '3%' }} aria-label="add">
-                <AddIcon />
-            </Fab>
-            <AddCardapio closeForm={closeForm} open={formState} fetchData={fetchData} />
+
+            <SaveCatalogItem
+                mustReload={setMustReload}
+                parentState={mustReload}
+            />
         </Wrapper >
     );
 };
