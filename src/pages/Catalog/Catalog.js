@@ -4,7 +4,7 @@ import {
     Grid, AppBar, Toolbar, Typography, InputBase, Card,
     CardActionArea, CardActions, CardContent, CardMedia, Button
 } from '@material-ui/core';
-import '../Configs/Configs.css';
+import '../Account/Configs.css';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchIcon from '@material-ui/icons/Search';
 import SaveCatalogItem from '../../components/Catalog/SaveCatalogItem';

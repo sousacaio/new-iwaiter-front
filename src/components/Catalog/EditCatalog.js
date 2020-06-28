@@ -6,7 +6,7 @@ import {
     InputLabel, MenuItem, Select
 } from '@material-ui/core';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import '../../pages/Configs/Configs.css';
+import '../../pages/Account/Configs.css';
 import { updateEstablishmentCatalog } from '../../utils/requisitions/catalog';
 
 const EditCatalog = ({ id, name, value, category, photo, description, mustReload, parentState }) => {

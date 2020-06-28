@@ -1,5 +1,4 @@
 import React from "react";
-import App from './pages/Agora/Agora';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Catalog from './pages/Catalog/Catalog';
@@ -31,7 +30,6 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={Login} />
       <Route exact path="/signup" component={Signup} />
-      <PrivateRoute path="/mesas" component={App} />
       <PrivateRoute path="/orders" component={Main} />
       <PrivateRoute path="/points" component={Points} />
       <PrivateRoute path="/catalog" component={Catalog} />
