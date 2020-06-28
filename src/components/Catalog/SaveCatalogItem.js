@@ -4,7 +4,7 @@ import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     TextField, Button, MenuItem, Select, Fab
 } from '@material-ui/core';
-import '../../pages/Configs/Configs.css';
+import '../../pages/Account/Configs.css';
 import { saveEstablishmentCatalog } from '../../utils/requisitions/catalog'
 
 const SaveCatalogItem = ({ mustReload, parentState }) => {

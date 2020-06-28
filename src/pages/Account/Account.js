@@ -1,44 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import './Configs.css';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import api from '../../services/api';
-import { makeStyles } from '@material-ui/core/styles';
 import { getId } from '../../services/auth'
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+import { Grid, TextField, Card, CardActionArea, CardMedia, Button } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import camera from '../../assets/camera.svg';
-import './Configs.css';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: '100%'
-    },
-    root2: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '50ch',
-        },
-    },
-    button: {
-        margin: theme.spacing(1),
-    }, modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-}));
 
-const Conta = () => {
+import { useStyles } from './styles'
+
+
+const Account = () => {
     const [data, setData] = useState([]);
     const [, updateState] = React.useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -179,4 +152,4 @@ const Conta = () => {
     )
 
 }
-export default Conta;
+export default Account;

@@ -58,7 +58,7 @@ export const mainListItems = (
 );
 export const secondaryListItems = (
     <div>
-        <ListSubheader inset>Saved reports</ListSubheader>
+        <ListSubheader inset></ListSubheader>
         <Link to="/settings" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
