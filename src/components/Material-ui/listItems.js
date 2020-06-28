@@ -59,7 +59,7 @@ export const mainListItems = (
 export const secondaryListItems = (
     <div>
         <ListSubheader inset>Saved reports</ListSubheader>
-        <Link to="/configuracoes" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/settings" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
                     <SettingsIcon />

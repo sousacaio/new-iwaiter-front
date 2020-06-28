@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(2, 2, 2, 2)
     },
 }));
-const Configuracoes = () => {
+const Settings = () => {
 
     const classes = useStyles()
     return (
@@ -88,4 +88,4 @@ const Configuracoes = () => {
     )
 }
 
-export default Configuracoes;
+export default Settings;
