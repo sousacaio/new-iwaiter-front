@@ -1,53 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import api from '../../services/api';
-import { Grid, Modal } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { connect } from 'react-redux';
-import { getId } from '../../services/auth';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+    Grid, Modal, Card, CardActions, CardContent,
+    Button, Typography, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow, Paper
+} from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check';
 import CancelIcon from '@material-ui/icons/Cancel';
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-        minWidth: 275,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    paper: {
-        position: 'absolute',
-        width: 800,
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2),
-    },
-    modalOverflow: {
-        overflow: 'scroll',
-    }
-}));
-
+import { useStyles } from './styles'
+import { connect } from 'react-redux';
+import { getId } from '../../services/auth';
 const Main = (props) => {
     const classes = useStyles();
     const [atualiza, setAtualiza] = useState('')
