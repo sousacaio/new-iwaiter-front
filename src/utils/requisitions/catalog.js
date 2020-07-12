@@ -4,6 +4,7 @@ import { success, warning, failure } from '../toasts/toasts';
 
 export const fetchEstablishmentCatalog = async () => {
     const response = await api.get(`establishment/${getId()}/catalog`);
+    console.log(response)
     const { data } = response;
     const desambiguation = data.success;
     if (desambiguation === true) {

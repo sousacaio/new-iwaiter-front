@@ -106,7 +106,7 @@ const Catalog = () => {
             </Grid>
             <Grid container>
                 {data.map((item, index) => {
-                    var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${item.foto}`;
+                    var foto = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/${item.photo}`;
                     return (
                         <Grid key={index} item lg={4} xs={12} sm={6}>
                             <div>
