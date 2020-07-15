@@ -1,17 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useStyles } from './ItemStyles';
 import {
-    Dialog, DialogActions, DialogContent, DialogContentText,
-    IconButton, TextField, Button, GridList, GridListTile, GridListTileBar,
-    InputLabel, MenuItem, Select
+    Dialog, DialogActions, DialogContent, DialogContentText
+    , TextField, Button,
+    InputLabel, MenuItem, Select, Slide, Grid,
+    Card, CardActionArea, CardMedia, CardActions
 } from '@material-ui/core';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import '../../pages/Account/Configs.css';
 import { updateEstablishmentCatalog } from '../../utils/requisitions/catalog';
 import camera from '../../assets/Cam.png';
+import CloseIcon from '@material-ui/icons/Close';
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+const styles = {
+    card: {
+        maxWidth: 345,
+    },
+    media: {
+        height: "300px" || "10em",
+        paddingTop: '56.25%', // 16:9
+    },
+};
+const useStyles2 = makeStyles((theme) => ({
+    appBar: {
+        position: 'relative',
+    },
+    title: {
+        marginLeft: theme.spacing(2),
+        flex: 1,
+    },
+}));
 const EditCatalog = ({ id, name, value, category, photo, description, mustReload, parentState }) => {
     const classes = useStyles();
-
+    const classes2 = useStyles2();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
         name: name,
@@ -49,7 +76,6 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
         setOpen(true);
     };
 
-    var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/${photo}`
     useEffect(() => {
         if (!selectedFile) {
             setPreview(undefined)
@@ -67,95 +93,118 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Editar
             </Button>
-            <Dialog open={open} onClose={() => { handleClose(); }} aria-labelledby="form-dialog-title">
-                <form >
-                    <label id="thumbnail">
-                        <input type="file" onChange={onSelectFile} />
-                        {selectedFile ? <img src={preview} alt="Select img" />
-                            : <img src={camera} alt="Select img" />}
-                    </label>
-                </form>
-                {photo ?
-                    <GridList cellHeight={300} spacing={5} className={classes.gridList}>
-                        <GridListTile cols={2} rows={1}>
-                            <img src={pic} alt={name} />
-                            <GridListTileBar
-                                title={name}
-                                titlePosition="top"
-                                actionIcon={
-                                    <IconButton aria-label={`star ${name}`} className={classes.icon}>
-                                        <StarBorderIcon />
-                                    </IconButton>
-                                }
-                                actionPosition="left"
-                                className={classes.titleBar}
-                            />
-                        </GridListTile>
-                    </GridList>
-                    :
-                    <GridList cellHeight={300} spacing={5} className={classes.gridList}>
-                        <GridListTile cols={2} rows={1}>
-                            {/* {selectedFile ? <img src={preview} alt="Select img" />
-                                : <img src={camera} alt="Select img" />} */}
-                            <GridListTileBar
-                                title={name}
-                                titlePosition="top"
-                                actionIcon={
-                                    <IconButton aria-label={`star ${name}`} className={classes.icon}>
-                                        <StarBorderIcon />
-                                    </IconButton>
-                                }
-                                actionPosition="left"
-                                className={classes.titleBar}
-                            />
-                        </GridListTile>
-                    </GridList>}
-                <DialogContent>
-                    <DialogContentText>
-                        As alterações entrarão imediatamente no seu menu
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        name="name"
-                        id="name"
-                        label="name do produto"
-                        type="text"
-                        value={data.name}
-                        onChange={handleItem('name')}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        name="description"
-                        id="description"
-                        label="Descrição"
-                        type="text"
-                        value={data.description}
-                        onChange={handleItem('description')}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        name="value"
-                        id="value"
-                        label="value"
-                        type="number"
-                        value={data.value}
-                        onChange={handleItem('value')}
-                        fullWidth
-                    />
-                    <InputLabel htmlFor="age-native-simple">Categoria</InputLabel>
-                    <Select
-                        value={data.category}
-                        onChange={handleItem('category')}
-                        autoWidth
-                    >
-                        <MenuItem value="comidas">Comidas</MenuItem>
-                        <MenuItem value="bebidas">Bebidas</MenuItem>
-                        <MenuItem value="sobremesas">Sobremesas</MenuItem>
-                    </Select>
+            <Dialog fullScreen open={open} onClose={() => { handleClose(); }} TransitionComponent={Transition} aria-labelledby="form-dialog-title">
+                <AppBar className={classes2.appBar}>
+                    <Toolbar>
 
+                        <Typography variant="h6" className={classes2.title}>
+                            Edição de produto do catálogo
+                        </Typography>
+
+                        <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                            <CloseIcon />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <DialogContent>
+                    <Grid container spacing="2" direction="row">
+                        <Grid item lg={6} md={8} sm={12} xs={12} spacing={2} direction="column" >
+                            <Card className={classes.root}>
+                                <CardActionArea>
+                                    {photo ?
+                                        <CardMedia
+                                            component="img"
+                                            alt="Foto bar"
+                                            height="200"
+                                            style={styles}
+                                            image={`http://${process.env.REACT_APP_NOT_SECRET_CODE}/${photo}`}
+                                            title="Foto bar"
+                                        />
+                                        :
+                                        <CardMedia
+                                            component="img"
+                                            alt="Foto bar"
+                                            height="200"
+                                            image={camera}
+                                            style={styles}
+                                            title="Foto bar"
+                                        />
+                                    }
+                                </CardActionArea>
+                            </Card >
+                            <Card className={classes.root}>
+                                <CardActionArea>
+                                    <form >
+                                        <label>
+                                            <input type="file" onChange={onSelectFile} />
+                                        </label>
+                                    </form>
+                                    <CardMedia
+                                        component="img"
+                                        alt="Foto bar"
+                                        height="200"
+                                        image={selectedFile ? preview : camera}
+                                        style={styles}
+                                        title="Fto bar"
+                                    />
+                                </CardActionArea>
+                                {selectedFile ?
+                                    <CardActions>
+                                        <Button size="small" onClick={() => { setSelectedFile(); setPreview() }}>
+                                            Escolher outra imagem
+                                        </Button>
+                                    </CardActions>
+                                    :
+                                    ""}
+                            </Card >
+                        </Grid>
+                        <Grid item lg={6} md={8} sm={12} xs={12} >
+                            <DialogContentText>
+                                As alterações entrarão imediatamente no seu menu
+                    </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                name="name"
+                                id="name"
+                                label="name do produto"
+                                type="text"
+                                value={data.name}
+                                onChange={handleItem('name')}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                name="description"
+                                id="description"
+                                label="Descrição"
+                                type="text"
+                                value={data.description}
+                                onChange={handleItem('description')}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                name="value"
+                                id="value"
+                                label="value"
+                                type="number"
+                                value={data.value}
+                                onChange={handleItem('value')}
+                                fullWidth
+                            />
+                            <InputLabel htmlFor="age-native-simple">Categoria</InputLabel>
+                            <Select
+                                value={data.category}
+                                onChange={handleItem('category')}
+                                autoWidth
+                            >
+                                <MenuItem value="comidas">Comidas</MenuItem>
+                                <MenuItem value="bebidas">Bebidas</MenuItem>
+                                <MenuItem value="sobremesas">Sobremesas</MenuItem>
+                            </Select>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => { handleClose(); }} color="primary">
