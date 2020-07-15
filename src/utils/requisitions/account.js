@@ -23,6 +23,7 @@ export const updateEstablishmentAccount = async (file, account) => {
             data.append('email', account.email)
             data.append('phone', account.phone)
             data.append('image', file)
+            console.log(file);
             const response = await api.put(`establishment/${getId()}/account`, data)
             const { data: { errors, message } } = response;
             if (!errors) {

@@ -29,7 +29,6 @@ const Account = () => {
             setSelectedFile(undefined)
             return
         }
-
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0])
     }
@@ -51,7 +50,6 @@ const Account = () => {
             setSelectedFile()
         }
     }
-
 
     useEffect(() => {
         getData();
@@ -79,7 +77,6 @@ const Account = () => {
                                         image={camera}
                                         title="Foto bar"
                                     />}
-
                             </CardActionArea>
                             <br />
                             <form >
@@ -87,13 +84,7 @@ const Account = () => {
                                     <input type="file" onChange={onSelectFile} />
                                     {selectedFile ? <img src={preview} alt="Select img" />
                                         : <img src={camera} alt="Select img" />}
-
-
-
-                                </label>
-                                <Button size="small" type="submit" color="primary" style={{ marginLeft: '35%', marginBottom: 10, marginTop: -5 }}>
-                                    Trocar foto
-                                </Button>
+                                </label>                         
                             </form>
                         </Card>
                     </Grid>

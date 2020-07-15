@@ -14,12 +14,22 @@ export const fetchEstablishmentCatalog = async () => {
     }
 }
 
-export const updateEstablishmentCatalog = async (product, id) => {
+export const updateEstablishmentCatalog = async (product, id, file) => {
     try {
         if (!product.name || !product.value || !product.description || !product.category) {
             warning('Preencha todos os campos!')
         } else {
-            const response = await api.put(`establishment/${getId()}/catalog/${id}`, product)
+            if (!file) {
+                warning("Selecione uma imagem para o produto");
+                return;
+            }
+            const data = new FormData();
+            data.append('image', file)
+            data.append('name', product.name)
+            data.append('value', product.value)
+            data.append('category', product.category)
+            data.append('description', product.description)
+            const response = await api.put(`establishment/${getId()}/catalog/${id}`, data)
             const { data: { errors, message } } = response
             if (!errors) {
                 success(message);

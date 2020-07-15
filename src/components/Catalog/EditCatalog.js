@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStyles } from './ItemStyles';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText,
@@ -8,9 +8,10 @@ import {
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import '../../pages/Account/Configs.css';
 import { updateEstablishmentCatalog } from '../../utils/requisitions/catalog';
-
+import camera from '../../assets/Cam.png';
 const EditCatalog = ({ id, name, value, category, photo, description, mustReload, parentState }) => {
     const classes = useStyles();
+
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({
         name: name,
@@ -19,8 +20,20 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
         photo: photo,
         description: description
     });
+    const [selectedFile, setSelectedFile] = useState();
+    const [preview, setPreview] = useState();
+
+    const onSelectFile = e => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setSelectedFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+        setSelectedFile(e.target.files[0])
+    }
     const update = async () => {
-        const response = await updateEstablishmentCatalog(data, id);
+        const response = await updateEstablishmentCatalog(data, id, selectedFile);
         if (response) {
             setOpen(false)
             mustReload(!parentState)
@@ -36,14 +49,32 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
         setOpen(true);
     };
 
-    var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/files/${photo}`
+    var pic = `http://${process.env.REACT_APP_NOT_SECRET_CODE}/${photo}`
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreview(undefined)
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(selectedFile)
+        setPreview(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [selectedFile])
     return (
         <>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Editar
             </Button>
             <Dialog open={open} onClose={() => { handleClose(); }} aria-labelledby="form-dialog-title">
-
+                <form >
+                    <label id="thumbnail">
+                        <input type="file" onChange={onSelectFile} />
+                        {selectedFile ? <img src={preview} alt="Select img" />
+                            : <img src={camera} alt="Select img" />}
+                    </label>
+                </form>
                 {photo ?
                     <GridList cellHeight={300} spacing={5} className={classes.gridList}>
                         <GridListTile cols={2} rows={1}>
@@ -64,7 +95,8 @@ const EditCatalog = ({ id, name, value, category, photo, description, mustReload
                     :
                     <GridList cellHeight={300} spacing={5} className={classes.gridList}>
                         <GridListTile cols={2} rows={1}>
-                            <img src="https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80" alt={name} />
+                            {/* {selectedFile ? <img src={preview} alt="Select img" />
+                                : <img src={camera} alt="Select img" />} */}
                             <GridListTileBar
                                 title={name}
                                 titlePosition="top"
