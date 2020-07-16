@@ -29,6 +29,7 @@ export const updateEstablishmentCatalog = async (product, id, file) => {
             data.append('value', product.value)
             data.append('category', product.category)
             data.append('description', product.description)
+            data.append('lastphoto', product.photo)
             const response = await api.put(`establishment/${getId()}/catalog/${id}`, data)
             const { data: { errors, message } } = response
             if (!errors) {
