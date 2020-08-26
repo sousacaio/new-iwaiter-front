@@ -9,10 +9,10 @@ import Badge from '@material-ui/core/Badge';
 
 const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) => {
     const classes = useStyles();
-
     return (
         <React.Fragment>
-            {data && data.map((item, index) => {
+            {data && data.filter(item=>item.isPaid === false).map((item, index) => {
+
                 const confirmedOrdersLength = item.orders.filter((conf)=>conf.confirmed === 1).length;
                 const notConfirmedOrdersLength = item.orders.filter((conf)=>conf.confirmed !== 1).length;
                 const paymentMethod = item.payment_method;
@@ -20,7 +20,6 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                 const idOrder = item._id;
                 const somar = (acumulado, x) => acumulado + x;
                 const isClosed =  item.isClosed;
-                const isPaid = item.isPaid;
                 const customerName = item.customer_info[0].name;
                 const values = item.orders.map((item) => {
                     if (item.confirmed === 1) {
@@ -37,7 +36,7 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                             <Typography variant="h5" component="h2">
                                 Comanda de {customerName}
                             </Typography>
-                                                        <br />
+                             <br />
                             <Grid container spacing="2" direction="column">
                                 <Grid
                                     container
@@ -134,18 +133,19 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                             </Grid>
                         </CardContent>
                         <CardActions>
-                            {!isClosed?
-                            <OrdersDialog
-                                id={item._id}  orders={item.orders}
-                                value={values.reduce(somar).toFixed(2)} point={item.point}
-                                setShouldUpdate={setShouldUpdate}
-                            />:''
-                            }
-                            <Button  variant="outlined"     color="primary" 
-                            onClick={()=>{    confirmPayment(idOrder,idCustomer);  }} disabled={isClosed }  >
+                            {!isClosed?                                
+                                    <OrdersDialog
+                                        id={item._id}  orders={item.orders}
+                                        value={values.reduce(somar).toFixed(2)} point={item.point}
+                                        setShouldUpdate={setShouldUpdate}
+                                    />
+                            :                              
+                            <Button  variant="contained"   color="primary" 
+                                 onClick={()=>{    confirmPayment(idOrder,idCustomer);  }}  >
                                  Confirmar pagamento
-                            </Button>
-                        </CardActions>
+                                </Button>
+                            }                          
+                            </CardActions>
                     </Card >
                 </Grid>
                 )

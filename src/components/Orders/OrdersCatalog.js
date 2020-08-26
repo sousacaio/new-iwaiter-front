@@ -3,6 +3,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { connect, useDispatch } from 'react-redux';
 import { storeOrders } from '../../actions/main-actions';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
     Button, Typography, Table, TableBody, TableCell,
     TableContainer, TableHead, TableRow, Paper,
@@ -82,11 +83,24 @@ const OrdersDialog = ({ orders, point, id ,value}) => {
                                         <TableCell >{orders.quantity}</TableCell>
                                         <TableCell >{orders.value}</TableCell>
                                         <TableCell >{orders.value * orders.quantity}</TableCell>
-                                        {orders.confirmed === 0 ? <><TableCell >
+                                        {orders.confirmed === 0 ? <>
+                                        <TableCell >
+                                                <Button
+                                                    variant="contained"
+                                                    color="default"
+                                                    startIcon={<HourglassEmptyIcon />}
+                                                    onClick={() => { confirmOrder(id, orders._id, 3) }}
+                                                    
+                                                >
+                                                    Em preparo
+                                                </Button>
+                                        </TableCell>
+                                        
+                                        <TableCell >
                                             <Button
                                                 variant="contained"
                                                 color="primary"
-                                                endIcon={<CheckIcon ></CheckIcon>}
+                                                startIcon={<CheckIcon ></CheckIcon>}
                                                 onClick={() => { confirmOrder(id, orders._id, 1) }}
                                             >
                                                 Confirmar
@@ -97,12 +111,14 @@ const OrdersDialog = ({ orders, point, id ,value}) => {
                                                 <Button
                                                     variant="contained"
                                                     color="secondary"
-                                                    endIcon={<CancelIcon />}
+                                                    startIcon={<CancelIcon />}
                                                     onClick={() => { confirmOrder(id, orders._id, 2) }}
                                                 >
                                                     Não atender
-                                                                </Button>
-                                            </TableCell></>
+                                                </Button>
+                                            </TableCell>
+                                                                          
+                                            </>
                                             : ''}
                                         {orders.confirmed === 1 ? <TableCell >
                                             Pedido confirmado!
@@ -111,7 +127,7 @@ const OrdersDialog = ({ orders, point, id ,value}) => {
                                             Pedido negado!
                                     </TableCell> : ''}
                                         {orders.confirmed === 3 ? <TableCell >
-                                            Pedido a caminho!
+                                           Em preparo!
                                     </TableCell> : ''}
                                         {orders.confirmed === 4 ? <TableCell >
                                             Pedido entregue
