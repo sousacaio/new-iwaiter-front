@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme) => ({
     card: {
-        minWidth: 275,
+        margin: 1
     },
     bullet: {
         display: 'inline-block',

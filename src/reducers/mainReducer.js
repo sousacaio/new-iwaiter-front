@@ -13,7 +13,6 @@ const mainReducer = (state = initState, action) => {
     if (action.type === FETCH_ADDRESS) {
         return { ...state, address: action.data };
     }
-
     if (action.type === FETCH_SETTINGS) {
         return { ...state, settings: action.data };
     }
