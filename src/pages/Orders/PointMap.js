@@ -21,6 +21,7 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                 const somar = (acumulado, x) => acumulado + x;
                 const isClosed =  item.isClosed;
                 const customerName = item.customer_info[0].name;
+                const point = item.point_number;
                 const values = item.orders.map((item) => {
                     if (item.confirmed === 1) {
                         return item.value * item.quantity
@@ -35,6 +36,10 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 Comanda de {customerName}
+                            </Typography>
+                             <br />
+                            <Typography variant="h5" component="h2">
+                                Alocado(a) na mesa {point}
                             </Typography>
                              <br />
                             <Grid container spacing="2" direction="column">
@@ -136,6 +141,7 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
                             {!isClosed?                                
                                     <OrdersDialog
                                         id={item._id}  orders={item.orders}
+                                        customer={customerName}
                                         value={values.reduce(somar).toFixed(2)} point={item.point}
                                         setShouldUpdate={setShouldUpdate}
                                     />

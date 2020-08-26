@@ -25,7 +25,7 @@ const useStyles2 = makeStyles((theme) => ({
         flex: 1,
     },
 }));
-const OrdersDialog = ({ orders, point, id ,value}) => {
+const OrdersDialog = ({ orders, point, id ,value,customer}) => {
     const dispatch = useDispatch();
 
     const storeActiveOrders = (orders) => {
@@ -55,7 +55,7 @@ const OrdersDialog = ({ orders, point, id ,value}) => {
                     <Toolbar>
 
                         <Typography variant="h6" className={classes2.title}>
-                            Total da mesa {point} até o momento: R$ {value}
+                            Total da comanda de {customer} até o momento: R$ {value}
                         </Typography>
 
                         <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -126,9 +126,19 @@ const OrdersDialog = ({ orders, point, id ,value}) => {
                                         {orders.confirmed === 2 ? <TableCell >
                                             Pedido negado!
                                     </TableCell> : ''}
-                                        {orders.confirmed === 3 ? <TableCell >
-                                           Em preparo!
-                                    </TableCell> : ''}
+                                        {orders.confirmed === 3 ? 
+                                        <TableCell >
+                                           Atualmente em preparo!
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                startIcon={<CheckIcon ></CheckIcon>}
+                                                onClick={() => { confirmOrder(id, orders._id, 1) }}
+                                            >
+                                                Confirmar?
+                                        </Button>
+                                            
+                                        </TableCell> : ''}
                                         {orders.confirmed === 4 ? <TableCell >
                                             Pedido entregue
                                     </TableCell> : ''}
