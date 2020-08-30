@@ -45,18 +45,24 @@ export const updateEstablishmentCatalog = async (product, id, file) => {
     }
 }
 
-export const saveEstablishmentCatalog = async (product) => {
+export const saveEstablishmentCatalog = async (product, file) => {
     try {
         if (!product.name || !product.value || !product.description || !product.category) {
             warning('Preencha todos os campos!')
         } else {
-            const response = await api.post(`establishment/${getId()}/catalog`, product);
-            console.log(response)
-            if (response.status === 201) {
-                success('Item adicionado com sucesso')
+            const data = new FormData();
+            data.append('image', file)
+            data.append('name', product.name)
+            data.append('value', product.value)
+            data.append('category', product.category)
+            data.append('description', product.description)
+            const res = await api.post(`establishment/${getId()}/catalog`, data);
+            const { data: { message, status } } = res;
+            if (status === 201) {
+                success(message)
                 return true;
             } else {
-                failure('Houve um erro ao adicionar o item ao seu catalogo')
+                failure(message)
                 return true;
             }
         }

@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button,  Snackbar } from '@material-ui/core';
+import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { getId } from '../../../services/auth';
 import api from '../../../services/api';
@@ -40,8 +40,6 @@ const useStyles = makeStyles(theme => ({
 const Funcionamento = (props, location) => {
     const [altera, setAltera] = useState(false);
     const [data, setData] = useState([]);
-    const [, updateState] = React.useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
 
     const [open, setOpen] = React.useState(false);
     const [workingDays, setWorkingDays] = React.useState(['']);
@@ -103,10 +101,8 @@ const Funcionamento = (props, location) => {
     };
     React.useEffect(() => {
         getData();
-        if (altera === true) {
-            forceUpdate();
-        }
-    }, [altera, forceUpdate])
+
+    }, [altera])
 
     return (
         <Grid container spacing={3}>
@@ -116,7 +112,7 @@ const Funcionamento = (props, location) => {
                 </Alert>
             </Snackbar>
             <Grid item xs={12} >
-                <form className={classes.root} noValidate autoComplete="off">
+                <form noValidate autoComplete="off">
                     <TextField
                         id="time"
                         label="Abre ás:"

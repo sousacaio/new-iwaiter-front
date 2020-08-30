@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, CssBaseline, TextField, Typography } from '@material-ui/core';
 import { Button, Link, Grid, Box, Input } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 const SignUp = (props) => {
     const classes = useStyles();
 
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .label('Email')

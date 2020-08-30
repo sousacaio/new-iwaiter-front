@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Button, TextField, Checkbox, Box, Grid } from '@material-ui/core';
 import { CssBaseline, FormControlLabel, Link, Paper, Typography } from '@material-ui/core';
@@ -14,7 +14,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 
 function SignInSide(props) {
     const classes = useStyles();
-    const [signin, setSignIn] = useState({ email: '', password: '' });
+
     const handleFetchSettings = (data) => {
         props.fetchSettings(data);
     }
@@ -82,7 +82,6 @@ function SignInSide(props) {
                                     label="Email Address"
                                     autoComplete="email"
                                     autoFocus
-                                    value={signin.email}
                                     name="email"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
