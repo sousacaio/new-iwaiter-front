@@ -15,10 +15,6 @@ import ErrorMessage from '../../components/ErrorMessage';
 function SignInSide(props) {
     const classes = useStyles();
     const [signin, setSignIn] = useState({ email: '', password: '' });
-    const handleLoginChange = (e) => setSignIn({
-        ...signin, [e.target.name]: e.target.value,
-    });
-
     const handleFetchSettings = (data) => {
         props.fetchSettings(data);
     }
@@ -31,7 +27,6 @@ function SignInSide(props) {
 
     async function handleSignIn(values) {
         const response = await doLogin(values.email, values.password);
-        console.log(response)
         const { settings, catalog, address, token, _id, establishment, authorized } = response;
         if (authorized) {
             handleFetchSettings(settings);
