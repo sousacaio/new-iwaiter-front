@@ -7,15 +7,18 @@ export const doLogin = async (email, password) => {
             warning('Preencha todos os campos!')
             return false;
         } else {
-            const response = await api.post('/establishment/auth', { email, password });
-            if (response) {
-                const { data: { data: { establishment, token } } } = response;
+            const res = await api.post('/establishment/auth', { email, password })
+            const { data: { response, status } } = res;
+            const { message } = response;
+            if (status === 200) {
+                const { data: { establishment, token } } = response;
                 const { settings, catalog, address, _id } = establishment;
                 return {
                     settings, catalog, address, token, _id, establishment, authorized: true
                 }
             } else {
-                failure('Houve um problema com suas credenciais');
+                failure(message);
+                return { authorized: false }
             }
         }
     } catch (error) {
