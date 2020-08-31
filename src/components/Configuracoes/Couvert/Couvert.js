@@ -7,9 +7,9 @@ const Couvert = (props) => {
     const [data, setData] = useState([])
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const getData = async () => {
-        const response = await getSettings()
+        const response = await getSettings();
         if (response) {
-            setData(response);
+            setData(response.settings);
         }
     }
     const handleValor = name => event => {
@@ -30,7 +30,6 @@ const Couvert = (props) => {
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <form className={classes.root} noValidate autoComplete="off">
-
                     <TextField
                         label="Valor"
                         type="text"

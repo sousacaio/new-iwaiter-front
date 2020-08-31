@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-import { getId } from '../../../services/auth';
-import api from '../../../services/api';
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import { Grid, Divider, Typography, TextField, Paper, Checkbox, Button } from '@material-ui/core';
+import { getSettings, saveConfsSettings } from '../../../utils/requisitions/settings'
+
 const useStyles = makeStyles(theme => ({
     toolbarTitle: {
         flex: 1,
@@ -37,21 +33,16 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     }
 }));
-const Funcionamento = (props, location) => {
-    const [altera, setAltera] = useState(false);
+const Funcionamento = () => {
     const [data, setData] = useState([]);
+    const [workingDays, setWorkingDays] = useState(['']);
 
-    const [open, setOpen] = React.useState(false);
-    const [workingDays, setWorkingDays] = React.useState(['']);
     async function getData() {
-        await api.get(`establishment/${getId()}/settings`).then((r) => {
-            if (r) {
-                const { data: { data } } = r;
-                const { settings } = data[0];
-                setData(settings);
-                setWorkingDays(settings.workingDays);
-            }
-        })
+        const res = await getSettings();
+        const { settings } = res;
+        const { settings: { workingDays } } = res;
+        setData(settings);
+        setWorkingDays(workingDays);
     }
     const handleHora = name => event => {
         setData({ ...data, [name]: event.target.value });
@@ -67,50 +58,22 @@ const Funcionamento = (props, location) => {
             setWorkingDays(newArray)
         }
     };
-    const salvar = () => {
-        api.put(`establishment/${getId()}/settings`, {
-            location: data.location,
-            couvert: data.couvert,
-            gorjeta: data.gorjeta,
-            embalagem: data.embalagem,
-            openingHours: data.openingHours,
-            workingDays,
-            closingTime: data.closingTime
-        }).then((r) => {
-            if (r.status === 200) {
-                handleClick();
-                alterar();
-            }
+
+    const salvar = async () => {
+        const res = await saveConfsSettings(data, workingDays)
+        if (res) {
+            getData()
         }
-        );
     }
-    const alterar = () => {
-        setAltera(!altera)
-    }
+
     const classes = useStyles();
-    const handleClick = () => {
-        setOpen(true);
-    };
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
-    React.useEffect(() => {
-        getData();
-
-    }, [altera])
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
         <Grid container spacing={3}>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    Configurações alteradas com sucesso!
-                </Alert>
-            </Snackbar>
             <Grid item xs={12} >
                 <form noValidate autoComplete="off">
                     <TextField
