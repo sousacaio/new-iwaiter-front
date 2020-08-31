@@ -13,6 +13,18 @@ export const fetchEstablishmentCatalog = async () => {
         failure('Não foi possível trazer seu catálogo')
     }
 }
+export const deleteCatalogItem = async (itemId) => {
+    console.log(itemId)
+    const res = await api.delete(`establishment/${getId()}/catalog/${itemId}/delete`);
+    const { data: { message, status } } = res;
+    if (status === 200) {
+        success(message)
+        return true;
+    } else {
+        failure(message)
+        return false
+    }
+}
 
 export const updateEstablishmentCatalog = async (product, id, file) => {
     try {

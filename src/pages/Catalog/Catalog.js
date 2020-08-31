@@ -10,7 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SaveCatalogItem from '../../components/Catalog/SaveCatalogItem';
 import EditCatalog from '../../components/Catalog/EditCatalog';
 import { useStyles } from './styles';
-import { fetchEstablishmentCatalog } from '../../utils/requisitions/catalog';
+import { fetchEstablishmentCatalog, deleteCatalogItem } from '../../utils/requisitions/catalog';
 
 const Catalog = () => {
     const classes = useStyles();
@@ -45,7 +45,12 @@ const Catalog = () => {
         }
     }
 
-
+    const deleteItem = async (itemId) => {
+        const res = await deleteCatalogItem(itemId);
+        if (res) {
+            setMustReload(!mustReload)
+        }
+    }
     useEffect(() => {
         fetchData()
     }, [mustReload]);
@@ -151,8 +156,12 @@ const Catalog = () => {
                                         <Button size="small" color="primary">
                                             R${item.value}
                                         </Button>
-                                        <Button size="small" color="primary">
-                                            Promoções ativas
+                                        <Button
+                                            variant="outlined"
+                                            size="small" color="secondary"
+                                            onClick={() => deleteItem(item._id)}
+                                        >
+                                            Excluir
                                         </Button>
                                     </CardActions>
                                 </Card>
