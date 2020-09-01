@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Wrapper from '../../components/Material-ui/Wrapper';
 import { Grid } from '@material-ui/core'
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../../utils/requisitions/orders';
+import { getOrders, confirmPaymentByEstablishment } from '../../utils/requisitions/orders';
 import { storeOrders } from '../../actions/main-actions';
-
-import api from '../../services/api';
-import { getId } from '../../services/auth';
 import PointMap from './PointMap';
 
 const Main = () => {
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const confirmPayment = async (idOrder, idCustomer) => {
-        const response = await api.post(`orders/confirmPayment/${idOrder}/${getId()}/${idCustomer}`);
-        console.log(response)
+        await confirmPaymentByEstablishment(idOrder, idCustomer)
     }
 
     const orders = useSelector(state => state.ordersReducer.orders)

@@ -18,11 +18,27 @@ export const getOrders = async () => {
 
 export const changeRequestStatus = async (OrderId, nestedOrderId, value) => {
     const changeStatus = await api.post(`orders/${OrderId}/changeOrderStatus/${nestedOrderId}/${value}`);
-    if (changeStatus.data.success === true) {
-        success('Pedido confirmado');
-        return changeStatus;
+
+    const { data: { status, message, response: { data } } } = changeStatus;
+    if (status === 200) {
+        success(message);
+        return data;
     } else {
-        warning('Houve um erro ao processar sua requisição');
-        return false;
+        warning(message);
+        return [];
     }
+}
+export const confirmPaymentByEstablishment = async (idOrder, idCustomer) => {
+    try {
+        const res = await api.post(`orders/confirmPayment/${idOrder}/${getId()}/${idCustomer}`);
+        const { data: { status, message } } = res;
+        if (status === 200) {
+            success(message)
+        } else {
+            failure(message)
+        }
+    } catch (error) {
+        failure(error)
+    }
+
 }

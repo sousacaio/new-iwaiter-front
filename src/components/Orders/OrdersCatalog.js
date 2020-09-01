@@ -25,7 +25,7 @@ const useStyles2 = makeStyles((theme) => ({
         flex: 1,
     },
 }));
-const OrdersDialog = ({ orders, point, id ,value,customer}) => {
+const OrdersDialog = ({ orders, point, id, value, customer }) => {
     const dispatch = useDispatch();
 
     const storeActiveOrders = (orders) => {
@@ -33,11 +33,11 @@ const OrdersDialog = ({ orders, point, id ,value,customer}) => {
     }
     async function confirmOrder(OrderId, nestedOrderId, value) {
         const result = await changeRequestStatus(OrderId, nestedOrderId, value);
-        storeActiveOrders(result.data)
+        storeActiveOrders(result)
     }
     const classes2 = useStyles2();
     const newOrders = orders;
- 
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -84,29 +84,29 @@ const OrdersDialog = ({ orders, point, id ,value,customer}) => {
                                         <TableCell >{orders.value}</TableCell>
                                         <TableCell >{orders.value * orders.quantity}</TableCell>
                                         {orders.confirmed === 0 ? <>
-                                        <TableCell >
+                                            <TableCell >
                                                 <Button
                                                     variant="contained"
                                                     color="default"
                                                     startIcon={<HourglassEmptyIcon />}
                                                     onClick={() => { confirmOrder(id, orders._id, 3) }}
-                                                    
+
                                                 >
                                                     Em preparo
                                                 </Button>
-                                        </TableCell>
-                                        
-                                        <TableCell >
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                startIcon={<CheckIcon ></CheckIcon>}
-                                                onClick={() => { confirmOrder(id, orders._id, 1) }}
-                                            >
-                                                Confirmar
+                                            </TableCell>
+
+                                            <TableCell >
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    startIcon={<CheckIcon ></CheckIcon>}
+                                                    onClick={() => { confirmOrder(id, orders._id, 1) }}
+                                                >
+                                                    Confirmar
                                         </Button>
 
-                                        </TableCell>
+                                            </TableCell>
                                             <TableCell >
                                                 <Button
                                                     variant="contained"
@@ -117,8 +117,8 @@ const OrdersDialog = ({ orders, point, id ,value,customer}) => {
                                                     Não atender
                                                 </Button>
                                             </TableCell>
-                                                                          
-                                            </>
+
+                                        </>
                                             : ''}
                                         {orders.confirmed === 1 ? <TableCell >
                                             Pedido confirmado!
@@ -126,19 +126,19 @@ const OrdersDialog = ({ orders, point, id ,value,customer}) => {
                                         {orders.confirmed === 2 ? <TableCell >
                                             Pedido negado!
                                     </TableCell> : ''}
-                                        {orders.confirmed === 3 ? 
-                                        <TableCell >
-                                           Atualmente em preparo!
+                                        {orders.confirmed === 3 ?
+                                            <TableCell >
+                                                Atualmente em preparo!
                                             <Button
-                                                variant="contained"
-                                                color="primary"
-                                                startIcon={<CheckIcon ></CheckIcon>}
-                                                onClick={() => { confirmOrder(id, orders._id, 1) }}
-                                            >
-                                                Confirmar?
+                                                    variant="contained"
+                                                    color="primary"
+                                                    startIcon={<CheckIcon ></CheckIcon>}
+                                                    onClick={() => { confirmOrder(id, orders._id, 1) }}
+                                                >
+                                                    Confirmar?
                                         </Button>
-                                            
-                                        </TableCell> : ''}
+
+                                            </TableCell> : ''}
                                         {orders.confirmed === 4 ? <TableCell >
                                             Pedido entregue
                                     </TableCell> : ''}
