@@ -11,7 +11,7 @@ const PointMap = ({data:{data}, setShouldUpdate, shouldUpdate,confirmPayment}) =
     const classes = useStyles();
     return (
         <React.Fragment>
-            {data && data.filter(item=>item.isPaid === false).map((item, index) => {
+            {data && data.filter(item=>item.isPaid === false && item.isCanceled === false).map((item, index) => {
 
                 const confirmedOrdersLength = item.orders.filter((conf)=>conf.confirmed === 1).length;
                 const notConfirmedOrdersLength = item.orders.filter((conf)=>conf.confirmed !== 1).length;

@@ -19,6 +19,8 @@ const Main = () => {
     }
     async function getData() {
         const data = await getOrders();
+        console.log('data')
+        console.log(data)
         storeActiveOrders(data)
     }
     useEffect(() => {

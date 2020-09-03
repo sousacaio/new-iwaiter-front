@@ -33,6 +33,8 @@ const OrdersDialog = ({ orders, point, id, value, customer }) => {
     }
     async function confirmOrder(OrderId, nestedOrderId, value) {
         const result = await changeRequestStatus(OrderId, nestedOrderId, value);
+        console.log('result')
+        console.log(result)
         storeActiveOrders(result)
     }
     const classes2 = useStyles2();
