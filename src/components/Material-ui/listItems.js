@@ -10,6 +10,7 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import { logout } from '../../services/auth';
 function handleLogout() {
     logout();
@@ -46,7 +47,15 @@ export const mainListItems = (
                 <ListItemText primary="Catalogo" />
             </ListItem>
         </Link>
-         <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
+        <Link to="/history" style={{ textDecoration: 'none', color: 'inherit', }}>
+            <ListItem button>
+                <ListItemIcon>
+                    <ListAltIcon />
+                </ListItemIcon>
+                <ListItemText primary="Histórico" />
+            </ListItem>
+        </Link>
+        <Link to="/qr" style={{ textDecoration: 'none', color: 'inherit', }}>
             <ListItem button>
                 <ListItemIcon>
                     <CameraAltIcon />

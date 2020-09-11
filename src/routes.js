@@ -7,6 +7,7 @@ import Points from './pages/Points/Points';
 import Testes from './pages/Testes/Testes';
 import Main from './pages/Orders/Orders';
 import Account from './pages/Account/Account';
+import History from './pages/History/History';
 import Settings from './pages/Settings/Settings';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -37,6 +38,7 @@ const Routes = () => (
       <PrivateRoute path="/testes" component={Testes} />
       <PrivateRoute path="/settings" component={Settings} />
       <PrivateRoute path="/account" component={Account} />
+      <PrivateRoute path="/history" component={History} />
       <Route path="*" component={() => <h1>Page not found</h1>} />
     </Switch>
   </BrowserRouter>

@@ -20,8 +20,10 @@ const Main = () => {
     async function getData() {
         const data = await getOrders();
         console.log('data')
-        console.log(data)
-        storeActiveOrders(data)
+        console.log(data.data)
+        storeActiveOrders(data.data)
+        console.log('orders')
+        console.log(orders)
     }
     useEffect(() => {
         getData();
