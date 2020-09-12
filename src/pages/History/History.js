@@ -25,6 +25,11 @@ import DetailOrdersModal from './DetailOrdersModal';
 import { red } from '@material-ui/core/colors';
 import moment from "moment";
 import "moment/locale/pt-br";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -83,6 +88,11 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: red[500],
     },
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        flexBasis: '33.33%',
+        flexShrink: 0,
+    },
 }));
 const History = () => {
     const dispatch = useDispatch()
@@ -102,7 +112,7 @@ const History = () => {
         const { success, data: newData } = data;
         if (success) {
             storeActiveOrders(newData)
-            setData(newData)
+            setData(newData.reverse())
         }
     }
     useEffect(() => {
@@ -111,6 +121,12 @@ const History = () => {
     //const orders = useSelector(state => state.ordersReducer.orders)
     const paidOrders = data.filter(item => item.isPaid === true && item.isCanceled === false)
     const canceledOrders = data.filter(item => item.isCanceled === true)
+    const [expanded, setExpanded] = React.useState(false);
+
+    const handleChangeAccordion = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
     return (
         <Wrapper>
             <div className={classes.root}>
@@ -134,6 +150,8 @@ const History = () => {
                         alignItems="stretch"
 
                     >
+
+
                         {paidOrders.map((item, index) => {
 
                             const somar = (acumulado, x) => acumulado + x;
@@ -144,6 +162,7 @@ const History = () => {
                                     return 0;
                                 }
                             });
+
                             return (
                                 <Grid key={index} item xs={5}  >
                                     <Card >
@@ -163,53 +182,84 @@ const History = () => {
                                                     title={`Comanda de ${item.customer_info[0].name}`}
                                                     subheader={`Fechada ${moment(item.createdAt).fromNow()}`}
                                                 />
-                                                <Typography>
-                                                    Criada em: {moment(item.createdAt).format('DD/MM/YYYY, h:mm:ss')}
-                                                </Typography>
-                                                <Typography>
-                                                    Número de itens pedidos: {item.orders.length}
-                                                </Typography>
-                                                <Typography>
-                                                    Número de itens confirmados: 0
-                                            </Typography>
-                                                <Typography>
-                                                    Número de itens negados: 0
-                                            </Typography>
-                                                <Typography>
-                                                    Número de itens em espera: 0
-                                            </Typography>
-                                                <Typography>
-                                                    Valor total da comanda: R$ {valores.reduce(somar).toFixed(2)}
-                                                </Typography>
+                                                <Grid xs style={{ margin: 10 }}>
+                                                    <Typography>
+                                                        Criada em: {moment(item.createdAt).format('DD/MM/YYYY, h:mm:ss')}
+                                                    </Typography>
+                                                    <Typography>
+                                                        Número de itens pedidos: {item.orders.length}
+                                                    </Typography>
 
-                                                {item.orders.map((order, index) => {
-                                                    return (
-                                                        <Grid container spacing="6">
-                                                            <Grid item xs={6}>
-                                                                <Typography >
-                                                                    {order.name}
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid item>
-                                                                <Typography>
-                                                                    {order.value}
-                                                                </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                    )
-                                                })}
+                                                    <Typography>
+                                                        Valor total da comanda: R$ {valores.reduce(somar).toFixed(2)}
+                                                    </Typography>
+                                                </Grid>
+                                                <br />
+                                                <Accordion expanded={expanded === 'panel1'} onChange={handleChangeAccordion('panel1')}>
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        aria-controls="panel1bh-content"
+                                                        id="panel1bh-header"
+                                                    >
+                                                        <Typography className={classes.heading}>Listar pedidos da comanda</Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <div style={{
+                                                            display: 'flex',
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center',
+                                                            flexWrap: 'wrap',
+                                                            margin: 10,
 
+                                                        }}>
+
+                                                            {item.orders.map((order, index) => {
+                                                                let orderStat = '';
+                                                                switch (order.confirmed) {
+                                                                    case 0:
+                                                                        orderStat = "Não atendido";
+                                                                        break;
+                                                                    case 1:
+                                                                        orderStat = "Confirmado";
+                                                                        break;
+                                                                    case 2:
+                                                                        orderStat = "negado";
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }
+                                                                return (
+                                                                    <>
+
+                                                                        <Grid item xs={6} >
+                                                                            <Typography >
+                                                                                {order.name}
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Typography>
+                                                                                {order.value}
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Typography>
+                                                                                {orderStat}
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Typography>
+                                                                                {order.quantity}
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                    </>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </AccordionDetails>
+                                                </Accordion>
                                             </CardContent>
                                         </CardActionArea>
-                                        <CardActions>
-                                            <DetailOrdersModal
-                                                total={valores.reduce(somar).toFixed(2)}
-                                                data={item.orders}
-                                                orders={item.orders}
-                                                open={openModal}
-                                                setOpen={setOpenModal}
-                                            />
-                                        </CardActions>
                                     </Card>
                                 </Grid>
                             )
@@ -294,7 +344,7 @@ const History = () => {
                 <TabPanel value={value} index="three">
                     Item Three
                 </TabPanel>
-            </div>
+            </div >
         </Wrapper >
     );
 }
