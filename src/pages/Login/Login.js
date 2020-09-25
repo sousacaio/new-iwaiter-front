@@ -70,7 +70,7 @@ function SignInSide(props) {
                                 <LockOutlinedIcon />
                             </Avatar>
                             <Typography component="h1" variant="h5">
-                                Iwaiter
+                                Iwaiter V1
                             </Typography>
                             <form className={classes.form} onSubmit={handleSubmit}>
                                 <TextField
