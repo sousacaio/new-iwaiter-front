@@ -7,7 +7,7 @@ export const doLogin = async (email, password) => {
             warning('Preencha todos os campos!')
             return false;
         } else {
-            const res = await api.post('/establishment/auth', { email, password })
+            const res = await api.post('/auth/establishments/login', { email, password })
             const { data: { response, status } } = res;
             const { message } = response;
             if (status === 200) {

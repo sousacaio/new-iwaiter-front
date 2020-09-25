@@ -35,7 +35,7 @@ const OrdersDialog = ({ orders, point, id, value, customer }) => {
         const result = await changeRequestStatus(OrderId, nestedOrderId, value);
         console.log('result')
         console.log(result)
-        storeActiveOrders(result)
+       // storeActiveOrders(result)
     }
     const classes2 = useStyles2();
     const newOrders = orders;
