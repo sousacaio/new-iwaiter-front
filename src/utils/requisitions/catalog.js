@@ -12,6 +12,7 @@ export const fetchEstablishmentCatalog = async () => {
     } else {
         failure('Não foi possível trazer seu catálogo')
     }
+    
 }
 export const deleteCatalogItem = async (itemId) => {
     console.log(itemId)

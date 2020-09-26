@@ -12,6 +12,7 @@ export const getOrders = async () => {
         console.log(data.data)
         return data.data;
     } else {
+        
         failure('Houve um problema ao trazer seus pedidos');
         return false;
     }

@@ -4,6 +4,7 @@ import { warning, failure, success } from '../toasts/toasts';
 
 export const getSettings = async () => {
     try {
+        
         const res = await api.get(`establishment/${getId()}/settings`)
         const { data: { response, status } } = res;
         if (status === 200) {

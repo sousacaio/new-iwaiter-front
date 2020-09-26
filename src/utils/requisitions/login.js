@@ -11,12 +11,13 @@ export const doLogin = async (email, password) => {
             const { data: { response, status } } = res;
             const { message } = response;
             if (status === 200) {
+                
                 const { data: { establishment, token } } = response;
                 const { settings, catalog, address, _id } = establishment;
                 return {
                     settings, catalog, address, token, _id, establishment, authorized: true
                 }
-                
+
             } else {
                 failure(message);
                 return { authorized: false }

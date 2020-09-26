@@ -8,6 +8,7 @@ export const deleteUniquePoint = async (idPoint) => {
         const desambiguation = data.success;
         if (desambiguation) {
             success('Ponto deletado com sucesso')
+            
             return true;
         } else {
             failure('Houve um problema ao deletar seu ponto');

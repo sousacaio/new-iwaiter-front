@@ -11,6 +11,7 @@ export const fetchEstablishmentAccountData = async () => {
     } else {
         failure('Não foi possível trazer suas configurações de conta')
     }
+    
 }
 
 export const updateEstablishmentAccount = async (file, account) => {

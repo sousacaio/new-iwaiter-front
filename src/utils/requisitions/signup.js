@@ -7,6 +7,7 @@ export const doSignUp = async (data) => {
         const { data: { response, status, errors } } = res;
         const { message } = response;
         console.log(res)
+        
         if (status === 201) {
             success(message)
             const { data: { email, password } } = response;
