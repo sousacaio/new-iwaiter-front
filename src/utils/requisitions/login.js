@@ -16,6 +16,7 @@ export const doLogin = async (email, password) => {
                 return {
                     settings, catalog, address, token, _id, establishment, authorized: true
                 }
+                
             } else {
                 failure(message);
                 return { authorized: false }
