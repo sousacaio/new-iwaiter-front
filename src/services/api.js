@@ -3,6 +3,8 @@ import { getToken } from "./auth";
 
 const api = axios.create({
     baseURL: 'https://nest-heroku-demo456.herokuapp.com/v1/'
+    //baseURL: 'http://localhost:3000/v1/'
+    
 })
 //api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
 api.interceptors.request.use(async config => {

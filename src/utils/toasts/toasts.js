@@ -10,6 +10,7 @@ export const success = (message) =>
         draggable: true,
         progress: undefined,
     });
+    
 export const failure = (message) =>
     toast.error(message, {
         position: "top-center",

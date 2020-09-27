@@ -11,7 +11,7 @@ export const doLogin = async (email, password) => {
             const { data: { response, status } } = res;
             const { message } = response;
             if (status === 200) {
-                
+
                 const { data: { establishment, token } } = response;
                 const { settings, catalog, address, _id } = establishment;
                 return {
@@ -26,5 +26,4 @@ export const doLogin = async (email, password) => {
     } catch (error) {
         failure('Houve um problema com suas credenciais');
     }
-
 }

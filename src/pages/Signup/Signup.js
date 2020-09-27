@@ -8,10 +8,14 @@ import { Formik } from 'formik';
 import * as Yup from 'yup'
 import ErrorMessage from '../../components/ErrorMessage';
 import MaskedInput from 'react-text-mask';
-import { doSignUp } from '../../utils/requisitions/signup';
 import { connect } from 'react-redux';
 import { fetchCatalog, fetchAddress, fetchSettings } from '../../actions/main-actions';
 import { setId, setToken, setData } from '../../services/auth';
+import api from '../../services/api';
+import { failure } from '../../utils/toasts/toasts';
+import { success } from '../../utils/toasts/toasts';
+import { doLogin } from '../../utils/requisitions/login';
+//import { doSignUp } from '../../utils/requisitions/signup';
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -97,6 +101,35 @@ const SignUp = (props) => {
     const handleFetchCatalog = (data) => {
         props.fetchCatalog(data);
     }
+    const doSignUp = async (data) => {
+        try {
+            const res = await api.post('auth/establishments/create', data);
+            const { data: { response, status, errors } } = res;
+            const { message } = response;
+            console.log(res)
+
+            if (status === 201) {
+                success(message)
+                const { data: { email, password } } = response;
+                const login = await doLogin(email, password);
+                return login;
+            } else {
+                if (message) {
+                    failure(message)
+                    return { authorized: false }
+                } else {
+                    if (errors) {
+                        failure(errors.messsage)
+                        return { authorized: false }
+                    }
+                }
+            }
+        } catch (error) {
+            failure(error)
+        }
+    }
+
+
     const handleSignup = async (values) => {
         const res = await doSignUp(values)
         const { settings, catalog, address, token, _id, establishment, authorized } = res;
@@ -247,4 +280,4 @@ const mapDispatchToProps = (dispatch) => {
         fetchAddress: (data) => { dispatch(fetchAddress(data)) },
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
